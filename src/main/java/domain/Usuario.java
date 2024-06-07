@@ -6,41 +6,60 @@
  */
 package domain;
 
-public class Usuario {
+import java.io.Serializable;
+import java.util.List;
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
-    // Atributos de la clase que coinciden con los registros de la base de datos
-    private int idUsuario;
+@Entity
+@Table(name = "usuario")
+@NamedQueries({
+        @NamedQuery(name = "Usuario.findAll", query = "SELECT u FROM Usuario u"),
+        @NamedQuery(name = "Usuario.findByIdUsuario", query = "SELECT u FROM Usuario u WHERE u.idUsuario = :idUsuario"),
+        @NamedQuery(name = "Usuario.findByUsername", query = "SELECT u FROM Usuario u WHERE u.username = :username"),
+        @NamedQuery(name = "Usuario.findByPassword", query = "SELECT u FROM Usuario u WHERE u.password = :password")})
+public class Usuario implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "id_usuario")
+    private Integer idUsuario;
     private String username;
     private String password;
+    @OneToMany(mappedBy = "usuario")
+    private List<Empleado> empleadoList;
+    @OneToMany(mappedBy = "usuario")
+    private List<Paciente> pacienteList;
+    @JoinColumn(name = "id_persona", referencedColumnName = "id_persona")
+    @ManyToOne
+    private Persona persona;
+    @OneToMany(mappedBy = "usuario")
+    private List<Perfil> perfilList;
 
-    // Constructor que permite crear objetos de la clase con o sin los atributos especificados
     public Usuario() {
     }
 
-    // Constructor que permite eliminar un objeto de la clase a través de la llave primaria
-    public Usuario(int idUsuario) {
+    public Usuario(Integer idUsuario) {
         this.idUsuario = idUsuario;
     }
 
-    // Constructor que permite insertar un objeto de la clase sin necesidad de la llave primaria
-    public Usuario(String username, String password) {
-        this.username = username;
-        this.password = password;
-    }
-
-    // Constructor que permite la modificación de todos los atributos de un objeto por completo
-    public Usuario(int idUsuario, String username, String password) {
-        this.idUsuario = idUsuario;
-        this.username = username;
-        this.password = password;
-    }
-
-    // Métodos Getter y Setter que permiten modificar un atributo específico del objeto
-    public int getIdUsuario() {
+    public Integer getIdUsuario() {
         return idUsuario;
     }
 
-    public void setIdUsuario(int idUsuario) {
+    public void setIdUsuario(Integer idUsuario) {
         this.idUsuario = idUsuario;
     }
 
@@ -60,12 +79,61 @@ public class Usuario {
         this.password = password;
     }
 
+    public List<Empleado> getEmpleadoList() {
+        return empleadoList;
+    }
+
+    public void setEmpleadoList(List<Empleado> empleadoList) {
+        this.empleadoList = empleadoList;
+    }
+
+    public List<Paciente> getPacienteList() {
+        return pacienteList;
+    }
+
+    public void setPacienteList(List<Paciente> pacienteList) {
+        this.pacienteList = pacienteList;
+    }
+
+    public Persona getPersona() {
+        return persona;
+    }
+
+    public void setPersona(Persona persona) {
+        this.persona = persona;
+    }
+
+    public List<Perfil> getPerfilList() {
+        return perfilList;
+    }
+
+    public void setPerfilList(List<Perfil> perfilList) {
+        this.perfilList = perfilList;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 0;
+        hash += (idUsuario != null ? idUsuario.hashCode() : 0);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof Usuario)) {
+            return false;
+        }
+        Usuario other = (Usuario) object;
+        if ((this.idUsuario == null && other.idUsuario != null) || (this.idUsuario != null && !this.idUsuario.equals(other.idUsuario))) {
+            return false;
+        }
+        return true;
+    }
+
     @Override
     public String toString() {
-        return "Usuario{" +
-                "idUsuario=" + idUsuario +
-                ", username='" + username + '\'' +
-                ", password='" + password + '\'' +
-                '}';
+        return "domain.Usuario[ idUsuario=" + idUsuario + " ]";
     }
+
 }

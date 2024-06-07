@@ -6,49 +6,61 @@
  */
 package domain;
 
-public class Persona {
+import java.io.Serializable;
+import java.util.List;
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
-    // Atributos de la clase que coinciden con los registros de la base de datos
-    private int idPersona;
+@Entity
+@Table(name = "persona")
+@NamedQueries({
+        @NamedQuery(name = "Persona.findAll", query = "SELECT p FROM Persona p"),
+        @NamedQuery(name = "Persona.findByIdPersona", query = "SELECT p FROM Persona p WHERE p.idPersona = :idPersona"),
+        @NamedQuery(name = "Persona.findByNombre", query = "SELECT p FROM Persona p WHERE p.nombre = :nombre"),
+        @NamedQuery(name = "Persona.findByApellido", query = "SELECT p FROM Persona p WHERE p.apellido = :apellido"),
+        @NamedQuery(name = "Persona.findByIdentificacion", query = "SELECT p FROM Persona p WHERE p.identificacion = :identificacion"),
+        @NamedQuery(name = "Persona.findByTelefono", query = "SELECT p FROM Persona p WHERE p.telefono = :telefono"),
+        @NamedQuery(name = "Persona.findByEmail", query = "SELECT p FROM Persona p WHERE p.email = :email")})
+public class Persona implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "id_persona")
+    private Integer idPersona;
     private String nombre;
     private String apellido;
     private String identificacion;
     private String telefono;
     private String email;
+    @OneToMany(mappedBy = "persona")
+    private List<Empleado> empleadoList;
+    @OneToMany(mappedBy = "persona")
+    private List<Paciente> pacienteList;
+    @OneToMany(mappedBy = "persona")
+    private List<Usuario> usuarioList;
 
-    // Constructor que permite crear objetos de la clase con o sin los atributos especificados
-    public Persona() {}
+    public Persona() {
+    }
 
-    // Constructor que permite eliminar un objeto de la clase a través de la llave primaria
-    public Persona(int idPersona) {
+    public Persona(Integer idPersona) {
         this.idPersona = idPersona;
     }
 
-    // Constructor que permite insertar un objeto de la clase sin necesidad de la llave primaria
-    public Persona(String nombre, String apellido, String identificacion, String telefono, String email) {
-        this.nombre = nombre;
-        this.apellido = apellido;
-        this.identificacion = identificacion;
-        this.telefono = telefono;
-        this.email = email;
-    }
-
-    // Constructor que permite la modificación de todos los atributos de un objeto por completo
-    public Persona(int idPersona, String nombre, String apellido, String identificacion, String telefono, String email) {
-        this.idPersona = idPersona;
-        this.nombre = nombre;
-        this.apellido = apellido;
-        this.identificacion = identificacion;
-        this.telefono = telefono;
-        this.email = email;
-    }
-
-    // Métodos Getter y Setter que permiten modificar un atributo específico del objeto
-    public int getIdPersona() {
+    public Integer getIdPersona() {
         return idPersona;
     }
 
-    public void setIdPersona(int idPersona) {
+    public void setIdPersona(Integer idPersona) {
         this.idPersona = idPersona;
     }
 
@@ -92,16 +104,54 @@ public class Persona {
         this.email = email;
     }
 
-    // Método ToString para imprimir el estado del objeto en cualquier momento
+    public List<Empleado> getEmpleadoList() {
+        return empleadoList;
+    }
+
+    public void setEmpleadoList(List<Empleado> empleadoList) {
+        this.empleadoList = empleadoList;
+    }
+
+    public List<Paciente> getPacienteList() {
+        return pacienteList;
+    }
+
+    public void setPacienteList(List<Paciente> pacienteList) {
+        this.pacienteList = pacienteList;
+    }
+
+    public List<Usuario> getUsuarioList() {
+        return usuarioList;
+    }
+
+    public void setUsuarioList(List<Usuario> usuarioList) {
+        this.usuarioList = usuarioList;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 0;
+        hash += (idPersona != null ? idPersona.hashCode() : 0);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof Persona)) {
+            return false;
+        }
+        Persona other = (Persona) object;
+        if ((this.idPersona == null && other.idPersona != null) || (this.idPersona != null && !this.idPersona.equals(other.idPersona))) {
+            return false;
+        }
+        return true;
+    }
+
     @Override
     public String toString() {
-        return "Persona{" +
-                "idPersona=" + idPersona +
-                ", nombre='" + nombre + '\'' +
-                ", apellido='" + apellido + '\'' +
-                ", identificacion='" + identificacion + '\'' +
-                ", telefono='" + telefono + '\'' +
-                ", email='" + email + '\'' +
-                '}';
+        return "domain.Persona[ idPersona=" + idPersona + " ]";
     }
+
 }
+
