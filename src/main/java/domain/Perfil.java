@@ -6,6 +6,7 @@
  */
 package domain;
 
+import java.io.Serial;
 import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -25,6 +26,7 @@ import javax.persistence.NamedQuery;
         @NamedQuery(name = "Perfil.findByRol", query = "SELECT p FROM Perfil p WHERE p.rol = :rol")})
 public class Perfil implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -43,6 +45,10 @@ public class Perfil implements Serializable {
     private Usuario usuario;
 
     public Perfil() {
+    }
+
+    public Perfil(String rol) {
+        this.rol = rol;
     }
 
     public Perfil(Integer idPerfil) {
@@ -111,7 +117,12 @@ public class Perfil implements Serializable {
 
     @Override
     public String toString() {
-        return "domain.Perfil[ idPerfil=" + idPerfil + " ]";
+        return "Perfil{" +
+                "idPerfil=" + idPerfil +
+                ", rol='" + rol + '\'' +
+                ", empleado=" + empleado +
+                ", paciente=" + paciente +
+                ", usuario=" + usuario +
+                '}';
     }
-
 }

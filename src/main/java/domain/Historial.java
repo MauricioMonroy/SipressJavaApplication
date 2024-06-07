@@ -6,6 +6,7 @@
  */
 package domain;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
@@ -29,6 +30,7 @@ import javax.persistence.TemporalType;
         @NamedQuery(name = "Historial.findByFechaNacimiento", query = "SELECT h FROM Historial h WHERE h.fechaNacimiento = :fechaNacimiento")})
 public class Historial implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -50,6 +52,13 @@ public class Historial implements Serializable {
     private List<Paciente> pacienteList;
 
     public Historial() {
+    }
+
+    public Historial(String motivoConsulta, Date fechaNacimiento, String examenes, String enfermedadesPrevias) {
+        this.motivoConsulta = motivoConsulta;
+        this.fechaNacimiento = fechaNacimiento;
+        this.examenes = examenes;
+        this.enfermedadesPrevias = enfermedadesPrevias;
     }
 
     public Historial(Integer idHistorial) {
@@ -126,7 +135,12 @@ public class Historial implements Serializable {
 
     @Override
     public String toString() {
-        return "domain.Historial[ idHistorial=" + idHistorial + " ]";
+        return "Historial{" +
+                "idHistorial=" + idHistorial +
+                ", motivoConsulta='" + motivoConsulta + '\'' +
+                ", fechaNacimiento=" + fechaNacimiento +
+                ", examenes='" + examenes + '\'' +
+                ", enfermedadesPrevias='" + enfermedadesPrevias + '\'' +
+                '}';
     }
-
 }

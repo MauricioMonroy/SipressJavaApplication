@@ -6,6 +6,7 @@
  */
 package domain;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Basic;
@@ -30,6 +31,7 @@ import javax.persistence.Table;
         @NamedQuery(name = "Usuario.findByPassword", query = "SELECT u FROM Usuario u WHERE u.password = :password")})
 public class Usuario implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -49,6 +51,11 @@ public class Usuario implements Serializable {
     private List<Perfil> perfilList;
 
     public Usuario() {
+    }
+
+    public Usuario(String username, String password) {
+        this.username = username;
+        this.password = password;
     }
 
     public Usuario(Integer idUsuario) {
@@ -133,7 +140,11 @@ public class Usuario implements Serializable {
 
     @Override
     public String toString() {
-        return "domain.Usuario[ idUsuario=" + idUsuario + " ]";
+        return "Usuario{" +
+                "idUsuario=" + idUsuario +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", persona=" + persona +
+                '}';
     }
-
 }

@@ -6,6 +6,7 @@
  */
 package domain;
 
+import java.io.Serial;
 import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -25,6 +26,7 @@ import javax.persistence.NamedQuery;
         @NamedQuery(name = "Funcion.findByNombre", query = "SELECT f FROM Funcion f WHERE f.nombre = :nombre")})
 public class Funcion implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -40,6 +42,10 @@ public class Funcion implements Serializable {
     private Servicio servicio;
 
     public Funcion() {
+    }
+
+    public Funcion(String nombre) {
+        this.nombre = nombre;
     }
 
     public Funcion(Integer idFuncion) {
@@ -100,8 +106,12 @@ public class Funcion implements Serializable {
 
     @Override
     public String toString() {
-        return "domain.Funcion[ idFuncion=" + idFuncion + " ]";
+        return "Funcion{" +
+                "idFuncion=" + idFuncion +
+                ", nombre='" + nombre + '\'' +
+                ", empleado=" + empleado +
+                ", servicio=" + servicio +
+                '}';
     }
-
 }
 

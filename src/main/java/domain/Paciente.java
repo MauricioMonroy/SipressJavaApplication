@@ -6,6 +6,7 @@
  */
 package domain;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
@@ -31,6 +32,7 @@ import javax.persistence.TemporalType;
         @NamedQuery(name = "Paciente.findByFechaConsulta", query = "SELECT p FROM Paciente p WHERE p.fechaConsulta = :fechaConsulta")})
 public class Paciente implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -58,6 +60,11 @@ public class Paciente implements Serializable {
     private List<Perfil> perfilList;
 
     public Paciente() {
+    }
+
+    public Paciente(String detalleEps, Date fechaConsulta) {
+        this.detalleEps = detalleEps;
+        this.fechaConsulta = fechaConsulta;
     }
 
     public Paciente(Integer idPaciente) {
@@ -150,7 +157,14 @@ public class Paciente implements Serializable {
 
     @Override
     public String toString() {
-        return "domain.Paciente[ idPaciente=" + idPaciente + " ]";
+        return "Paciente{" +
+                "idPaciente=" + idPaciente +
+                ", detalleEps='" + detalleEps + '\'' +
+                ", fechaConsulta=" + fechaConsulta +
+                ", historial=" + historial +
+                ", persona=" + persona +
+                ", servicio=" + servicio +
+                ", usuario=" + usuario +
+                '}';
     }
-
 }

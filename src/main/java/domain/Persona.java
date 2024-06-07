@@ -6,6 +6,7 @@
  */
 package domain;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Basic;
@@ -31,6 +32,7 @@ import javax.persistence.Table;
         @NamedQuery(name = "Persona.findByEmail", query = "SELECT p FROM Persona p WHERE p.email = :email")})
 public class Persona implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -50,6 +52,14 @@ public class Persona implements Serializable {
     private List<Usuario> usuarioList;
 
     public Persona() {
+    }
+
+    public Persona(String nombre, String apellido, String identificacion, String telefono, String email) {
+        this.nombre = nombre;
+        this.apellido = apellido;
+        this.identificacion = identificacion;
+        this.telefono = telefono;
+        this.email = email;
     }
 
     public Persona(Integer idPersona) {
@@ -150,8 +160,14 @@ public class Persona implements Serializable {
 
     @Override
     public String toString() {
-        return "domain.Persona[ idPersona=" + idPersona + " ]";
+        return "Persona{" +
+                "idPersona=" + idPersona +
+                ", nombre='" + nombre + '\'' +
+                ", apellido='" + apellido + '\'' +
+                ", identificacion='" + identificacion + '\'' +
+                ", telefono='" + telefono + '\'' +
+                ", email='" + email + '\'' +
+                '}';
     }
-
 }
 

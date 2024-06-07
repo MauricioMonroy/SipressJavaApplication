@@ -6,6 +6,7 @@
  */
 package domain;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Basic;
@@ -25,6 +26,7 @@ import javax.persistence.OneToMany;
         @NamedQuery(name = "Servicio.findByNombre", query = "SELECT s FROM Servicio s WHERE s.nombre = :nombre")})
 public class Servicio implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -38,6 +40,10 @@ public class Servicio implements Serializable {
     private List<Funcion> funcionList;
 
     public Servicio() {
+    }
+
+    public Servicio(String nombre) {
+        this.nombre = nombre;
     }
 
     public Servicio(Integer idServicio) {
@@ -98,8 +104,10 @@ public class Servicio implements Serializable {
 
     @Override
     public String toString() {
-        return "domain.Servicio[ idServicio=" + idServicio + " ]";
+        return "Servicio{" +
+                "idServicio=" + idServicio +
+                ", nombre='" + nombre + '\'' +
+                '}';
     }
-
 }
 
