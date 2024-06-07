@@ -2,7 +2,8 @@ package test;
 
 import datos.Conexion;
 import datos.PersonaDAO;
-import domain.Persona;
+import datos.PersonaDaoJDBC;
+import domain.PersonaDTO;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -18,38 +19,38 @@ public class ManejoPersonas {
             if (conexion.getAutoCommit()) {
                 conexion.setAutoCommit(false);
             }
-            PersonaDAO personaDAO = new PersonaDAO(conexion);
+            PersonaDAO persona = new PersonaDaoJDBC(conexion);
 
             // Actualizar un registro en la base de datos
-            Persona personaModificada = new Persona();
+            /*PersonaDTO personaModificada = new PersonaDTO();
             personaModificada.setIdPersona(1);
             personaModificada.setNombre("Carlos Alberto");
             personaModificada.setApellido("Calle Contreras");
             personaModificada.setIdentificacion("3141592654");
             personaModificada.setTelefono("6063218277");
             personaModificada.setEmail("cabeto@gmail.com");
-            personaDAO.actualizar(personaModificada);
+            persona.actualizar(personaModificada);*/
 
             // Insertar un registro en la base de datos
-            /*Persona nuevaPersona = new Persona();
+            /*PersonaDTO nuevaPersona = new PersonaDTO();
             nuevaPersona.setNombre("Julia");
             nuevaPersona.setApellido("Cuartas");
             nuevaPersona.setIdentificacion("3141592654");
             nuevaPersona.setTelefono("6012589874");
             nuevaPersona.setEmail("julia@gmail.com");
-            personaDAO.insertar(nuevaPersona);*/
+            persona.insertar(nuevaPersona);*/
 
             // Eliminar un registro de la base de datos
-            /*personaDAO.eliminar(new Persona(3));*/
+            /*persona.eliminar(new PersonaDTO(3));*/
 
             // Commit de la transacción
             conexion.commit();
             System.out.println("Se ha hecho el commit de la transacción");
 
             // Listar los registros existentes en la base de datos
-            List<Persona> personas = personaDAO.seleccionar();
-            personas.forEach(personaList -> {
-                System.out.println("Registros: " + personaList);
+            List<PersonaDTO> personas = persona.seleccionar();
+            personas.forEach(personasLista -> {
+                System.out.println("Registros: " + personasLista);
             });
 
         } catch (SQLException ex) {

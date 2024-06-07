@@ -1,6 +1,6 @@
 package domain;
 
-public class Usuario {
+public class UsuarioDTO {
 
     // Atributos de la clase que coinciden con los registros de la base de datos
     private int idUsuario;
@@ -8,22 +8,22 @@ public class Usuario {
     private String password;
 
     // Constructor que permite crear objetos de la clase con o sin los atributos especificados
-    public Usuario() {
+    public UsuarioDTO() {
     }
 
     // Constructor que permite eliminar un objeto de la clase a través de la llave primaria
-    public Usuario(int idUsuario) {
+    public UsuarioDTO(int idUsuario) {
         this.idUsuario = idUsuario;
     }
 
     // Constructor que permite insertar un objeto de la clase sin necesidad de la llave primaria
-    public Usuario(String username, String password) {
+    public UsuarioDTO(String username, String password) {
         this.username = username;
         this.password = password;
     }
 
     // Constructor que permite la modificación de todos los atributos de un objeto por completo
-    public Usuario(int idUsuario, String username, String password) {
+    public UsuarioDTO(int idUsuario, String username, String password) {
         this.idUsuario = idUsuario;
         this.username = username;
         this.password = password;
@@ -56,7 +56,7 @@ public class Usuario {
 
     @Override
     public String toString() {
-        return "Usuario{" +
+        return "UsuarioDTO{" +
                 "idUsuario=" + idUsuario +
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +

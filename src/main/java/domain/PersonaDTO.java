@@ -1,6 +1,10 @@
+/*
+ * DTO hace referencia al patrón de diseño Data Transfer Object
+ * Permite realizar las transferencias de datos entre paquetes
+ */
 package domain;
 
-public class Persona {
+public class PersonaDTO {
 
     // Atributos de la clase que coinciden con los registros de la base de datos
     private int idPersona;
@@ -11,15 +15,15 @@ public class Persona {
     private String email;
 
     // Constructor que permite crear objetos de la clase con o sin los atributos especificados
-    public Persona() {}
+    public PersonaDTO() {}
 
     // Constructor que permite eliminar un objeto de la clase a través de la llave primaria
-    public Persona(int idPersona) {
+    public PersonaDTO(int idPersona) {
         this.idPersona = idPersona;
     }
 
     // Constructor que permite insertar un objeto de la clase sin necesidad de la llave primaria
-    public Persona(String nombre, String apellido, String identificacion, String telefono, String email) {
+    public PersonaDTO(String nombre, String apellido, String identificacion, String telefono, String email) {
         this.nombre = nombre;
         this.apellido = apellido;
         this.identificacion = identificacion;
@@ -28,7 +32,7 @@ public class Persona {
     }
 
     // Constructor que permite la modificación de todos los atributos de un objeto por completo
-    public Persona(int idPersona, String nombre, String apellido, String identificacion, String telefono, String email) {
+    public PersonaDTO(int idPersona, String nombre, String apellido, String identificacion, String telefono, String email) {
         this.idPersona = idPersona;
         this.nombre = nombre;
         this.apellido = apellido;
@@ -89,7 +93,7 @@ public class Persona {
     // Método ToString para imprimir el estado del objeto en cualquier momento
     @Override
     public String toString() {
-        return "Persona{" +
+        return "PersonaDTO{" +
                 "idPersona=" + idPersona +
                 ", nombre='" + nombre + '\'' +
                 ", apellido='" + apellido + '\'' +

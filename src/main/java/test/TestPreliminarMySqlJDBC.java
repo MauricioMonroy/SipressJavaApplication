@@ -18,7 +18,7 @@ public class TestPreliminarMySqlJDBC {
 
             // Iteración de los elementos para obtener todos los registros
             while (resultado.next()) {
-                System.out.print("Id Persona: " + resultado.getInt("id_persona"));
+                System.out.print("Id PersonaDTO: " + resultado.getInt("id_persona"));
                 System.out.print(" |Nombre: " + resultado.getString("nombre"));
                 System.out.print(" |Apellido: " + resultado.getString("apellido"));
                 System.out.print(" |Identificación: " + resultado.getString("identificacion"));
