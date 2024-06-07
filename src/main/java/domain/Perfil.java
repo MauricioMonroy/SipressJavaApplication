@@ -105,14 +105,10 @@ public class Perfil implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Perfil)) {
+        if (!(object instanceof Perfil other)) {
             return false;
         }
-        Perfil other = (Perfil) object;
-        if ((this.idPerfil == null && other.idPerfil != null) || (this.idPerfil != null && !this.idPerfil.equals(other.idPerfil))) {
-            return false;
-        }
-        return true;
+        return (this.idPerfil != null || other.idPerfil == null) && (this.idPerfil == null || this.idPerfil.equals(other.idPerfil));
     }
 
     @Override

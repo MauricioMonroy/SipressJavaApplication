@@ -92,14 +92,10 @@ public class Servicio implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Servicio)) {
+        if (!(object instanceof Servicio other)) {
             return false;
         }
-        Servicio other = (Servicio) object;
-        if ((this.idServicio == null && other.idServicio != null) || (this.idServicio != null && !this.idServicio.equals(other.idServicio))) {
-            return false;
-        }
-        return true;
+        return (this.idServicio != null || other.idServicio == null) && (this.idServicio == null || this.idServicio.equals(other.idServicio));
     }
 
     @Override

@@ -148,14 +148,10 @@ public class Persona implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Persona)) {
+        if (!(object instanceof Persona other)) {
             return false;
         }
-        Persona other = (Persona) object;
-        if ((this.idPersona == null && other.idPersona != null) || (this.idPersona != null && !this.idPersona.equals(other.idPersona))) {
-            return false;
-        }
-        return true;
+        return (this.idPersona != null || other.idPersona == null) && (this.idPersona == null || this.idPersona.equals(other.idPersona));
     }
 
     @Override

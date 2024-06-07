@@ -116,14 +116,10 @@ public class Empleado implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Empleado)) {
+        if (!(object instanceof Empleado other)) {
             return false;
         }
-        Empleado other = (Empleado) object;
-        if ((this.idEmpleado == null && other.idEmpleado != null) || (this.idEmpleado != null && !this.idEmpleado.equals(other.idEmpleado))) {
-            return false;
-        }
-        return true;
+        return (this.idEmpleado != null || other.idEmpleado == null) && (this.idEmpleado == null || this.idEmpleado.equals(other.idEmpleado));
     }
 
     @Override

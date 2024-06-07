@@ -145,14 +145,10 @@ public class Paciente implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Paciente)) {
+        if (!(object instanceof Paciente other)) {
             return false;
         }
-        Paciente other = (Paciente) object;
-        if ((this.idPaciente == null && other.idPaciente != null) || (this.idPaciente != null && !this.idPaciente.equals(other.idPaciente))) {
-            return false;
-        }
-        return true;
+        return (this.idPaciente != null || other.idPaciente == null) && (this.idPaciente == null || this.idPaciente.equals(other.idPaciente));
     }
 
     @Override

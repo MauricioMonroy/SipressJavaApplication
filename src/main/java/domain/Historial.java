@@ -123,14 +123,10 @@ public class Historial implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Historial)) {
+        if (!(object instanceof Historial other)) {
             return false;
         }
-        Historial other = (Historial) object;
-        if ((this.idHistorial == null && other.idHistorial != null) || (this.idHistorial != null && !this.idHistorial.equals(other.idHistorial))) {
-            return false;
-        }
-        return true;
+        return (this.idHistorial != null || other.idHistorial == null) && (this.idHistorial == null || this.idHistorial.equals(other.idHistorial));
     }
 
     @Override
