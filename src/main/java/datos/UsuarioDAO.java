@@ -17,6 +17,10 @@ import static datos.Conexion.close;
 import static datos.Conexion.getConnection;
 
 public class UsuarioDAO {
+
+    // Objeto que permite manejar la conexión y las transacciones con la base de datos
+    private Connection conexionTransaccional;
+
     // Creación de las sentencias para recuperar la información de la base de datos
     private static final String SQL_SELECT =
             "SELECT id_usuario, username, password FROM usuario";
@@ -27,15 +31,23 @@ public class UsuarioDAO {
     private static final String SQL_DELETE =
             "DELETE FROM usuario WHERE id_usuario = ?";
 
-    // Método que permite seleccionar los objetos (SELECT)
-    public List<Usuario> seleccionar() {
+    // Constructores para la conexión transaccional
+    public UsuarioDAO() {
+    }
+
+    public UsuarioDAO(Connection conexionTransaccional) {
+        this.conexionTransaccional = conexionTransaccional;
+    }
+
+    // Método que permite seleccionar los objetos de la base de datos (SELECT)
+    public List<Usuario> seleccionar() throws SQLException {
         Connection conn = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
         List<Usuario> usuarios = new ArrayList<>();
 
         try {
-            conn = getConnection();
+            conn = this.conexionTransaccional != null ? this.conexionTransaccional : getConnection();
             System.out.println("Ejecutando query = " + SQL_SELECT);
             ps = conn.prepareStatement(SQL_SELECT);
             rs = ps.executeQuery();
@@ -53,26 +65,26 @@ public class UsuarioDAO {
                 usuario.setPassword(password);
                 usuarios.add(usuario);
             }
-        } catch (SQLException ex) {
-            ex.printStackTrace(System.out);
         }
         // Se ejecuta el bloque finally para cerrar los objetos creados
         finally {
             close(rs);
             close(ps);
-            close(conn);
+            if (this.conexionTransaccional == null) {
+                close(conn);
+            }
         }
 
         return usuarios;
     }
 
-    // Método que permite insertar objetos en la base de datos
-    public int insertar(Usuario usuario) {
+    // Método que permite insertar objetos en la base de datos (INSERT)
+    public int insertar(Usuario usuario) throws SQLException {
         Connection conn = null;
         PreparedStatement ps = null;
         int registros = 0;
         try {
-            conn = getConnection();
+            conn = this.conexionTransaccional != null ? this.conexionTransaccional : getConnection();
             System.out.println("Ejecutando query = " + SQL_INSERT);
             ps = conn.prepareStatement(SQL_INSERT);
             ps.setString(1, usuario.getUsername());
@@ -80,23 +92,24 @@ public class UsuarioDAO {
 
             registros = ps.executeUpdate();
             System.out.println("Registros insertados = " + registros);
-        } catch (SQLException ex) {
-            ex.printStackTrace(System.out);
         }
+        // Se ejecuta el bloque finally para cerrar la conexión
         finally {
             close(ps);
-            close(conn);
+            if (this.conexionTransaccional == null) {
+                close(conn);
+            }
         }
         return registros;
     }
 
-    // Método que permite actualizar objetos en la base de datos
-    public int actualizar(Usuario usuario) {
+    // Método que permite actualizar objetos en la base de datos (UPDATE)
+    public int actualizar(Usuario usuario) throws SQLException {
         Connection conn = null;
         PreparedStatement ps = null;
         int registros = 0;
         try {
-            conn = getConnection();
+            conn = this.conexionTransaccional != null ? this.conexionTransaccional : getConnection();
             System.out.println("Ejecutando query = " + SQL_UPDATE);
             ps = conn.prepareStatement(SQL_UPDATE);
             ps.setString(1, usuario.getUsername());
@@ -105,35 +118,37 @@ public class UsuarioDAO {
 
             registros = ps.executeUpdate();
             System.out.println("Registros actualizados = " + registros);
-        } catch (SQLException ex) {
-            ex.printStackTrace(System.out);
         }
+        // Se ejecuta el bloque finally para cerrar la conexión
         finally {
             close(ps);
-            close(conn);
+            if (this.conexionTransaccional == null) {
+                close(conn);
+            }
         }
         return registros;
     }
 
-    // Método que permite eliminar objetos en la base de datos
-    public int eliminar(Usuario usuario) {
+    // Método que permite eliminar objetos en la base de datos (DELETE)
+    public int eliminar(Usuario usuario) throws SQLException {
         Connection conn = null;
         PreparedStatement ps = null;
         int registros = 0;
         try {
-            conn = getConnection();
+            conn = this.conexionTransaccional != null ? this.conexionTransaccional : getConnection();
             System.out.println("Ejecutando query = " + SQL_DELETE);
             ps = conn.prepareStatement(SQL_DELETE);
             ps.setInt(1, usuario.getIdUsuario());
 
             registros = ps.executeUpdate();
             System.out.println("Registros eliminados = " + registros);
-        } catch (SQLException ex) {
-            ex.printStackTrace(System.out);
         }
+        // Se ejecuta el bloque finally para cerrar la conexión
         finally {
             close(ps);
-            close(conn);
+            if (this.conexionTransaccional == null) {
+                close(conn);
+            }
         }
         return registros;
     }

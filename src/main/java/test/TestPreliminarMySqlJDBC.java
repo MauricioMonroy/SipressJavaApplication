@@ -2,7 +2,7 @@ package test;
 
 import java.sql.*;
 
-public class TestGeneralMySqlJDBC {
+public class TestPreliminarMySqlJDBC {
     public static void main(String[] args) {
         var url = "jdbc:mysql://localhost:3306/database_sipress?useSSL=false&useTimezone=true&serverTimezone=UTC&allowPublicKeyRetrieval=true";
         try {
