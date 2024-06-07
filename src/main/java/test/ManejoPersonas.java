@@ -3,7 +3,7 @@ package test;
 import datos.Conexion;
 import datos.PersonaDAO;
 import datos.PersonaDaoJDBC;
-import domain.PersonaDTO;
+import domain.Persona;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -22,7 +22,7 @@ public class ManejoPersonas {
             PersonaDAO persona = new PersonaDaoJDBC(conexion);
 
             // Actualizar un registro en la base de datos
-            /*PersonaDTO personaModificada = new PersonaDTO();
+            /*Persona personaModificada = new Persona();
             personaModificada.setIdPersona(1);
             personaModificada.setNombre("Carlos Alberto");
             personaModificada.setApellido("Calle Contreras");
@@ -32,7 +32,7 @@ public class ManejoPersonas {
             persona.actualizar(personaModificada);*/
 
             // Insertar un registro en la base de datos
-            /*PersonaDTO nuevaPersona = new PersonaDTO();
+            /*Persona nuevaPersona = new Persona();
             nuevaPersona.setNombre("Julia");
             nuevaPersona.setApellido("Cuartas");
             nuevaPersona.setIdentificacion("3141592654");
@@ -41,14 +41,14 @@ public class ManejoPersonas {
             persona.insertar(nuevaPersona);*/
 
             // Eliminar un registro de la base de datos
-            /*persona.eliminar(new PersonaDTO(3));*/
+            /*persona.eliminar(new Persona(3));*/
 
             // Commit de la transacción
             conexion.commit();
             System.out.println("Se ha hecho el commit de la transacción");
 
             // Listar los registros existentes en la base de datos
-            List<PersonaDTO> personas = persona.seleccionar();
+            List<Persona> personas = persona.seleccionar();
             personas.forEach(personasLista -> {
                 System.out.println("Registros: " + personasLista);
             });

@@ -1,13 +1,13 @@
 package datos;
 
-import domain.PersonaDTO;
+import domain.Persona;
 
 import java.sql.SQLException;
 import java.util.List;
 
 public interface PersonaDAO {
-    List<PersonaDTO> seleccionar() throws SQLException;
-    int insertar(PersonaDTO personaDTO) throws SQLException;
-    int actualizar(PersonaDTO personaDTO) throws SQLException;
-    int eliminar(PersonaDTO personaDTO) throws SQLException;
+    List<Persona> seleccionar() throws SQLException;
+    int insertar(Persona persona) throws SQLException;
+    int actualizar(Persona persona) throws SQLException;
+    int eliminar(Persona persona) throws SQLException;
 }

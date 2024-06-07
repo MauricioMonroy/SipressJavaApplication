@@ -1,6 +1,12 @@
+/*
+ * Esta clase es de tipo DTO
+ * Esto hace referencia al patrón de diseño Data Transfer Object
+ * Permite realizar las transferencias de datos entre paquetes
+ * Garantiza una alta cohesión y bajo acoplamiento
+ */
 package domain;
 
-public class UsuarioDTO {
+public class Usuario {
 
     // Atributos de la clase que coinciden con los registros de la base de datos
     private int idUsuario;
@@ -8,22 +14,22 @@ public class UsuarioDTO {
     private String password;
 
     // Constructor que permite crear objetos de la clase con o sin los atributos especificados
-    public UsuarioDTO() {
+    public Usuario() {
     }
 
     // Constructor que permite eliminar un objeto de la clase a través de la llave primaria
-    public UsuarioDTO(int idUsuario) {
+    public Usuario(int idUsuario) {
         this.idUsuario = idUsuario;
     }
 
     // Constructor que permite insertar un objeto de la clase sin necesidad de la llave primaria
-    public UsuarioDTO(String username, String password) {
+    public Usuario(String username, String password) {
         this.username = username;
         this.password = password;
     }
 
     // Constructor que permite la modificación de todos los atributos de un objeto por completo
-    public UsuarioDTO(int idUsuario, String username, String password) {
+    public Usuario(int idUsuario, String username, String password) {
         this.idUsuario = idUsuario;
         this.username = username;
         this.password = password;
@@ -56,7 +62,7 @@ public class UsuarioDTO {
 
     @Override
     public String toString() {
-        return "UsuarioDTO{" +
+        return "Usuario{" +
                 "idUsuario=" + idUsuario +
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +

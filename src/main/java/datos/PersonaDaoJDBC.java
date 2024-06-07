@@ -4,7 +4,7 @@
  */
 package datos;
 
-import domain.PersonaDTO;
+import domain.Persona;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -39,11 +39,11 @@ public class PersonaDaoJDBC implements PersonaDAO {
     }
 
     // Método que permite seleccionar los objetos de la base de datos (SELECT)
-    public List<PersonaDTO> seleccionar() throws SQLException {
+    public List<Persona> seleccionar() throws SQLException {
         Connection conn = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
-        List<PersonaDTO> personasDto = new ArrayList<>();
+        List<Persona> personasDto = new ArrayList<>();
 
         try {
             conn = this.conexionTransaccional != null ? this.conexionTransaccional : getConnection();
@@ -61,7 +61,7 @@ public class PersonaDaoJDBC implements PersonaDAO {
                 String email = rs.getString("email");
 
                 // Creación de un nuevo objeto de la clase
-                var persona = new PersonaDTO();
+                var persona = new Persona();
                 persona.setIdPersona(idPersona);
                 persona.setNombre(nombre);
                 persona.setApellido(apellido);
@@ -84,7 +84,7 @@ public class PersonaDaoJDBC implements PersonaDAO {
     }
 
     // Método que permite insertar objetos en la base de datos (INSERT)
-    public int insertar(PersonaDTO personaDTO) throws SQLException {
+    public int insertar(Persona persona) throws SQLException {
         Connection conn = null;
         PreparedStatement ps = null;
         int registros = 0;
@@ -92,11 +92,11 @@ public class PersonaDaoJDBC implements PersonaDAO {
             conn = this.conexionTransaccional != null ? this.conexionTransaccional : getConnection();
             System.out.println("Ejecutando query = " + SQL_INSERT);
             ps = conn.prepareStatement(SQL_INSERT);
-            ps.setString(1, personaDTO.getNombre());
-            ps.setString(2, personaDTO.getApellido());
-            ps.setString(3, personaDTO.getIdentificacion());
-            ps.setString(4, personaDTO.getTelefono());
-            ps.setString(5, personaDTO.getEmail());
+            ps.setString(1, persona.getNombre());
+            ps.setString(2, persona.getApellido());
+            ps.setString(3, persona.getIdentificacion());
+            ps.setString(4, persona.getTelefono());
+            ps.setString(5, persona.getEmail());
             registros = ps.executeUpdate();
             System.out.println("Registros insertados = " + registros);
         }
@@ -111,7 +111,7 @@ public class PersonaDaoJDBC implements PersonaDAO {
     }
 
     // Método que permite actualizar objetos en la base de datos (UPDATE)
-    public int actualizar(PersonaDTO personaDTO) throws SQLException {
+    public int actualizar(Persona persona) throws SQLException {
         Connection conn = null;
         PreparedStatement ps = null;
         int registros = 0;
@@ -119,12 +119,12 @@ public class PersonaDaoJDBC implements PersonaDAO {
             conn = this.conexionTransaccional != null ? this.conexionTransaccional : getConnection();
             System.out.println("Ejecutando query = " + SQL_UPDATE);
             ps = conn.prepareStatement(SQL_UPDATE);
-            ps.setString(1, personaDTO.getNombre());
-            ps.setString(2, personaDTO.getApellido());
-            ps.setString(3, personaDTO.getIdentificacion());
-            ps.setString(4, personaDTO.getTelefono());
-            ps.setString(5, personaDTO.getEmail());
-            ps.setInt(6, personaDTO.getIdPersona());
+            ps.setString(1, persona.getNombre());
+            ps.setString(2, persona.getApellido());
+            ps.setString(3, persona.getIdentificacion());
+            ps.setString(4, persona.getTelefono());
+            ps.setString(5, persona.getEmail());
+            ps.setInt(6, persona.getIdPersona());
             registros = ps.executeUpdate();
             System.out.println("Registros actualizados = " + registros);
         }
@@ -139,7 +139,7 @@ public class PersonaDaoJDBC implements PersonaDAO {
     }
 
     // Método que permite eliminar objetos en la base de datos (DELETE)
-    public int eliminar(PersonaDTO personaDTO) throws SQLException {
+    public int eliminar(Persona persona) throws SQLException {
         Connection conn = null;
         PreparedStatement ps = null;
         int registros = 0;
@@ -147,7 +147,7 @@ public class PersonaDaoJDBC implements PersonaDAO {
             conn = this.conexionTransaccional != null ? this.conexionTransaccional : getConnection();
             System.out.println("Ejecutando query = " + SQL_DELETE);
             ps = conn.prepareStatement(SQL_DELETE);
-            ps.setInt(1, personaDTO.getIdPersona());
+            ps.setInt(1, persona.getIdPersona());
             registros = ps.executeUpdate();
             System.out.println("Registros eliminados = " + registros);
         }

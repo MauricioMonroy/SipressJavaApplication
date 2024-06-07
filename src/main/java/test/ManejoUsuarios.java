@@ -2,7 +2,7 @@ package test;
 
 import datos.Conexion;
 import datos.UsuarioDaoJDBC;
-import domain.UsuarioDTO;
+import domain.Usuario;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -22,28 +22,28 @@ public class ManejoUsuarios {
             UsuarioDaoJDBC usuarioDAO = new UsuarioDaoJDBC(conexion);
 
             // Insertar un nuevo objeto de la clase en la base de datos
-            /*UsuarioDTO usuarioNuevo = new UsuarioDTO();
+            /*Usuario usuarioNuevo = new Usuario();
             usuarioNuevo.setUsername("julia.cuartas");
             usuarioNuevo.setPassword("456");
             usuarioDAO.insertar(usuarioNuevo);*/
 
 
             // Actualizar un registro existente en la base de datos
-            /*UsuarioDTO usuarioModificado = new UsuarioDTO();
+            /*Usuario usuarioModificado = new Usuario();
             usuarioModificado.setIdUsuario(3);
             usuarioModificado.setUsername("cata.trejos");
             usuarioModificado.setPassword("789");
             usuarioDAO.actualizar(usuarioModificado);*/
 
             // Eliminar un registro de la base de datos
-            /*usuarioDAO.eliminar(new UsuarioDTO(1));*/
+            /*usuarioDAO.eliminar(new Usuario(1));*/
 
             // Commit de la transacción
             conexion.commit();
             System.out.println("Se ha hecho el commit de la transacción");
 
             // Listar los registros existentes en la base de datos
-            List<UsuarioDTO> usuarios = usuarioDAO.seleccionar();
+            List<Usuario> usuarios = usuarioDAO.seleccionar();
             usuarios.forEach(usuarioList -> {
                 System.out.println("Registros: " + usuarioList);
             });

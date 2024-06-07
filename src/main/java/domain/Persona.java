@@ -1,10 +1,12 @@
 /*
- * DTO hace referencia al patrón de diseño Data Transfer Object
+ * Esta clase es de tipo DTO
+ * Esto hace referencia al patrón de diseño Data Transfer Object
  * Permite realizar las transferencias de datos entre paquetes
+ * Garantiza una alta cohesión y bajo acoplamiento
  */
 package domain;
 
-public class PersonaDTO {
+public class Persona {
 
     // Atributos de la clase que coinciden con los registros de la base de datos
     private int idPersona;
@@ -15,15 +17,15 @@ public class PersonaDTO {
     private String email;
 
     // Constructor que permite crear objetos de la clase con o sin los atributos especificados
-    public PersonaDTO() {}
+    public Persona() {}
 
     // Constructor que permite eliminar un objeto de la clase a través de la llave primaria
-    public PersonaDTO(int idPersona) {
+    public Persona(int idPersona) {
         this.idPersona = idPersona;
     }
 
     // Constructor que permite insertar un objeto de la clase sin necesidad de la llave primaria
-    public PersonaDTO(String nombre, String apellido, String identificacion, String telefono, String email) {
+    public Persona(String nombre, String apellido, String identificacion, String telefono, String email) {
         this.nombre = nombre;
         this.apellido = apellido;
         this.identificacion = identificacion;
@@ -32,7 +34,7 @@ public class PersonaDTO {
     }
 
     // Constructor que permite la modificación de todos los atributos de un objeto por completo
-    public PersonaDTO(int idPersona, String nombre, String apellido, String identificacion, String telefono, String email) {
+    public Persona(int idPersona, String nombre, String apellido, String identificacion, String telefono, String email) {
         this.idPersona = idPersona;
         this.nombre = nombre;
         this.apellido = apellido;
@@ -93,7 +95,7 @@ public class PersonaDTO {
     // Método ToString para imprimir el estado del objeto en cualquier momento
     @Override
     public String toString() {
-        return "PersonaDTO{" +
+        return "Persona{" +
                 "idPersona=" + idPersona +
                 ", nombre='" + nombre + '\'' +
                 ", apellido='" + apellido + '\'' +

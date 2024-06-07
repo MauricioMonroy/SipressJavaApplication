@@ -4,7 +4,7 @@
  */
 package datos;
 
-import domain.UsuarioDTO;
+import domain.Usuario;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -40,11 +40,11 @@ public class UsuarioDaoJDBC implements UsuarioDAO {
     }
 
     // Método que permite seleccionar los objetos de la base de datos (SELECT)
-    public List<UsuarioDTO> seleccionar() throws SQLException {
+    public List<Usuario> seleccionar() throws SQLException {
         Connection conn = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
-        List<UsuarioDTO> usuariosDto = new ArrayList<>();
+        List<Usuario> usuariosDto = new ArrayList<>();
 
         try {
             conn = this.conexionTransaccional != null ? this.conexionTransaccional : getConnection();
@@ -59,7 +59,7 @@ public class UsuarioDaoJDBC implements UsuarioDAO {
                 String password = rs.getString("password");
 
                 // Creación de un nuevo objeto de la clase
-                var usuario = new UsuarioDTO();
+                var usuario = new Usuario();
                 usuario.setIdUsuario(idUsuario);
                 usuario.setUsername(username);
                 usuario.setPassword(password);
@@ -79,7 +79,7 @@ public class UsuarioDaoJDBC implements UsuarioDAO {
     }
 
     // Método que permite insertar objetos en la base de datos (INSERT)
-    public int insertar(UsuarioDTO usuario) throws SQLException {
+    public int insertar(Usuario usuario) throws SQLException {
         Connection conn = null;
         PreparedStatement ps = null;
         int registros = 0;
@@ -104,7 +104,7 @@ public class UsuarioDaoJDBC implements UsuarioDAO {
     }
 
     // Método que permite actualizar objetos en la base de datos (UPDATE)
-    public int actualizar(UsuarioDTO usuario) throws SQLException {
+    public int actualizar(Usuario usuario) throws SQLException {
         Connection conn = null;
         PreparedStatement ps = null;
         int registros = 0;
@@ -130,7 +130,7 @@ public class UsuarioDaoJDBC implements UsuarioDAO {
     }
 
     // Método que permite eliminar objetos en la base de datos (DELETE)
-    public int eliminar(UsuarioDTO usuario) throws SQLException {
+    public int eliminar(Usuario usuario) throws SQLException {
         Connection conn = null;
         PreparedStatement ps = null;
         int registros = 0;
