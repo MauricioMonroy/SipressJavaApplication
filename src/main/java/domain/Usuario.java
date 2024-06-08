@@ -6,24 +6,12 @@
  */
 package domain;
 
+import javax.persistence.*;
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.List;
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
 
 @Entity
-@Table(name = "usuario")
 @NamedQueries({
         @NamedQuery(name = "Usuario.findAll", query = "SELECT u FROM Usuario u"),
         @NamedQuery(name = "Usuario.findByIdUsuario", query = "SELECT u FROM Usuario u WHERE u.idUsuario = :idUsuario"),
@@ -40,12 +28,8 @@ public class Usuario implements Serializable {
     private Integer idUsuario;
     private String username;
     private String password;
-    @OneToMany(mappedBy = "usuario")
-    private List<Empleado> empleadoList;
-    @OneToMany(mappedBy = "usuario")
-    private List<Paciente> pacienteList;
     @JoinColumn(name = "id_persona", referencedColumnName = "id_persona")
-    @ManyToOne
+    @OneToOne
     private Persona persona;
     @OneToMany(mappedBy = "usuario")
     private List<Perfil> perfilList;
@@ -56,6 +40,19 @@ public class Usuario implements Serializable {
     public Usuario(String username, String password) {
         this.username = username;
         this.password = password;
+    }
+
+    public Usuario(String username, String password, Persona persona) {
+        this.username = username;
+        this.password = password;
+        this.persona = persona;
+    }
+
+    public Usuario(Integer idUsuario, String username, String password, Persona persona) {
+        this.idUsuario = idUsuario;
+        this.username = username;
+        this.password = password;
+        this.persona = persona;
     }
 
     public Usuario(Integer idUsuario) {
@@ -86,22 +83,6 @@ public class Usuario implements Serializable {
         this.password = password;
     }
 
-    public List<Empleado> getEmpleadoList() {
-        return empleadoList;
-    }
-
-    public void setEmpleadoList(List<Empleado> empleadoList) {
-        this.empleadoList = empleadoList;
-    }
-
-    public List<Paciente> getPacienteList() {
-        return pacienteList;
-    }
-
-    public void setPacienteList(List<Paciente> pacienteList) {
-        this.pacienteList = pacienteList;
-    }
-
     public Persona getPersona() {
         return persona;
     }
@@ -128,10 +109,14 @@ public class Usuario implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Usuario other)) {
+        if (!(object instanceof Usuario)) {
             return false;
         }
-        return (this.idUsuario != null || other.idUsuario == null) && (this.idUsuario == null || this.idUsuario.equals(other.idUsuario));
+        Usuario other = (Usuario) object;
+        if ((this.idUsuario == null && other.idUsuario != null) || (this.idUsuario != null && !this.idUsuario.equals(other.idUsuario))) {
+            return false;
+        }
+        return true;
     }
 
     @Override

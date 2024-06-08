@@ -26,7 +26,7 @@ public class PersonaDaoJDBC implements PersonaDAO {
     private static final String SQL_INSERT =
             "INSERT INTO persona (nombre, apellido, identificacion, telefono, email) VALUES (?, ?, ?, ?, ?)";
     private static final String SQL_UPDATE =
-            "UPDATE persona SET nombre = ?, apellido = ?, identificacion = ?, telefono = ?, email = ? WHERE id_persona = ?";
+            "UPDATE persona SET id_paciente = ?, nombre = ?, apellido = ?, identificacion = ?, telefono = ?, email = ? WHERE id_persona = ?";
     private static final String SQL_DELETE =
             "DELETE FROM persona WHERE id_persona = ?";
 
@@ -73,6 +73,7 @@ public class PersonaDaoJDBC implements PersonaDAO {
         }
         // Se ejecuta el bloque finally para cerrar la conexión
         finally {
+            assert rs != null;
             close(rs);
             close(ps);
             if (this.conexionTransaccional == null) {
@@ -102,6 +103,7 @@ public class PersonaDaoJDBC implements PersonaDAO {
         }
         // Se ejecuta el bloque finally para cerrar la conexión
         finally {
+            assert ps != null;
             close(ps);
             if (this.conexionTransaccional == null) {
                 close(conn);
@@ -130,6 +132,7 @@ public class PersonaDaoJDBC implements PersonaDAO {
         }
         // Se ejecuta el bloque finally para cerrar la conexión
         finally {
+            assert ps != null;
             close(ps);
             if (this.conexionTransaccional == null) {
                 close(conn);
@@ -153,6 +156,7 @@ public class PersonaDaoJDBC implements PersonaDAO {
         }
         // Se ejecuta el bloque finally para cerrar la conexión
         finally {
+            assert ps != null;
             close(ps);
             if (this.conexionTransaccional == null) {
                 close(conn);

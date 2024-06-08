@@ -52,6 +52,7 @@ public class ManejoUsuarios {
             ex.printStackTrace(System.out);
             System.out.println("Se llama al método rollback");
             try {
+                assert conexion != null;
                 conexion.rollback();
             } catch (SQLException ex1) {
                 ex1.printStackTrace(System.out);

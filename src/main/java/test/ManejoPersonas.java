@@ -33,7 +33,7 @@ public class ManejoPersonas {
 
             // Insertar un registro en la base de datos
             /*Persona nuevaPersona = new Persona();
-            nuevaPersona.setNombre("Julia");
+            nuevaPersona.setNombre("Juan");
             nuevaPersona.setApellido("Cuartas");
             nuevaPersona.setIdentificacion("3141592654");
             nuevaPersona.setTelefono("6012589874");
@@ -57,6 +57,7 @@ public class ManejoPersonas {
             ex.printStackTrace(System.out);
             System.out.println("Se llama al método rollback");
             try {
+                assert conexion != null;
                 conexion.rollback();
             } catch (SQLException ex1) {
                 ex1.printStackTrace(System.out);

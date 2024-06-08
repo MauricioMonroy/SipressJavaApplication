@@ -6,22 +6,12 @@
  */
 package domain;
 
+import javax.persistence.*;
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.List;
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
 
 @Entity
-@Table(name = "persona")
 @NamedQueries({
         @NamedQuery(name = "Persona.findAll", query = "SELECT p FROM Persona p"),
         @NamedQuery(name = "Persona.findByIdPersona", query = "SELECT p FROM Persona p WHERE p.idPersona = :idPersona"),
@@ -48,10 +38,18 @@ public class Persona implements Serializable {
     private List<Empleado> empleadoList;
     @OneToMany(mappedBy = "persona")
     private List<Paciente> pacienteList;
-    @OneToMany(mappedBy = "persona")
+    @OneToOne(mappedBy = "persona")
     private List<Usuario> usuarioList;
 
     public Persona() {
+    }
+
+    public Persona(Integer idPersona) {
+        this.idPersona = idPersona;
+    }
+
+    public Integer getIdPersona() {
+        return idPersona;
     }
 
     public Persona(String nombre, String apellido, String identificacion, String telefono, String email) {
@@ -62,12 +60,13 @@ public class Persona implements Serializable {
         this.email = email;
     }
 
-    public Persona(Integer idPersona) {
+    public Persona(Integer idPersona, String nombre, String apellido, String identificacion, String telefono, String email) {
         this.idPersona = idPersona;
-    }
-
-    public Integer getIdPersona() {
-        return idPersona;
+        this.nombre = nombre;
+        this.apellido = apellido;
+        this.identificacion = identificacion;
+        this.telefono = telefono;
+        this.email = email;
     }
 
     public void setIdPersona(Integer idPersona) {

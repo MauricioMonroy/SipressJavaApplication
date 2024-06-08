@@ -4,6 +4,7 @@
  */
 package datos;
 
+import domain.Persona;
 import domain.Usuario;
 
 import java.sql.Connection;
@@ -23,7 +24,9 @@ public class UsuarioDaoJDBC implements UsuarioDAO {
 
     // Creación de las sentencias para recuperar la información de la base de datos
     private static final String SQL_SELECT =
-            "SELECT id_usuario, username, password FROM usuario";
+            "SELECT u.id_usuario, u.username, u.password, p.id_persona, p.nombre, p.apellido, p.identificacion, p.telefono, p.email " +
+                    "FROM usuario u " +
+                    "INNER JOIN persona p ON u.id_persona = p.id_persona";
     private static final String SQL_INSERT =
             "INSERT INTO usuario (username, password) VALUES (?, ?)";
     private static final String SQL_UPDATE =
@@ -44,7 +47,7 @@ public class UsuarioDaoJDBC implements UsuarioDAO {
         Connection conn = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
-        List<Usuario> usuariosDto = new ArrayList<>();
+        List<Usuario> usuarios = new ArrayList<>();
 
         try {
             conn = this.conexionTransaccional != null ? this.conexionTransaccional : getConnection();
@@ -57,25 +60,43 @@ public class UsuarioDaoJDBC implements UsuarioDAO {
                 int idUsuario = rs.getInt("id_usuario");
                 String username = rs.getString("username");
                 String password = rs.getString("password");
+                int idPersona = rs.getInt("id_persona");
+                String nombre = rs.getString("nombre");
+                String apellido = rs.getString("apellido");
+                String identificacion = rs.getString("identificacion");
+                String telefono = rs.getString("telefono");
+                String email = rs.getString("email");
 
                 // Creación de un nuevo objeto de la clase
                 var usuario = new Usuario();
                 usuario.setIdUsuario(idUsuario);
                 usuario.setUsername(username);
                 usuario.setPassword(password);
-                usuariosDto.add(usuario);
+
+                var persona = new Persona();
+                persona.setIdPersona(idPersona);
+                persona.setNombre(nombre);
+                persona.setApellido(apellido);
+                persona.setIdentificacion(identificacion);
+                persona.setTelefono(telefono);
+                persona.setEmail(email);
+
+                usuario.setPersona(persona);
+                usuarios.add(usuario);
             }
         }
         // Se ejecuta el bloque finally para cerrar los objetos creados
         finally {
-            close(rs);
+            if (rs != null) {
+                close(rs);
+            }
             close(ps);
             if (this.conexionTransaccional == null) {
                 close(conn);
             }
         }
 
-        return usuariosDto;
+        return usuarios;
     }
 
     // Método que permite insertar objetos en la base de datos (INSERT)
@@ -95,6 +116,7 @@ public class UsuarioDaoJDBC implements UsuarioDAO {
         }
         // Se ejecuta el bloque finally para cerrar la conexión
         finally {
+            assert ps != null;
             close(ps);
             if (this.conexionTransaccional == null) {
                 close(conn);
@@ -121,6 +143,7 @@ public class UsuarioDaoJDBC implements UsuarioDAO {
         }
         // Se ejecuta el bloque finally para cerrar la conexión
         finally {
+            assert ps != null;
             close(ps);
             if (this.conexionTransaccional == null) {
                 close(conn);
@@ -145,6 +168,7 @@ public class UsuarioDaoJDBC implements UsuarioDAO {
         }
         // Se ejecuta el bloque finally para cerrar la conexión
         finally {
+            assert ps != null;
             close(ps);
             if (this.conexionTransaccional == null) {
                 close(conn);
