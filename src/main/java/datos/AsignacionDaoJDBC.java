@@ -24,13 +24,13 @@ public class AsignacionDaoJDBC implements AsignacionDAO {
     // Creación de las sentencias para recuperar la información de la base de datos
     private static final String SQL_SELECT =
             "SELECT a.id_asignacion, a.id_paciente, a.id_servicio, a.id_empleado, px.id_paciente, px.id_paciente, "
-                    + " px.detalle_eps, px.fecha_consulta, s.id_servicio, s.nombre, e.id_empleado, e.id_paciente, "
+                    + " px.detalle_eps, px.fecha_consulta, s.id_servicio, s.nombre, e.id_empleado, e.id_persona, "
                     + "e.cargo FROM asignacion a INNER JOIN paciente px ON a.id_paciente = px.id_paciente "
                     + "INNER JOIN servicio s ON a.id_servicio = s.id_servicio "
                     + "INNER JOIN empleado e ON a.id_empleado = e.id_empleado ";
     private static final String SQL_SELECT_ONE =
             "SELECT a.id_asignacion, a.id_paciente, a.id_servicio, a.id_empleado, px.id_paciente, px.id_paciente, "
-                    + " px.detalle_eps, px.fecha_consulta, s.id_servicio, s.nombre, e.id_empleado, e.id_paciente, "
+                    + " px.detalle_eps, px.fecha_consulta, s.id_servicio, s.nombre, e.id_empleado, e.id_persona, "
                     + "e.cargo FROM asignacion a INNER JOIN paciente px ON a.id_paciente = px.id_paciente "
                     + "INNER JOIN servicio s ON a.id_servicio = s.id_servicio "
                     + "INNER JOIN empleado e ON a.id_empleado = e.id_empleado "
