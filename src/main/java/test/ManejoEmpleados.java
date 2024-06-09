@@ -3,6 +3,7 @@ package test;
 import datos.Conexion;
 import datos.EmpleadoDaoJDBC;
 import domain.Empleado;
+import domain.Empleado;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -41,10 +42,14 @@ public class ManejoEmpleados {
             System.out.println("Se ha hecho el commit de la transacción");
 
             // Listar los registros existentes en la base de datos
-            List<Empleado> empleados = empleadoDAO.seleccionar();
+            /*List<Empleado> empleados = empleadoDAO.seleccionar();
             for (int i = 0; i < empleados.size(); i++) {
                 System.out.println("Registro " + (i + 1) + ": " + empleados.get(i));
-            }
+            }*/
+
+            // Obtener y mostrar un solo registro
+            Empleado empleado = empleadoDAO.seleccionarPorId(3);
+            System.out.println("Empleado: " + empleado);
 
         } catch (SQLException ex) {
             ex.printStackTrace(System.out);

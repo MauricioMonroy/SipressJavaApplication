@@ -6,26 +6,37 @@
  */
 package domain;
 
-import javax.persistence.*;
-import java.io.Serial;
 import java.io.Serializable;
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 
+/**
+ *
+ * @author M.Licht
+ */
 @Entity
 @NamedQueries({
         @NamedQuery(name = "Asignacion.findAll", query = "SELECT a FROM Asignacion a"),
         @NamedQuery(name = "Asignacion.findByIdAsignacion", query = "SELECT a FROM Asignacion a WHERE a.idAsignacion = :idAsignacion")})
 public class Asignacion implements Serializable {
 
-    @Serial
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "id_asignacion")
     private Integer idAsignacion;
-    @JoinColumn(name = "id_funcion", referencedColumnName = "id_funcion")
+    @JoinColumn(name = "id_empleado", referencedColumnName = "id_empleado")
     @ManyToOne
-    private Funcion funcion;
+    private Empleado empleado;
     @JoinColumn(name = "id_paciente", referencedColumnName = "id_paciente")
     @ManyToOne
     private Paciente paciente;
@@ -40,9 +51,30 @@ public class Asignacion implements Serializable {
         this.idAsignacion = idAsignacion;
     }
 
-    public Asignacion(Integer idAsignacion, Funcion funcion, Paciente paciente, Servicio servicio) {
+    public Asignacion(Integer idAsignacion, Empleado empleado) {
         this.idAsignacion = idAsignacion;
-        this.funcion = funcion;
+        this.empleado = empleado;
+    }
+
+    public Asignacion(Integer idAsignacion, Paciente paciente) {
+        this.idAsignacion = idAsignacion;
+        this.paciente = paciente;
+    }
+
+    public Asignacion(Integer idAsignacion, Servicio servicio) {
+        this.idAsignacion = idAsignacion;
+        this.servicio = servicio;
+    }
+
+    public Asignacion(Empleado empleado, Paciente paciente, Servicio servicio) {
+        this.empleado = empleado;
+        this.paciente = paciente;
+        this.servicio = servicio;
+    }
+
+    public Asignacion(Integer idAsignacion, Empleado empleado, Paciente paciente, Servicio servicio) {
+        this.idAsignacion = idAsignacion;
+        this.empleado = empleado;
         this.paciente = paciente;
         this.servicio = servicio;
     }
@@ -55,12 +87,12 @@ public class Asignacion implements Serializable {
         this.idAsignacion = idAsignacion;
     }
 
-    public Funcion getFuncion() {
-        return funcion;
+    public Empleado getEmpleado() {
+        return empleado;
     }
 
-    public void setFuncion(Funcion funcion) {
-        this.funcion = funcion;
+    public void setEmpleado(Empleado empleado) {
+        this.empleado = empleado;
     }
 
     public Paciente getPaciente() {
@@ -93,17 +125,20 @@ public class Asignacion implements Serializable {
             return false;
         }
         Asignacion other = (Asignacion) object;
-        return (this.idAsignacion != null || other.idAsignacion == null) && (this.idAsignacion == null || this.idAsignacion.equals(other.idAsignacion));
+        if ((this.idAsignacion == null && other.idAsignacion != null) || (this.idAsignacion != null && !this.idAsignacion.equals(other.idAsignacion))) {
+            return false;
+        }
+        return true;
     }
 
     @Override
     public String toString() {
         return "Asignacion{" +
-                "idAsignacion=" + idAsignacion +
-                ", funcion=" + funcion +
-                ", paciente=" + paciente +
-                ", servicio=" + servicio +
-                '}';
+                "idAsignacion=" + idAsignacion + ",\n" +
+                "| Empleado asociado{" + empleado + ",\n" +
+                "| Paciente asociado{" + paciente + ",\n" +
+                "| Servicio asociado{" + servicio +
+                '}' + "\n";
     }
 }
 

@@ -122,6 +122,6 @@ public class Usuario implements Serializable {
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
                 " |\n" + "-> Persona asociada{" + persona +
-                '}';
+                '}' + "\n";
     }
 }

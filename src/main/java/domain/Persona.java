@@ -162,7 +162,7 @@ public class Persona implements Serializable {
                 ", identificacion='" + identificacion + '\'' +
                 ", telefono='" + telefono + '\'' +
                 ", email='" + email + '\'' +
-                '}';
+                '}' + "\n";
     }
 }
 

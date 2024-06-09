@@ -6,10 +6,20 @@
  */
 package domain;
 
-import javax.persistence.*;
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.List;
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 
 @Entity
 @NamedQueries({
@@ -26,6 +36,8 @@ public class Empleado implements Serializable {
     @Column(name = "id_empleado")
     private Integer idEmpleado;
     private String cargo;
+    @OneToMany(mappedBy = "empleado")
+    private List<Asignacion> asignacionList;
     @JoinColumn(name = "id_persona", referencedColumnName = "id_persona")
     @ManyToOne
     private Persona persona;
@@ -48,9 +60,16 @@ public class Empleado implements Serializable {
         this.cargo = cargo;
     }
 
-    public Empleado(Integer idEmpleado, String cargo, Persona persona, List<Funcion> funcionList) {
+    public Empleado(Integer idEmpleado, String cargo, Persona persona) {
         this.idEmpleado = idEmpleado;
         this.cargo = cargo;
+        this.persona = persona;
+    }
+
+    public Empleado(Integer idEmpleado, String cargo, List<Asignacion> asignacionList, Persona persona, List<Funcion> funcionList) {
+        this.idEmpleado = idEmpleado;
+        this.cargo = cargo;
+        this.asignacionList = asignacionList;
         this.persona = persona;
         this.funcionList = funcionList;
     }
@@ -69,6 +88,14 @@ public class Empleado implements Serializable {
 
     public void setCargo(String cargo) {
         this.cargo = cargo;
+    }
+
+    public List<Asignacion> getAsignacionList() {
+        return asignacionList;
+    }
+
+    public void setAsignacionList(List<Asignacion> asignacionList) {
+        this.asignacionList = asignacionList;
     }
 
     public Persona getPersona() {
@@ -97,10 +124,14 @@ public class Empleado implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Empleado other)) {
+        if (!(object instanceof Empleado)) {
             return false;
         }
-        return (this.idEmpleado != null || other.idEmpleado == null) && (this.idEmpleado == null || this.idEmpleado.equals(other.idEmpleado));
+        Empleado other = (Empleado) object;
+        if ((this.idEmpleado == null && other.idEmpleado != null) || (this.idEmpleado != null && !this.idEmpleado.equals(other.idEmpleado))) {
+            return false;
+        }
+        return true;
     }
 
     @Override

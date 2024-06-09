@@ -1,53 +1,61 @@
 package datos;
 
-import domain.*;
+import domain.Asignacion;
 import domain.Empleado;
-import domain.Empleado;
+import domain.Paciente;
+import domain.Servicio;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import static datos.Conexion.close;
 import static datos.Conexion.getConnection;
 
-public class EmpleadoDaoJDBC implements EmpleadoDAO {
+public class AsignacionDaoJDBC implements AsignacionDAO {
 
     // Objeto que permite manejar la conexión y las transacciones con la base de datos
     private Connection conexionTransaccional;
 
     // Creación de las sentencias para recuperar la información de la base de datos
     private static final String SQL_SELECT =
-            "SELECT e.id_empleado, e.id_persona, e.cargo, p.id_persona, p.nombre, p.apellido, p.identificacion, "
-                    + "p.telefono, p.email FROM empleado e INNER JOIN persona p ON e.id_persona = p.id_persona";
+            "SELECT a.id_asignacion, a.id_paciente, a.id_servicio, a.id_empleado, px.id_paciente, px.id_paciente, "
+                    + " px.detalle_eps, px.fecha_consulta, s.id_servicio, s.nombre, e.id_empleado, e.id_paciente, "
+                    + "e.cargo FROM asignacion a INNER JOIN paciente px ON a.id_paciente = px.id_paciente "
+                    + "INNER JOIN servicio s ON a.id_servicio = s.id_servicio "
+                    + "INNER JOIN empleado e ON a.id_empleado = e.id_empleado ";
     private static final String SQL_SELECT_ONE =
-            "SELECT e.id_empleado, e.id_persona, e.cargo, p.id_persona, p.nombre, p.apellido, p.identificacion, "
-                    + "p.telefono, p.email FROM empleado e INNER JOIN persona p ON e.id_persona = p.id_persona "
-                    + "WHERE e.id_empleado = ?";
+            "SELECT a.id_asignacion, a.id_paciente, a.id_servicio, a.id_empleado, px.id_paciente, px.id_paciente, "
+                    + " px.detalle_eps, px.fecha_consulta, s.id_servicio, s.nombre, e.id_empleado, e.id_paciente, "
+                    + "e.cargo FROM asignacion a INNER JOIN paciente px ON a.id_paciente = px.id_paciente "
+                    + "INNER JOIN servicio s ON a.id_servicio = s.id_servicio "
+                    + "INNER JOIN empleado e ON a.id_empleado = e.id_empleado "
+                    + "WHERE a.id_asignacion = ?";
     private static final String SQL_INSERT =
-            "INSERT INTO empleado (cargo) VALUES (?)";
+            "INSERT INTO asignacion (cargo) VALUES (?)";
     private static final String SQL_UPDATE =
-            "UPDATE empleado SET cargo = ? WHERE id_empleado = ?";
+            "UPDATE asignacion SET cargo = ? WHERE id_asignacion = ?";
     private static final String SQL_DELETE =
-            "DELETE FROM empleado WHERE id_empleado = ?";
+            "DELETE FROM asignacion WHERE id_asignacion = ?";
 
     // Constructores para la conexión transaccional
-    public EmpleadoDaoJDBC() {
+    public AsignacionDaoJDBC() {
     }
 
-    public EmpleadoDaoJDBC(Connection conexionTransaccional) {
+    public AsignacionDaoJDBC(Connection conexionTransaccional) {
         this.conexionTransaccional = conexionTransaccional;
     }
 
     // Método que permite seleccionar y listar todos los objetos de la base de datos (SELECT)
-    public List<Empleado> seleccionar() throws SQLException {
+    public List<Asignacion> seleccionar() throws SQLException {
         Connection conn = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
-        List<Empleado> empleados = new ArrayList<>();
+        List<Asignacion> asignaciones = new ArrayList<>();
 
         try {
             conn = this.conexionTransaccional != null ? this.conexionTransaccional : getConnection();
@@ -57,31 +65,41 @@ public class EmpleadoDaoJDBC implements EmpleadoDAO {
 
             // Iteración de los elementos para obtener todos los registros
             while (rs.next()) {
+                int idAsignacion = rs.getInt("id_asignacion");
+                int idPaciente = rs.getInt("id_paciente");
+                int idServicio = rs.getInt("id_servicio");
                 int idEmpleado = rs.getInt("id_empleado");
-                String cargo = rs.getString("cargo");
-                int idPersona = rs.getInt("id_persona");
+                String detalleEps = rs.getString("detalle_eps");
+                Date fechaConsulta = rs.getDate("fecha_consulta");
                 String nombre = rs.getString("nombre");
-                String apellido = rs.getString("apellido");
-                String identificacion = rs.getString("identificacion");
-                String telefono = rs.getString("telefono");
-                String email = rs.getString("email");
+                String cargo = rs.getString("cargo");
 
-                // Creación de un nuevo objeto de la clase o clases
+                // Creación de un nuevo objeto de la clase Paciente
+                var paciente = new Paciente();
+                paciente.setIdPaciente(idPaciente);
+                paciente.setDetalleEps(detalleEps);
+                paciente.setFechaConsulta(fechaConsulta);
+
+                // Creación de un nuevo objeto de la clase Servicio
+                var servicio = new Servicio();
+                servicio.setIdServicio(idServicio);
+                servicio.setNombre(nombre);
+
+                // Creación de un nuevo objeto de la clase Empleado
                 var empleado = new Empleado();
                 empleado.setIdEmpleado(idEmpleado);
                 empleado.setCargo(cargo);
 
-                var persona = new Persona();
-                persona.setIdPersona(idPersona);
-                persona.setNombre(nombre);
-                persona.setApellido(apellido);
-                persona.setIdentificacion(identificacion);
-                persona.setTelefono(telefono);
-                persona.setEmail(email);
+                // Creación de un nuevo objeto de la clase Asignacion
+                var asignacion = new Asignacion();
+                asignacion.setIdAsignacion(idAsignacion);
+                asignacion.setPaciente(paciente);
+                asignacion.setServicio(servicio);
+                asignacion.setEmpleado(empleado);
 
-                empleado.setPersona(persona);
-                empleados.add(empleado);
+                asignaciones.add(asignacion);
             }
+
         }
         // Se ejecuta el bloque finally para cerrar los objetos creados
         finally {
@@ -92,37 +110,45 @@ public class EmpleadoDaoJDBC implements EmpleadoDAO {
             }
         }
 
-        return empleados;
+        return asignaciones;
     }
 
     // Método para recuperar solo uno de los registros en la base de datos
-    public Empleado seleccionarPorId(int idEmpleado) throws SQLException {
+    public Asignacion seleccionarPorId(int idAsignacion) throws SQLException {
         Connection conn = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
-        Empleado empleado = null;
+        Asignacion asignacion = null;
 
         try {
             conn = this.conexionTransaccional != null ? this.conexionTransaccional : getConnection();
             ps = conn.prepareStatement(SQL_SELECT_ONE);
-            ps.setInt(1, idEmpleado);
+            ps.setInt(1, idAsignacion);
             rs = ps.executeQuery();
 
-            // Si se encontró un registro, crear el objeto Empleado
+            // Si se encuentra un registro, se crea el objeto
             if (rs.next()) {
-                empleado = new Empleado();
+                asignacion = new Asignacion();
+                asignacion.setIdAsignacion(rs.getInt("id_asignacion"));
+
+                var paciente = new Paciente();
+                paciente.setIdPaciente(rs.getInt("id_paciente"));
+                paciente.setDetalleEps(rs.getString("detalle_eps"));
+                paciente.setFechaConsulta(rs.getDate("fecha_consulta"));
+
+                var servicio = new Servicio();
+                servicio.setIdServicio(rs.getInt("id_servicio"));
+                servicio.setNombre(rs.getString("nombre"));
+
+                var empleado = new Empleado();
                 empleado.setIdEmpleado(rs.getInt("id_empleado"));
                 empleado.setCargo(rs.getString("cargo"));
-                var persona = new Persona();
-                persona.setIdPersona(rs.getInt("id_persona"));
-                persona.setNombre(rs.getString("nombre"));
-                persona.setApellido(rs.getString("apellido"));
-                persona.setIdentificacion(rs.getString("identificacion"));
-                persona.setTelefono(rs.getString("telefono"));
-                persona.setEmail(rs.getString("email"));
 
-                empleado.setPersona(persona);
+                asignacion.setPaciente(paciente);
+                asignacion.setServicio(servicio);
+                asignacion.setEmpleado(empleado);
             }
+
         }
         // Se ejecuta el bloque finally para cerrar los objetos creados
         finally {
@@ -135,11 +161,11 @@ public class EmpleadoDaoJDBC implements EmpleadoDAO {
             }
         }
 
-        return empleado;
+        return asignacion;
     }
 
     // Método que permite insertar objetos en la base de datos (INSERT)
-    public int insertar(Empleado empleado) throws SQLException {
+    public int insertar(Asignacion asignacion) throws SQLException {
         Connection conn = null;
         PreparedStatement ps = null;
         int registros = 0;
@@ -147,7 +173,10 @@ public class EmpleadoDaoJDBC implements EmpleadoDAO {
             conn = this.conexionTransaccional != null ? this.conexionTransaccional : getConnection();
             System.out.println("Ejecutando query = " + SQL_INSERT);
             ps = conn.prepareStatement(SQL_INSERT);
-            ps.setString(1, empleado.getCargo());
+            ps.setInt(1, asignacion.getIdAsignacion());
+            ps.setInt(2, asignacion.getPaciente().getIdPaciente());
+            ps.setInt(3, asignacion.getServicio().getIdServicio());
+            ps.setInt(4, asignacion.getEmpleado().getIdEmpleado());
 
             registros = ps.executeUpdate();
             System.out.println("Registros insertados = " + registros);
@@ -163,7 +192,7 @@ public class EmpleadoDaoJDBC implements EmpleadoDAO {
     }
 
     // Método que permite actualizar objetos en la base de datos (UPDATE)
-    public int actualizar(Empleado empleado) throws SQLException {
+    public int actualizar(Asignacion asignacion) throws SQLException {
         Connection conn = null;
         PreparedStatement ps = null;
         int registros = 0;
@@ -171,8 +200,10 @@ public class EmpleadoDaoJDBC implements EmpleadoDAO {
             conn = this.conexionTransaccional != null ? this.conexionTransaccional : getConnection();
             System.out.println("Ejecutando query = " + SQL_UPDATE);
             ps = conn.prepareStatement(SQL_UPDATE);
-            ps.setString(1, empleado.getCargo());
-            ps.setInt(2, empleado.getIdEmpleado());
+            ps.setInt(1, asignacion.getPaciente().getIdPaciente());
+            ps.setInt(2, asignacion.getServicio().getIdServicio());
+            ps.setInt(3, asignacion.getEmpleado().getIdEmpleado());
+            ps.setInt(4, asignacion.getIdAsignacion());
 
             registros = ps.executeUpdate();
             System.out.println("Registros actualizados = " + registros);
@@ -187,8 +218,9 @@ public class EmpleadoDaoJDBC implements EmpleadoDAO {
         return registros;
     }
 
+
     // Método que permite eliminar objetos en la base de datos (DELETE)
-    public int eliminar(Empleado empleado) throws SQLException {
+    public int eliminar(Asignacion asignacion) throws SQLException {
         Connection conn = null;
         PreparedStatement ps = null;
         int registros = 0;
@@ -196,7 +228,7 @@ public class EmpleadoDaoJDBC implements EmpleadoDAO {
             conn = this.conexionTransaccional != null ? this.conexionTransaccional : getConnection();
             System.out.println("Ejecutando query = " + SQL_DELETE);
             ps = conn.prepareStatement(SQL_DELETE);
-            ps.setInt(1, empleado.getIdEmpleado());
+            ps.setInt(1, asignacion.getIdAsignacion());
 
             registros = ps.executeUpdate();
             System.out.println("Registros eliminados = " + registros);
