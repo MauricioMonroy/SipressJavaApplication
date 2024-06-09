@@ -5,6 +5,7 @@
 package datos;
 
 import domain.Persona;
+import domain.Usuario;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -13,7 +14,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static datos.Conexion.*;
+import static datos.Conexion.close;
+import static datos.Conexion.getConnection;
 
 public class PersonaDaoJDBC implements PersonaDAO {
 
@@ -43,7 +45,8 @@ public class PersonaDaoJDBC implements PersonaDAO {
         Connection conn = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
-        List<Persona> personasDto = new ArrayList<>();
+        List<Persona> personas = new ArrayList<>();
+        Persona personaActual = null;
 
         try {
             conn = this.conexionTransaccional != null ? this.conexionTransaccional : getConnection();
@@ -54,34 +57,36 @@ public class PersonaDaoJDBC implements PersonaDAO {
             // Iteración de los elementos para obtener todos los registros de la base de datos
             while (rs.next()) {
                 int idPersona = rs.getInt("id_persona");
-                String nombre = rs.getString("nombre");
-                String apellido = rs.getString("apellido");
-                String identificacion = rs.getString("identificacion");
-                String telefono = rs.getString("telefono");
-                String email = rs.getString("email");
 
-                // Creación de un nuevo objeto de la clase
-                var persona = new Persona();
-                persona.setIdPersona(idPersona);
-                persona.setNombre(nombre);
-                persona.setApellido(apellido);
-                persona.setIdentificacion(identificacion);
-                persona.setTelefono(telefono);
-                persona.setEmail(email);
-                personasDto.add(persona);
+                if (personaActual == null || personaActual.getIdPersona() != idPersona) {
+
+                    // Creación de un nuevo objeto de la clase
+                    personaActual = new Persona();
+                    personaActual.setIdPersona(idPersona);
+                    personaActual.setNombre(rs.getString("nombre"));
+                    personaActual.setApellido(rs.getString("apellido"));
+                    personaActual.setIdentificacion(rs.getString("identificacion"));
+                    personaActual.setTelefono(rs.getString("telefono"));
+                    personaActual.setEmail(rs.getString("email"));
+
+                    personas.add(personaActual);
+                }
+
             }
+
         }
         // Se ejecuta el bloque finally para cerrar la conexión
         finally {
-            assert rs != null;
-            close(rs);
+            if (rs != null) {
+                close(rs);
+            }
             close(ps);
             if (this.conexionTransaccional == null) {
                 close(conn);
             }
         }
 
-        return personasDto;
+        return personas;
     }
 
     // Método que permite insertar objetos en la base de datos (INSERT)

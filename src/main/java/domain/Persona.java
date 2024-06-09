@@ -38,7 +38,7 @@ public class Persona implements Serializable {
     private List<Empleado> empleadoList;
     @OneToMany(mappedBy = "persona")
     private List<Paciente> pacienteList;
-    @OneToOne(mappedBy = "persona")
+    @OneToMany(mappedBy = "persona")
     private List<Usuario> usuarioList;
 
     public Persona() {

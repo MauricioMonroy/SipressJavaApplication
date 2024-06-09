@@ -24,9 +24,8 @@ public class UsuarioDaoJDBC implements UsuarioDAO {
 
     // Creación de las sentencias para recuperar la información de la base de datos
     private static final String SQL_SELECT =
-            "SELECT u.id_usuario, u.username, u.password, p.id_persona, p.nombre, p.apellido, p.identificacion, p.telefono, p.email " +
-                    "FROM usuario u " +
-                    "INNER JOIN persona p ON u.id_persona = p.id_persona";
+            "SELECT u.id_usuario, u.username, u.password, p.id_persona, p.nombre, p.apellido, p.identificacion, "
+                    + "p.telefono, p.email FROM usuario u INNER JOIN persona p ON u.id_persona = p.id_persona";
     private static final String SQL_INSERT =
             "INSERT INTO usuario (username, password) VALUES (?, ?)";
     private static final String SQL_UPDATE =
@@ -47,7 +46,7 @@ public class UsuarioDaoJDBC implements UsuarioDAO {
         Connection conn = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
-        List<Usuario> usuarios = new ArrayList<>();
+        List<Usuario> usuariosDto = new ArrayList<>();
 
         try {
             conn = this.conexionTransaccional != null ? this.conexionTransaccional : getConnection();
@@ -67,7 +66,7 @@ public class UsuarioDaoJDBC implements UsuarioDAO {
                 String telefono = rs.getString("telefono");
                 String email = rs.getString("email");
 
-                // Creación de un nuevo objeto de la clase
+                // Creación de un nuevo objeto de la clase o clases
                 var usuario = new Usuario();
                 usuario.setIdUsuario(idUsuario);
                 usuario.setUsername(username);
@@ -82,21 +81,19 @@ public class UsuarioDaoJDBC implements UsuarioDAO {
                 persona.setEmail(email);
 
                 usuario.setPersona(persona);
-                usuarios.add(usuario);
+                usuariosDto.add(usuario);
             }
         }
         // Se ejecuta el bloque finally para cerrar los objetos creados
         finally {
-            if (rs != null) {
-                close(rs);
-            }
+            close(rs);
             close(ps);
             if (this.conexionTransaccional == null) {
                 close(conn);
             }
         }
 
-        return usuarios;
+        return usuariosDto;
     }
 
     // Método que permite insertar objetos en la base de datos (INSERT)
@@ -116,7 +113,6 @@ public class UsuarioDaoJDBC implements UsuarioDAO {
         }
         // Se ejecuta el bloque finally para cerrar la conexión
         finally {
-            assert ps != null;
             close(ps);
             if (this.conexionTransaccional == null) {
                 close(conn);
@@ -143,7 +139,6 @@ public class UsuarioDaoJDBC implements UsuarioDAO {
         }
         // Se ejecuta el bloque finally para cerrar la conexión
         finally {
-            assert ps != null;
             close(ps);
             if (this.conexionTransaccional == null) {
                 close(conn);
@@ -168,7 +163,6 @@ public class UsuarioDaoJDBC implements UsuarioDAO {
         }
         // Se ejecuta el bloque finally para cerrar la conexión
         finally {
-            assert ps != null;
             close(ps);
             if (this.conexionTransaccional == null) {
                 close(conn);

@@ -44,9 +44,9 @@ public class ManejoUsuarios {
 
             // Listar los registros existentes en la base de datos
             List<Usuario> usuarios = usuarioDAO.seleccionar();
-            usuarios.forEach(usuarioList -> {
-                System.out.println("Registros: " + usuarioList);
-            });
+            for (int i = 0; i < usuarios.size(); i++) {
+                System.out.println("Registro " + (i+1) + ": " + usuarios.get(i));
+            }
 
         } catch (SQLException ex) {
             ex.printStackTrace(System.out);

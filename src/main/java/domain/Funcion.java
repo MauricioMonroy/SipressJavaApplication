@@ -6,24 +6,16 @@
  */
 package domain;
 
+import javax.persistence.*;
 import java.io.Serial;
 import java.io.Serializable;
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
+import java.util.List;
 
 @Entity
 @NamedQueries({
         @NamedQuery(name = "Funcion.findAll", query = "SELECT f FROM Funcion f"),
         @NamedQuery(name = "Funcion.findByIdFuncion", query = "SELECT f FROM Funcion f WHERE f.idFuncion = :idFuncion"),
-        @NamedQuery(name = "Funcion.findByNombre", query = "SELECT f FROM Funcion f WHERE f.nombre = :nombre")})
+        @NamedQuery(name = "Funcion.findByDescripcion", query = "SELECT f FROM Funcion f WHERE f.descripcion = :descripcion")})
 public class Funcion implements Serializable {
 
     @Serial
@@ -33,23 +25,34 @@ public class Funcion implements Serializable {
     @Basic(optional = false)
     @Column(name = "id_funcion")
     private Integer idFuncion;
-    private String nombre;
+    private String descripcion;
+    @OneToMany(mappedBy = "funcion")
+    private List<Asignacion> asignacionList;
     @JoinColumn(name = "id_empleado", referencedColumnName = "id_empleado")
     @ManyToOne
     private Empleado empleado;
-    @JoinColumn(name = "id_servicio", referencedColumnName = "id_servicio")
-    @ManyToOne
-    private Servicio servicio;
 
     public Funcion() {
     }
 
-    public Funcion(String nombre) {
-        this.nombre = nombre;
-    }
-
     public Funcion(Integer idFuncion) {
         this.idFuncion = idFuncion;
+    }
+
+    public Funcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
+
+    public Funcion(Integer idFuncion, String descripcion) {
+        this.idFuncion = idFuncion;
+        this.descripcion = descripcion;
+    }
+
+    public Funcion(Integer idFuncion, String descripcion, List<Asignacion> asignacionList, Empleado empleado) {
+        this.idFuncion = idFuncion;
+        this.descripcion = descripcion;
+        this.asignacionList = asignacionList;
+        this.empleado = empleado;
     }
 
     public Integer getIdFuncion() {
@@ -60,12 +63,20 @@ public class Funcion implements Serializable {
         this.idFuncion = idFuncion;
     }
 
-    public String getNombre() {
-        return nombre;
+    public String getDescripcion() {
+        return descripcion;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
+
+    public List<Asignacion> getAsignacionList() {
+        return asignacionList;
+    }
+
+    public void setAsignacionList(List<Asignacion> asignacionList) {
+        this.asignacionList = asignacionList;
     }
 
     public Empleado getEmpleado() {
@@ -74,14 +85,6 @@ public class Funcion implements Serializable {
 
     public void setEmpleado(Empleado empleado) {
         this.empleado = empleado;
-    }
-
-    public Servicio getServicio() {
-        return servicio;
-    }
-
-    public void setServicio(Servicio servicio) {
-        this.servicio = servicio;
     }
 
     @Override
@@ -104,9 +107,8 @@ public class Funcion implements Serializable {
     public String toString() {
         return "Funcion{" +
                 "idFuncion=" + idFuncion +
-                ", nombre='" + nombre + '\'' +
+                ", descripcion='" + descripcion + '\'' +
                 ", empleado=" + empleado +
-                ", servicio=" + servicio +
                 '}';
     }
 }

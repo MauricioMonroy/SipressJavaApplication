@@ -49,9 +49,9 @@ public class ManejoPersonas {
 
             // Listar los registros existentes en la base de datos
             List<Persona> personas = persona.seleccionar();
-            personas.forEach(personasLista -> {
-                System.out.println("Registros: " + personasLista);
-            });
+            for (int i = 0; i < personas.size(); i++) {
+                System.out.println("Registro " + (i+1) + ": " + personas.get(i));
+            }
 
         } catch (SQLException ex) {
             ex.printStackTrace(System.out);

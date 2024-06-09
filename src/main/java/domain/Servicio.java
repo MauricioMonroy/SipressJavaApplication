@@ -6,18 +6,10 @@
  */
 package domain;
 
+import javax.persistence.*;
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.List;
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 
 @Entity
 @NamedQueries({
@@ -35,19 +27,28 @@ public class Servicio implements Serializable {
     private Integer idServicio;
     private String nombre;
     @OneToMany(mappedBy = "servicio")
-    private List<Paciente> pacienteList;
-    @OneToMany(mappedBy = "servicio")
-    private List<Funcion> funcionList;
+    private List<Asignacion> asignacionList;
 
     public Servicio() {
+    }
+
+    public Servicio(Integer idServicio) {
+        this.idServicio = idServicio;
     }
 
     public Servicio(String nombre) {
         this.nombre = nombre;
     }
 
-    public Servicio(Integer idServicio) {
+    public Servicio(Integer idServicio, String nombre) {
         this.idServicio = idServicio;
+        this.nombre = nombre;
+    }
+
+    public Servicio(Integer idServicio, String nombre, List<Asignacion> asignacionList) {
+        this.idServicio = idServicio;
+        this.nombre = nombre;
+        this.asignacionList = asignacionList;
     }
 
     public Integer getIdServicio() {
@@ -66,20 +67,12 @@ public class Servicio implements Serializable {
         this.nombre = nombre;
     }
 
-    public List<Paciente> getPacienteList() {
-        return pacienteList;
+    public List<Asignacion> getAsignacionList() {
+        return asignacionList;
     }
 
-    public void setPacienteList(List<Paciente> pacienteList) {
-        this.pacienteList = pacienteList;
-    }
-
-    public List<Funcion> getFuncionList() {
-        return funcionList;
-    }
-
-    public void setFuncionList(List<Funcion> funcionList) {
-        this.funcionList = funcionList;
+    public void setAsignacionList(List<Asignacion> asignacionList) {
+        this.asignacionList = asignacionList;
     }
 
     @Override

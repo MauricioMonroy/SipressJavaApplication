@@ -6,20 +6,10 @@
  */
 package domain;
 
+import javax.persistence.*;
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.List;
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 
 @Entity
 @NamedQueries({
@@ -39,23 +29,30 @@ public class Empleado implements Serializable {
     @JoinColumn(name = "id_persona", referencedColumnName = "id_persona")
     @ManyToOne
     private Persona persona;
-    @JoinColumn(name = "id_usuario", referencedColumnName = "id_usuario")
-    @ManyToOne
-    private Usuario usuario;
     @OneToMany(mappedBy = "empleado")
     private List<Funcion> funcionList;
-    @OneToMany(mappedBy = "empleado")
-    private List<Perfil> perfilList;
 
     public Empleado() {
+    }
+
+    public Empleado(Integer idEmpleado) {
+        this.idEmpleado = idEmpleado;
     }
 
     public Empleado(String cargo) {
         this.cargo = cargo;
     }
 
-    public Empleado(Integer idEmpleado) {
+    public Empleado(Integer idEmpleado, String cargo) {
         this.idEmpleado = idEmpleado;
+        this.cargo = cargo;
+    }
+
+    public Empleado(Integer idEmpleado, String cargo, Persona persona, List<Funcion> funcionList) {
+        this.idEmpleado = idEmpleado;
+        this.cargo = cargo;
+        this.persona = persona;
+        this.funcionList = funcionList;
     }
 
     public Integer getIdEmpleado() {
@@ -82,28 +79,12 @@ public class Empleado implements Serializable {
         this.persona = persona;
     }
 
-    public Usuario getUsuario() {
-        return usuario;
-    }
-
-    public void setUsuario(Usuario usuario) {
-        this.usuario = usuario;
-    }
-
     public List<Funcion> getFuncionList() {
         return funcionList;
     }
 
     public void setFuncionList(List<Funcion> funcionList) {
         this.funcionList = funcionList;
-    }
-
-    public List<Perfil> getPerfilList() {
-        return perfilList;
-    }
-
-    public void setPerfilList(List<Perfil> perfilList) {
-        this.perfilList = perfilList;
     }
 
     @Override
@@ -128,8 +109,8 @@ public class Empleado implements Serializable {
                 "idEmpleado=" + idEmpleado +
                 ", cargo='" + cargo + '\'' +
                 ", persona=" + persona +
-                ", usuario=" + usuario +
                 '}';
     }
 }
+
 

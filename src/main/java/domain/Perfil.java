@@ -6,18 +6,9 @@
  */
 package domain;
 
+import javax.persistence.*;
 import java.io.Serial;
 import java.io.Serializable;
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 
 @Entity
 @NamedQueries({
@@ -34,12 +25,6 @@ public class Perfil implements Serializable {
     @Column(name = "id_perfil")
     private Integer idPerfil;
     private String rol;
-    @JoinColumn(name = "id_empleado", referencedColumnName = "id_empleado")
-    @ManyToOne
-    private Empleado empleado;
-    @JoinColumn(name = "id_paciente", referencedColumnName = "id_paciente")
-    @ManyToOne
-    private Paciente paciente;
     @JoinColumn(name = "id_usuario", referencedColumnName = "id_usuario")
     @ManyToOne
     private Usuario usuario;
@@ -47,12 +32,23 @@ public class Perfil implements Serializable {
     public Perfil() {
     }
 
+    public Perfil(Integer idPerfil) {
+        this.idPerfil = idPerfil;
+    }
+
     public Perfil(String rol) {
         this.rol = rol;
     }
 
-    public Perfil(Integer idPerfil) {
+    public Perfil(Integer idPerfil, String rol) {
         this.idPerfil = idPerfil;
+        this.rol = rol;
+    }
+
+    public Perfil(Integer idPerfil, String rol, Usuario usuario) {
+        this.idPerfil = idPerfil;
+        this.rol = rol;
+        this.usuario = usuario;
     }
 
     public Integer getIdPerfil() {
@@ -69,22 +65,6 @@ public class Perfil implements Serializable {
 
     public void setRol(String rol) {
         this.rol = rol;
-    }
-
-    public Empleado getEmpleado() {
-        return empleado;
-    }
-
-    public void setEmpleado(Empleado empleado) {
-        this.empleado = empleado;
-    }
-
-    public Paciente getPaciente() {
-        return paciente;
-    }
-
-    public void setPaciente(Paciente paciente) {
-        this.paciente = paciente;
     }
 
     public Usuario getUsuario() {
@@ -115,10 +95,9 @@ public class Perfil implements Serializable {
     public String toString() {
         return "Perfil{" +
                 "idPerfil=" + idPerfil +
-                ", rol='" + rol + '\'' +
-                ", empleado=" + empleado +
-                ", paciente=" + paciente +
-                ", usuario=" + usuario +
+                ", rol='" + rol + '\'' + ",\n" +
+                "| Usuario asociado{" + usuario +
                 '}';
     }
 }
+

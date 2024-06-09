@@ -6,23 +6,11 @@
  */
 package domain;
 
+import javax.persistence.*;
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 @Entity
 @NamedQueries({
@@ -44,22 +32,19 @@ public class Paciente implements Serializable {
     @Column(name = "fecha_consulta")
     @Temporal(TemporalType.DATE)
     private Date fechaConsulta;
-    @JoinColumn(name = "id_historial", referencedColumnName = "id_historial")
-    @ManyToOne
-    private Historial historial;
+    @OneToMany(mappedBy = "paciente")
+    private List<Asignacion> asignacionList;
     @JoinColumn(name = "id_persona", referencedColumnName = "id_persona")
     @ManyToOne
     private Persona persona;
-    @JoinColumn(name = "id_servicio", referencedColumnName = "id_servicio")
-    @ManyToOne
-    private Servicio servicio;
-    @JoinColumn(name = "id_usuario", referencedColumnName = "id_usuario")
-    @ManyToOne
-    private Usuario usuario;
-    @OneToMany(mappedBy = "paciente")
-    private List<Perfil> perfilList;
+    @OneToOne(mappedBy = "paciente")
+    private Historial historial;
 
     public Paciente() {
+    }
+
+    public Paciente(Integer idPaciente) {
+        this.idPaciente = idPaciente;
     }
 
     public Paciente(String detalleEps, Date fechaConsulta) {
@@ -67,8 +52,19 @@ public class Paciente implements Serializable {
         this.fechaConsulta = fechaConsulta;
     }
 
-    public Paciente(Integer idPaciente) {
+    public Paciente(Integer idPaciente, String detalleEps, Date fechaConsulta) {
         this.idPaciente = idPaciente;
+        this.detalleEps = detalleEps;
+        this.fechaConsulta = fechaConsulta;
+    }
+
+    public Paciente(Integer idPaciente, String detalleEps, Date fechaConsulta, List<Asignacion> asignacionList, Persona persona, Historial historial) {
+        this.idPaciente = idPaciente;
+        this.detalleEps = detalleEps;
+        this.fechaConsulta = fechaConsulta;
+        this.asignacionList = asignacionList;
+        this.persona = persona;
+        this.historial = historial;
     }
 
     public Integer getIdPaciente() {
@@ -95,12 +91,12 @@ public class Paciente implements Serializable {
         this.fechaConsulta = fechaConsulta;
     }
 
-    public Historial getHistorial() {
-        return historial;
+    public List<Asignacion> getAsignacionList() {
+        return asignacionList;
     }
 
-    public void setHistorial(Historial historial) {
-        this.historial = historial;
+    public void setAsignacionList(List<Asignacion> asignacionList) {
+        this.asignacionList = asignacionList;
     }
 
     public Persona getPersona() {
@@ -111,28 +107,12 @@ public class Paciente implements Serializable {
         this.persona = persona;
     }
 
-    public Servicio getServicio() {
-        return servicio;
+    public Historial getHistorial() {
+        return historial;
     }
 
-    public void setServicio(Servicio servicio) {
-        this.servicio = servicio;
-    }
-
-    public Usuario getUsuario() {
-        return usuario;
-    }
-
-    public void setUsuario(Usuario usuario) {
-        this.usuario = usuario;
-    }
-
-    public List<Perfil> getPerfilList() {
-        return perfilList;
-    }
-
-    public void setPerfilList(List<Perfil> perfilList) {
-        this.perfilList = perfilList;
+    public void setHistorial(Historial historial) {
+        this.historial = historial;
     }
 
     @Override
@@ -157,10 +137,8 @@ public class Paciente implements Serializable {
                 "idPaciente=" + idPaciente +
                 ", detalleEps='" + detalleEps + '\'' +
                 ", fechaConsulta=" + fechaConsulta +
-                ", historial=" + historial +
                 ", persona=" + persona +
-                ", servicio=" + servicio +
-                ", usuario=" + usuario +
+                ", historial=" + historial +
                 '}';
     }
 }
