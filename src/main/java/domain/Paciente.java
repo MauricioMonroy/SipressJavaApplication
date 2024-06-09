@@ -136,9 +136,9 @@ public class Paciente implements Serializable {
         return "Paciente{" +
                 "idPaciente=" + idPaciente +
                 ", detalleEps='" + detalleEps + '\'' +
-                ", fechaConsulta=" + fechaConsulta +
-                ", persona=" + persona +
-                ", historial=" + historial +
+                ", fechaConsulta=" + fechaConsulta + ",\n" +
+                "| Persona asociada" + persona + ",\n" +
+                "| Historial clínico" + ",\n" + historial +
                 '}';
     }
 }

@@ -1,6 +1,8 @@
 package datos;
 
 import domain.Empleado;
+import domain.Persona;
+import domain.Empleado;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -19,7 +21,12 @@ public class EmpleadoDaoJDBC implements EmpleadoDAO {
 
     // Creación de las sentencias para recuperar la información de la base de datos
     private static final String SQL_SELECT =
-            "SELECT id_empleado, id_persona, id_empleado, cargo FROM empleado";
+            "SELECT e.id_empleado, e.id_persona, e.cargo, p.id_persona, p.nombre, p.apellido, p.identificacion, "
+                    + "p.telefono, p.email FROM empleado e INNER JOIN persona p ON e.id_persona = p.id_persona";
+    private static final String SQL_SELECT_ONE =
+            "SELECT u.id_usuario, u.username, u.password, p.id_persona, p.nombre, p.apellido, p.identificacion, "
+                    + "p.telefono, p.email FROM usuario u INNER JOIN persona p ON u.id_persona = p.id_persona "
+                    + "WHERE u.id_usuario = ?";
     private static final String SQL_INSERT =
             "INSERT INTO empleado (cargo) VALUES (?)";
     private static final String SQL_UPDATE =
@@ -40,7 +47,7 @@ public class EmpleadoDaoJDBC implements EmpleadoDAO {
         Connection conn = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
-        List<Empleado> empleadosDto = new ArrayList<>();
+        List<Empleado> empleados = new ArrayList<>();
 
         try {
             conn = this.conexionTransaccional != null ? this.conexionTransaccional : getConnection();
@@ -52,12 +59,28 @@ public class EmpleadoDaoJDBC implements EmpleadoDAO {
             while (rs.next()) {
                 int idEmpleado = rs.getInt("id_empleado");
                 String cargo = rs.getString("cargo");
+                int idPersona = rs.getInt("id_persona");
+                String nombre = rs.getString("nombre");
+                String apellido = rs.getString("apellido");
+                String identificacion = rs.getString("identificacion");
+                String telefono = rs.getString("telefono");
+                String email = rs.getString("email");
 
-                // Creación de un nuevo objeto de la clase
+                // Creación de un nuevo objeto de la clase o clases
                 var empleado = new Empleado();
                 empleado.setIdEmpleado(idEmpleado);
                 empleado.setCargo(cargo);
-                empleadosDto.add(empleado);
+
+                var persona = new Persona();
+                persona.setIdPersona(idPersona);
+                persona.setNombre(nombre);
+                persona.setApellido(apellido);
+                persona.setIdentificacion(identificacion);
+                persona.setTelefono(telefono);
+                persona.setEmail(email);
+
+                empleado.setPersona(persona);
+                empleados.add(empleado);
             }
         }
         // Se ejecuta el bloque finally para cerrar los objetos creados
@@ -69,7 +92,7 @@ public class EmpleadoDaoJDBC implements EmpleadoDAO {
             }
         }
 
-        return empleadosDto;
+        return empleados;
     }
 
     // Método que permite insertar objetos en la base de datos (INSERT)

@@ -26,6 +26,10 @@ public class UsuarioDaoJDBC implements UsuarioDAO {
     private static final String SQL_SELECT =
             "SELECT u.id_usuario, u.username, u.password, p.id_persona, p.nombre, p.apellido, p.identificacion, "
                     + "p.telefono, p.email FROM usuario u INNER JOIN persona p ON u.id_persona = p.id_persona";
+    private static final String SQL_SELECT_ONE =
+            "SELECT u.id_usuario, u.username, u.password, p.id_persona, p.nombre, p.apellido, p.identificacion, "
+                    + "p.telefono, p.email FROM usuario u INNER JOIN persona p ON u.id_persona = p.id_persona "
+                    + "WHERE u.id_usuario = ?";
     private static final String SQL_INSERT =
             "INSERT INTO usuario (username, password) VALUES (?, ?)";
     private static final String SQL_UPDATE =
@@ -46,7 +50,7 @@ public class UsuarioDaoJDBC implements UsuarioDAO {
         Connection conn = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
-        List<Usuario> usuariosDto = new ArrayList<>();
+        List<Usuario> usuarios = new ArrayList<>();
 
         try {
             conn = this.conexionTransaccional != null ? this.conexionTransaccional : getConnection();
@@ -81,7 +85,7 @@ public class UsuarioDaoJDBC implements UsuarioDAO {
                 persona.setEmail(email);
 
                 usuario.setPersona(persona);
-                usuariosDto.add(usuario);
+                usuarios.add(usuario);
             }
         }
         // Se ejecuta el bloque finally para cerrar los objetos creados
@@ -93,8 +97,53 @@ public class UsuarioDaoJDBC implements UsuarioDAO {
             }
         }
 
-        return usuariosDto;
+        return usuarios;
     }
+
+    // Método para recuperar solo uno de los registros en la base de datos
+    public Usuario seleccionarPorId(int idUsuario) throws SQLException {
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        Usuario usuario = null;
+
+        try {
+            conn = this.conexionTransaccional != null ? this.conexionTransaccional : getConnection();
+            ps = conn.prepareStatement(SQL_SELECT_ONE);
+            ps.setInt(1, idUsuario);
+            rs = ps.executeQuery();
+
+            // Si se encontró un registro, crear el objeto Usuario
+            if (rs.next()) {
+                usuario = new Usuario();
+                usuario.setIdUsuario(rs.getInt("id_usuario"));
+                usuario.setUsername(rs.getString("username"));
+                usuario.setPassword(rs.getString("password"));
+                var persona = new Persona();
+                persona.setIdPersona(rs.getInt("id_persona"));
+                persona.setNombre(rs.getString("nombre"));
+                persona.setApellido(rs.getString("apellido"));
+                persona.setIdentificacion(rs.getString("identificacion"));
+                persona.setTelefono(rs.getString("telefono"));
+                persona.setEmail(rs.getString("email"));
+
+                usuario.setPersona(persona);
+            }
+        }
+        // Se ejecuta el bloque finally para cerrar los objetos creados
+        finally {
+            if (rs != null) {
+                close(rs);
+            }
+            close(ps);
+            if (this.conexionTransaccional == null) {
+                close(conn);
+            }
+        }
+
+        return usuario;
+    }
+
 
     // Método que permite insertar objetos en la base de datos (INSERT)
     public int insertar(Usuario usuario) throws SQLException {

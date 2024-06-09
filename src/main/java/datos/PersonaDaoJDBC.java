@@ -5,7 +5,6 @@
 package datos;
 
 import domain.Persona;
-import domain.Usuario;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

@@ -43,10 +43,14 @@ public class ManejoUsuarios {
             System.out.println("Se ha hecho el commit de la transacción");
 
             // Listar los registros existentes en la base de datos
-            List<Usuario> usuarios = usuarioDAO.seleccionar();
+            /*List<Usuario> usuarios = usuarioDAO.seleccionar();
             for (int i = 0; i < usuarios.size(); i++) {
                 System.out.println("Registro " + (i+1) + ": " + usuarios.get(i));
-            }
+            }*/
+
+            // Obtener y mostrar un solo registro
+            Usuario usuario = usuarioDAO.seleccionarPorId(3);
+            System.out.println("Usuario: " + usuario);
 
         } catch (SQLException ex) {
             ex.printStackTrace(System.out);

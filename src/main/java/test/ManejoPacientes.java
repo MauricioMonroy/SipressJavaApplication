@@ -1,14 +1,16 @@
 package test;
 
 import datos.Conexion;
-import datos.EmpleadoDaoJDBC;
-import domain.Empleado;
+import datos.PacienteDaoJDBC;
+import datos.PacienteDaoJDBC;
+import domain.Paciente;
+import domain.Paciente;
 
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 
-public class ManejoEmpleados {
+public class ManejoPacientes {
 
     public static void main(String[] args) {
 
@@ -19,32 +21,36 @@ public class ManejoEmpleados {
             if (conexion.getAutoCommit()) {
                 conexion.setAutoCommit(false);
             }
-            EmpleadoDaoJDBC empleadoDAO = new EmpleadoDaoJDBC(conexion);
+            PacienteDaoJDBC pacienteDAO = new PacienteDaoJDBC(conexion);
 
             // Insertar un nuevo objeto de la clase en la base de datos
-            /*Empleado empleadoNuevo = new Empleado();
-            empleadoNuevo.setCargo("Enfermera");
-            empleadoDAO.insertar(empleadoNuevo);*/
+            /*Paciente pacienteNuevo = new Paciente();
+            pacienteNuevo.setCargo("Enfermera");
+            pacienteDAO.insertar(pacienteNuevo);*/
 
 
             // Actualizar un registro existente en la base de datos
-            /*Empleado empleadoModificado = new Empleado();
-            empleadoModificado.setIdEmpleado(3);
-            empleadoModificado.setCargo("Radiólogo");
-            empleadoDAO.actualizar(empleadoModificado);*/
+            /*Paciente pacienteModificado = new Paciente();
+            pacienteModificado.setIdPaciente(3);
+            pacienteModificado.setCargo("Radiólogo");
+            pacienteDAO.actualizar(pacienteModificado);*/
 
             // Eliminar un registro de la base de datos
-            /*empleadoDAO.eliminar(new Empleado(1));*/
+            /*pacienteDAO.eliminar(new Paciente(1));*/
 
             // Commit de la transacción
             conexion.commit();
             System.out.println("Se ha hecho el commit de la transacción");
 
             // Listar los registros existentes en la base de datos
-            List<Empleado> empleados = empleadoDAO.seleccionar();
-            for (int i = 0; i < empleados.size(); i++) {
-                System.out.println("Registro " + (i + 1) + ": " + empleados.get(i));
-            }
+            /*List<Paciente> pacientes = pacienteDAO.seleccionar();
+            for (int i = 0; i < pacientes.size(); i++) {
+                System.out.println("Registro " + (i + 1) + ": " + pacientes.get(i));
+            }*/
+
+            // Obtener y mostrar un solo registro
+            Paciente paciente = pacienteDAO.seleccionarPorId(8);
+            System.out.println("Paciente: " + paciente);
 
         } catch (SQLException ex) {
             ex.printStackTrace(System.out);

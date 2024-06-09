@@ -107,8 +107,8 @@ public class Empleado implements Serializable {
     public String toString() {
         return "Empleado{" +
                 "idEmpleado=" + idEmpleado +
-                ", cargo='" + cargo + '\'' +
-                ", persona=" + persona +
+                ", cargo='" + cargo + '\'' + ",\n" +
+                "| Persona asociada{" + persona +
                 '}';
     }
 }

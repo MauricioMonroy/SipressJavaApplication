@@ -276,22 +276,21 @@ public class Historial implements Serializable {
     @Override
     public String toString() {
         return "Historial{" +
-                "idHistorial=" + idHistorial +
-                ", motivoConsulta='" + motivoConsulta + '\'' +
-                ", fechaNacimiento=" + fechaNacimiento +
-                ", sexo='" + sexo + '\'' +
-                ", direccion='" + direccion + '\'' +
-                ", ocupacion='" + ocupacion + '\'' +
-                ", contactoEmergencia='" + contactoEmergencia + '\'' +
-                ", nombreContactoEmergencia='" + nombreContactoEmergencia + '\'' +
-                ", alergias='" + alergias + '\'' +
-                ", condicionesPreexistentes='" + condicionesPreexistentes + '\'' +
-                ", medicamentosActuales='" + medicamentosActuales + '\'' +
-                ", historialVacunas='" + historialVacunas + '\'' +
-                ", grupoSanguineo='" + grupoSanguineo + '\'' +
-                ", notasAdicionales='" + notasAdicionales + '\'' +
+                "idHistorial=" + idHistorial + ",\n" +
+                ", motivoConsulta='" + motivoConsulta + '\'' + ",\n" +
+                ", fechaNacimiento=" + fechaNacimiento + ",\n" +
+                ", sexo='" + sexo + '\'' + ",\n" +
+                ", direccion='" + direccion + '\'' + ",\n" +
+                ", ocupacion='" + ocupacion + '\'' + ",\n" +
+                ", contactoEmergencia='" + contactoEmergencia + '\'' + ",\n" +
+                ", nombreContactoEmergencia='" + nombreContactoEmergencia + '\'' + ",\n" +
+                ", alergias='" + alergias + '\'' + ",\n" +
+                ", condicionesPreexistentes='" + condicionesPreexistentes + '\'' + ",\n" +
+                ", medicamentosActuales='" + medicamentosActuales + '\'' + ",\n" +
+                ", historialVacunas='" + historialVacunas + '\'' + ",\n" +
+                ", grupoSanguineo='" + grupoSanguineo + '\'' + ",\n" +
+                ", notasAdicionales='" + notasAdicionales + '\'' + ",\n" +
                 ", ultimaActualizacion=" + ultimaActualizacion + ",\n" +
-                "| Paciente asociado{" + paciente +
                 '}';
     }
 }

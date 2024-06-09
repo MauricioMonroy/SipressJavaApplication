@@ -33,6 +33,7 @@ public class Conexion {
             ex.printStackTrace(System.out);
         }
     }
+
     public static void close(Statement stmt) {
         try {
             stmt.close();
@@ -40,6 +41,7 @@ public class Conexion {
             ex.printStackTrace(System.out);
         }
     }
+
     public static void close(PreparedStatement ps) {
         try {
             ps.close();
@@ -47,6 +49,7 @@ public class Conexion {
             ex.printStackTrace(System.out);
         }
     }
+
     public static void close(Connection conn) {
         try {
             conn.close();
