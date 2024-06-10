@@ -1,8 +1,12 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="true" type="GlassfishConfiguration" factoryName="Local" APPLICATION_SERVER_NAME="GlassFish 7.0.14" ALTERNATIVE_JRE_ENABLED="false">
+  <configuration default="true" type="GlassfishConfiguration" factoryName="Local" APPLICATION_SERVER_NAME="GlassFish 7.0.14" ALTERNATIVE_JRE_ENABLED="true" ALTERNATIVE_JRE_PATH="21">
     <option name="START_JAVASCRIPT_DEBUGGER" value="true" />
     <option name="UPDATING_POLICY" value="restart-server" />
-    <deployment />
+    <deployment>
+      <artifact name="SipressJavaApplication:war exploded">
+        <settings />
+      </artifact>
+    </deployment>
     <server-settings>
       <option name="DOMAIN" value="domain1" />
       <option name="PRESERVE" value="false" />
@@ -61,6 +65,9 @@
     </ConfigurationWrapper>
     <method v="2">
       <option name="Make" enabled="true" />
+      <option name="BuildArtifacts" enabled="true">
+        <artifact name="SipressJavaApplication:war exploded" />
+      </option>
     </method>
   </configuration>
 </component>
