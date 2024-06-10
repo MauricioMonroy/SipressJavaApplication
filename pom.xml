@@ -7,11 +7,16 @@
     <groupId>co.com.codelicht.app</groupId>
     <artifactId>SipressJavaApplication</artifactId>
     <version>1.0</version>
+    <packaging>war</packaging>
+    <name>SipressJavaApplication</name>
 
     <properties>
         <maven.compiler.source>21</maven.compiler.source>
         <maven.compiler.target>21</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>
+        <failOnMissingWebXml>false</failOnMissingWebXml>
+        <jakartaee>9.1.0</jakartaee>
     </properties>
     <dependencies>
         <dependency>
