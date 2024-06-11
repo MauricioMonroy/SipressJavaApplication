@@ -1,0 +1,6 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="SipressJavaApplication">
+    <output-path>$PROJECT_DIR$/out/artifacts/SipressJavaApplication</output-path>
+    <root id="archive" name="SipressJavaApplication.war" />
+  </artifact>
+</component>

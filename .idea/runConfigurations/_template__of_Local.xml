@@ -3,7 +3,7 @@
     <option name="START_JAVASCRIPT_DEBUGGER" value="true" />
     <option name="UPDATING_POLICY" value="restart-server" />
     <deployment>
-      <artifact name="SipressJavaApplication:war exploded">
+      <artifact name="SipressJavaApplication:war">
         <settings />
       </artifact>
     </deployment>
@@ -66,7 +66,7 @@
     <method v="2">
       <option name="Make" enabled="true" />
       <option name="BuildArtifacts" enabled="true">
-        <artifact name="SipressJavaApplication:war exploded" />
+        <artifact name="SipressJavaApplication:war" />
       </option>
     </method>
   </configuration>

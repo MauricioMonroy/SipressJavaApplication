@@ -8,9 +8,10 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
   <head>
-    <title>$Title$</title>
+    <title>Prueba Servlet</title>
   </head>
   <body>
-  $END$
+    <h1>Llamada al servlet</h1>
+  <a href="${pageContext.request.contextPath}/ServletControlador">Servlet Controlador</a>
   </body>
 </html>
