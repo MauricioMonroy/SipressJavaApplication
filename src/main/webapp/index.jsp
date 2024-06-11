@@ -5,6 +5,6 @@
 </head>
 <body>
 <h1>Welcome to MyWebApp!</h1>
-<a href="ServletControlador.java">Go to Servlet</a>
+<a href="${pageContext.request.contextPath}/ServletControlador">Go to Servlet</a>
 </body>
 </html>
