@@ -1,5 +1,5 @@
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
-<%@ page contentType="text/html;charset=UTF-8" pageEncoding="utf-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" %>
 <html>
 <head>
     <meta
@@ -93,10 +93,10 @@
     <div class="container px-lg-3">
         <div class="p-2 p-lg-3 bg-light rounded-3 text-center">
             <div class="m-2 m-lg-3">
-                <h1 class="fs-3 fw-bold"></h1>
+                <h1 class="fs-3 fw-bold">${pageContext.request.contextPath}/ServletControlador/mensaje</h1>
                 <p class="fs-6">
-                    <span class="text-success fw-bold fs-5">SIPRESS </span> es una
-                    aplicación que simpifica la gestión de las Instituciones
+                    <span class="text-success fw-bold fs-5">SIPRESS</span> es una
+                    aplicación que simplifica la gestión de las Instituciones
                     Prestadoras de Salud (IPS). Facilita el registro de pacientes, la
                     programación de citas y el control de recursos médicos. Su
                     objetivo es: mejorar la atención y la eficiencia en la prestación

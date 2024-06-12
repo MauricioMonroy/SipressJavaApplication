@@ -43,6 +43,7 @@ public class EmpleadoDaoJDBC implements EmpleadoDAO {
     }
 
     // Método que permite seleccionar y listar todos los objetos de la base de datos (SELECT)
+    @Override
     public List<Empleado> seleccionar() throws SQLException {
         Connection conn = null;
         PreparedStatement ps = null;
@@ -96,6 +97,7 @@ public class EmpleadoDaoJDBC implements EmpleadoDAO {
     }
 
     // Método para recuperar solo uno de los registros en la base de datos
+    @Override
     public Empleado seleccionarPorId(int idEmpleado) throws SQLException {
         Connection conn = null;
         PreparedStatement ps = null;
@@ -139,6 +141,7 @@ public class EmpleadoDaoJDBC implements EmpleadoDAO {
     }
 
     // Método que permite insertar objetos en la base de datos (INSERT)
+    @Override
     public int insertar(Empleado empleado) throws SQLException {
         Connection conn = null;
         PreparedStatement ps = null;
@@ -163,6 +166,7 @@ public class EmpleadoDaoJDBC implements EmpleadoDAO {
     }
 
     // Método que permite actualizar objetos en la base de datos (UPDATE)
+    @Override
     public int actualizar(Empleado empleado) throws SQLException {
         Connection conn = null;
         PreparedStatement ps = null;
@@ -188,6 +192,7 @@ public class EmpleadoDaoJDBC implements EmpleadoDAO {
     }
 
     // Método que permite eliminar objetos en la base de datos (DELETE)
+    @Override
     public int eliminar(Empleado empleado) throws SQLException {
         Connection conn = null;
         PreparedStatement ps = null;

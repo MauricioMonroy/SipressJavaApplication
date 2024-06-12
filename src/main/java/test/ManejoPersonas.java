@@ -48,10 +48,14 @@ public class ManejoPersonas {
             System.out.println("Se ha hecho el commit de la transacción");
 
             // Listar los registros existentes en la base de datos
-            List<Persona> personas = persona.seleccionar();
+            /*List<Persona> personas = persona.seleccionar();
             for (int i = 0; i < personas.size(); i++) {
                 System.out.println("Registro " + (i+1) + ": " + personas.get(i));
-            }
+            }*/
+
+            // Obtener y mostrar un solo registro
+            Persona personaSeleccionada = persona.seleccionarPorId(3);
+            System.out.println("Persona: " + personaSeleccionada);
 
         } catch (SQLException ex) {
             ex.printStackTrace(System.out);

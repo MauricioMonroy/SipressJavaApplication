@@ -51,6 +51,7 @@ public class AsignacionDaoJDBC implements AsignacionDAO {
     }
 
     // Método que permite seleccionar y listar todos los objetos de la base de datos (SELECT)
+    @Override
     public List<Asignacion> seleccionar() throws SQLException {
         Connection conn = null;
         PreparedStatement ps = null;
@@ -114,6 +115,7 @@ public class AsignacionDaoJDBC implements AsignacionDAO {
     }
 
     // Método para recuperar solo uno de los registros en la base de datos
+    @Override
     public Asignacion seleccionarPorId(int idAsignacion) throws SQLException {
         Connection conn = null;
         PreparedStatement ps = null;
@@ -165,6 +167,7 @@ public class AsignacionDaoJDBC implements AsignacionDAO {
     }
 
     // Método que permite insertar objetos en la base de datos (INSERT)
+    @Override
     public int insertar(Asignacion asignacion) throws SQLException {
         Connection conn = null;
         PreparedStatement ps = null;
@@ -192,6 +195,7 @@ public class AsignacionDaoJDBC implements AsignacionDAO {
     }
 
     // Método que permite actualizar objetos en la base de datos (UPDATE)
+    @Override
     public int actualizar(Asignacion asignacion) throws SQLException {
         Connection conn = null;
         PreparedStatement ps = null;
@@ -220,6 +224,7 @@ public class AsignacionDaoJDBC implements AsignacionDAO {
 
 
     // Método que permite eliminar objetos en la base de datos (DELETE)
+    @Override
     public int eliminar(Asignacion asignacion) throws SQLException {
         Connection conn = null;
         PreparedStatement ps = null;

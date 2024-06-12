@@ -48,6 +48,7 @@ public class PacienteDaoJDBC implements PacienteDAO {
     }
 
     // Método que permite seleccionar y recuperar los objetos de la base de datos (SELECT)
+    @Override
     public List<Paciente> seleccionar() throws SQLException {
         Connection conn = null;
         PreparedStatement ps = null;
@@ -136,6 +137,7 @@ public class PacienteDaoJDBC implements PacienteDAO {
     }
 
     // Método para recuperar solo uno de los registros en la base de datos
+    @Override
     public Paciente seleccionarPorId(int idPaciente) throws SQLException {
         Connection conn = null;
         PreparedStatement ps = null;
@@ -197,6 +199,7 @@ public class PacienteDaoJDBC implements PacienteDAO {
     }
 
     // Método que permite insertar objetos en la base de datos (INSERT)
+    @Override
     public int insertar(Paciente paciente) throws SQLException {
         Connection conn = null;
         PreparedStatement ps = null;
@@ -221,6 +224,7 @@ public class PacienteDaoJDBC implements PacienteDAO {
     }
 
     // Método que permite actualizar objetos en la base de datos (UPDATE)
+    @Override
     public int actualizar(Paciente paciente) throws SQLException {
         Connection conn = null;
         PreparedStatement ps = null;
@@ -246,6 +250,7 @@ public class PacienteDaoJDBC implements PacienteDAO {
     }
 
     // Método que permite eliminar objetos en la base de datos (DELETE)
+    @Override
     public int eliminar(Paciente paciente) throws SQLException {
         Connection conn = null;
         PreparedStatement ps = null;

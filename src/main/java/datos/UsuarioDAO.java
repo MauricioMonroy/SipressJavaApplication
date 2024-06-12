@@ -8,6 +8,8 @@ import java.util.List;
 public interface UsuarioDAO {
     List<Usuario> seleccionar() throws SQLException;
 
+    Usuario seleccionarPorId(int id) throws SQLException;
+
     int insertar(Usuario usuario) throws SQLException;
 
     int actualizar(Usuario usuario) throws SQLException;

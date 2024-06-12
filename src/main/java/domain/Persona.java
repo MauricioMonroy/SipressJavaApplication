@@ -7,6 +7,7 @@
 package domain;
 
 import jakarta.persistence.*;
+
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.List;
@@ -48,10 +49,6 @@ public class Persona implements Serializable {
         this.idPersona = idPersona;
     }
 
-    public Integer getIdPersona() {
-        return idPersona;
-    }
-
     public Persona(String nombre, String apellido, String identificacion, String telefono, String email) {
         this.nombre = nombre;
         this.apellido = apellido;
@@ -67,6 +64,10 @@ public class Persona implements Serializable {
         this.identificacion = identificacion;
         this.telefono = telefono;
         this.email = email;
+    }
+
+    public Integer getIdPersona() {
+        return idPersona;
     }
 
     public void setIdPersona(Integer idPersona) {

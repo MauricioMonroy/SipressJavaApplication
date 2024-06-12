@@ -6,10 +6,7 @@ package datos;
 
 import domain.Persona;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,6 +21,9 @@ public class PersonaDaoJDBC implements PersonaDAO {
     // Creación de las sentencias para recuperar la información de la base de datos
     private static final String SQL_SELECT =
             "SELECT id_persona, nombre, apellido, identificacion, telefono, email FROM persona";
+    private static final String SQL_SELECT_ONE =
+            "SELECT id_persona, nombre, apellido, identificacion, telefono, email FROM persona "
+                    + "WHERE id_persona = ?";
     private static final String SQL_INSERT =
             "INSERT INTO persona (nombre, apellido, identificacion, telefono, email) VALUES (?, ?, ?, ?, ?)";
     private static final String SQL_UPDATE =
@@ -40,90 +40,110 @@ public class PersonaDaoJDBC implements PersonaDAO {
     }
 
     // Método que permite seleccionar los objetos de la base de datos (SELECT)
+
+    @Override
     public List<Persona> seleccionar() throws SQLException {
         Connection conn = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
         List<Persona> personas = new ArrayList<>();
-        Persona personaActual = null;
 
         try {
             conn = this.conexionTransaccional != null ? this.conexionTransaccional : getConnection();
-            System.out.println("Ejecutando query = " + SQL_SELECT);
             ps = conn.prepareStatement(SQL_SELECT);
             rs = ps.executeQuery();
 
-            // Iteración de los elementos para obtener todos los registros de la base de datos
             while (rs.next()) {
-                int idPersona = rs.getInt("id_persona");
-
-                if (personaActual == null || personaActual.getIdPersona() != idPersona) {
-
-                    // Creación de un nuevo objeto de la clase
-                    personaActual = new Persona();
-                    personaActual.setIdPersona(idPersona);
-                    personaActual.setNombre(rs.getString("nombre"));
-                    personaActual.setApellido(rs.getString("apellido"));
-                    personaActual.setIdentificacion(rs.getString("identificacion"));
-                    personaActual.setTelefono(rs.getString("telefono"));
-                    personaActual.setEmail(rs.getString("email"));
-
-                    personas.add(personaActual);
-                }
-
+                Persona persona = new Persona();
+                persona.setIdPersona(rs.getInt("id_persona"));
+                persona.setNombre(rs.getString("nombre"));
+                persona.setApellido(rs.getString("apellido"));
+                persona.setIdentificacion(rs.getString("identificacion"));
+                persona.setTelefono(rs.getString("telefono"));
+                persona.setEmail(rs.getString("email"));
+                personas.add(persona);
             }
-
+        } finally {
+            if (rs != null) close(rs);
+            if (ps != null) close(ps);
+            if (this.conexionTransaccional == null) close(conn);
         }
-        // Se ejecuta el bloque finally para cerrar la conexión
-        finally {
-            if (rs != null) {
-                close(rs);
-            }
-            close(ps);
-            if (this.conexionTransaccional == null) {
-                close(conn);
-            }
-        }
-
         return personas;
     }
 
+    // Método para recuperar solo uno de los registros en la base de datos
+    @Override
+    public Persona seleccionarPorId(int id) throws SQLException {
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        Persona persona = null;
+
+        try {
+            conn = this.conexionTransaccional != null ? this.conexionTransaccional : getConnection();
+            ps = conn.prepareStatement(SQL_SELECT_ONE);
+            ps.setInt(1, id);
+            rs = ps.executeQuery();
+
+            if (rs.next()) {
+                persona = new Persona();
+                persona.setIdPersona(rs.getInt("id_persona"));
+                persona.setNombre(rs.getString("nombre"));
+                persona.setApellido(rs.getString("apellido"));
+                persona.setIdentificacion(rs.getString("identificacion"));
+                persona.setTelefono(rs.getString("telefono"));
+                persona.setEmail(rs.getString("email"));
+            }
+        } finally {
+            if (rs != null) close(rs);
+            if (ps != null) close(ps);
+            if (this.conexionTransaccional == null) close(conn);
+        }
+        return persona;
+    }
+
     // Método que permite insertar objetos en la base de datos (INSERT)
+    @Override
     public int insertar(Persona persona) throws SQLException {
         Connection conn = null;
         PreparedStatement ps = null;
-        int registros = 0;
+        ResultSet rs = null;
+        int idPersonaGenerada = 0;
         try {
             conn = this.conexionTransaccional != null ? this.conexionTransaccional : getConnection();
             System.out.println("Ejecutando query = " + SQL_INSERT);
-            ps = conn.prepareStatement(SQL_INSERT);
+            ps = conn.prepareStatement(SQL_INSERT, Statement.RETURN_GENERATED_KEYS);
             ps.setString(1, persona.getNombre());
             ps.setString(2, persona.getApellido());
             ps.setString(3, persona.getIdentificacion());
             ps.setString(4, persona.getTelefono());
             ps.setString(5, persona.getEmail());
-            registros = ps.executeUpdate();
-            System.out.println("Registros insertados = " + registros);
-        }
-        // Se ejecuta el bloque finally para cerrar la conexión
-        finally {
-            assert ps != null;
+
+            ps.executeUpdate();
+
+            rs = ps.getGeneratedKeys();
+            if (rs.next()) {
+                idPersonaGenerada = rs.getInt(1);
+            }
+            System.out.println("ID Persona generada = " + idPersonaGenerada);
+        } finally {
+            close(rs);
             close(ps);
             if (this.conexionTransaccional == null) {
                 close(conn);
             }
         }
-        return registros;
+        return idPersonaGenerada;
     }
 
     // Método que permite actualizar objetos en la base de datos (UPDATE)
+    @Override
     public int actualizar(Persona persona) throws SQLException {
         Connection conn = null;
         PreparedStatement ps = null;
         int registros = 0;
         try {
             conn = this.conexionTransaccional != null ? this.conexionTransaccional : getConnection();
-            System.out.println("Ejecutando query = " + SQL_UPDATE);
             ps = conn.prepareStatement(SQL_UPDATE);
             ps.setString(1, persona.getNombre());
             ps.setString(2, persona.getApellido());
@@ -132,39 +152,27 @@ public class PersonaDaoJDBC implements PersonaDAO {
             ps.setString(5, persona.getEmail());
             ps.setInt(6, persona.getIdPersona());
             registros = ps.executeUpdate();
-            System.out.println("Registros actualizados = " + registros);
-        }
-        // Se ejecuta el bloque finally para cerrar la conexión
-        finally {
-            assert ps != null;
-            close(ps);
-            if (this.conexionTransaccional == null) {
-                close(conn);
-            }
+        } finally {
+            if (ps != null) close(ps);
+            if (this.conexionTransaccional == null) close(conn);
         }
         return registros;
     }
 
     // Método que permite eliminar objetos en la base de datos (DELETE)
+    @Override
     public int eliminar(Persona persona) throws SQLException {
         Connection conn = null;
         PreparedStatement ps = null;
         int registros = 0;
         try {
             conn = this.conexionTransaccional != null ? this.conexionTransaccional : getConnection();
-            System.out.println("Ejecutando query = " + SQL_DELETE);
             ps = conn.prepareStatement(SQL_DELETE);
             ps.setInt(1, persona.getIdPersona());
             registros = ps.executeUpdate();
-            System.out.println("Registros eliminados = " + registros);
-        }
-        // Se ejecuta el bloque finally para cerrar la conexión
-        finally {
-            assert ps != null;
-            close(ps);
-            if (this.conexionTransaccional == null) {
-                close(conn);
-            }
+        } finally {
+            if (ps != null) close(ps);
+            if (this.conexionTransaccional == null) close(conn);
         }
         return registros;
     }

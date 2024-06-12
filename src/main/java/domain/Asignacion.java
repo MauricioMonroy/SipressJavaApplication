@@ -6,6 +6,7 @@
  */
 package domain;
 
+import java.io.Serial;
 import java.io.Serializable;
 import jakarta.persistence.Basic;
 import jakarta.persistence.Column;
@@ -18,16 +19,13 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.NamedQueries;
 import jakarta.persistence.NamedQuery;
 
-/**
- *
- * @author M.Licht
- */
 @Entity
 @NamedQueries({
         @NamedQuery(name = "Asignacion.findAll", query = "SELECT a FROM Asignacion a"),
         @NamedQuery(name = "Asignacion.findByIdAsignacion", query = "SELECT a FROM Asignacion a WHERE a.idAsignacion = :idAsignacion")})
 public class Asignacion implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -121,14 +119,10 @@ public class Asignacion implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Asignacion)) {
+        if (!(object instanceof Asignacion other)) {
             return false;
         }
-        Asignacion other = (Asignacion) object;
-        if ((this.idAsignacion == null && other.idAsignacion != null) || (this.idAsignacion != null && !this.idAsignacion.equals(other.idAsignacion))) {
-            return false;
-        }
-        return true;
+        return (this.idAsignacion != null || other.idAsignacion == null) && (this.idAsignacion == null || this.idAsignacion.equals(other.idAsignacion));
     }
 
     @Override

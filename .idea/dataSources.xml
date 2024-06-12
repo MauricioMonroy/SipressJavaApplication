@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="database_sipress@localhost" uuid="af25a72e-36a1-4ce6-ad49-e9009eb81c25">
+    <data-source source="LOCAL" name="database_sipress@localhost" uuid="5256ba05-7287-4383-9be1-5eadc955ecbf">
       <driver-ref>mysql.8</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>

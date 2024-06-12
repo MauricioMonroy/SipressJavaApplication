@@ -17,7 +17,7 @@ public class Conexion {
         ds.setUsername(JDBC_USER);
         ds.setPassword(JDBC_PASS);
         // Definición del tamaño del pool de conexiones
-        ds.setInitialSize(5);
+        ds.setInitialSize(50);
         return ds;
     }
 
