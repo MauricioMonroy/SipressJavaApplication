@@ -93,7 +93,7 @@
     <div class="container px-lg-3">
         <div class="p-2 p-lg-3 bg-light rounded-3 text-center">
             <div class="m-2 m-lg-3">
-                <h1 class="fs-3 fw-bold"><c:out value="" ></h1>
+                <h1 class="fs-3 fw-bold"></h1>
                 <p class="fs-6">
                     <span class="text-success fw-bold fs-5">SIPRESS </span> es una
                     aplicación que simpifica la gestión de las Instituciones
