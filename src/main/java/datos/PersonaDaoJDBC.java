@@ -27,7 +27,7 @@ public class PersonaDaoJDBC implements PersonaDAO {
     private static final String SQL_INSERT =
             "INSERT INTO persona (nombre, apellido, identificacion, telefono, email) VALUES (?, ?, ?, ?, ?)";
     private static final String SQL_UPDATE =
-            "UPDATE persona SET id_paciente = ?, nombre = ?, apellido = ?, identificacion = ?, telefono = ?, email = ? WHERE id_persona = ?";
+            "UPDATE persona SET id_persona = ?, nombre = ?, apellido = ?, identificacion = ?, telefono = ?, email = ? WHERE id_persona = ?";
     private static final String SQL_DELETE =
             "DELETE FROM persona WHERE id_persona = ?";
 
