@@ -16,7 +16,8 @@ import java.util.List;
         @NamedQuery(name = "Usuario.findAll", query = "SELECT u FROM Usuario u"),
         @NamedQuery(name = "Usuario.findByIdUsuario", query = "SELECT u FROM Usuario u WHERE u.idUsuario = :idUsuario"),
         @NamedQuery(name = "Usuario.findByUsername", query = "SELECT u FROM Usuario u WHERE u.username = :username"),
-        @NamedQuery(name = "Usuario.findByPassword", query = "SELECT u FROM Usuario u WHERE u.password = :password")})
+        @NamedQuery(name = "Usuario.findByPassword", query = "SELECT u FROM Usuario u WHERE u.password = :password"),
+        @NamedQuery(name = "Usuario.findByTipoUsuario", query = "SELECT u FROM Usuario u WHERE u.tipoUsuario = :tipoUsuario" )})
 public class Usuario implements Serializable {
 
     @Serial
@@ -28,6 +29,9 @@ public class Usuario implements Serializable {
     private Integer idUsuario;
     private String username;
     private String password;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "tipo_usuario")
+    private String tipoUsuario;
     @JoinColumn(name = "id_persona", referencedColumnName = "id_persona")
     @ManyToOne
     private Persona persona;
@@ -83,6 +87,14 @@ public class Usuario implements Serializable {
         this.password = password;
     }
 
+    public String getTipoUsuario() {
+        return tipoUsuario;
+    }
+
+    public void setTipoUsuario(String tipoUsuario) {
+        this.tipoUsuario = tipoUsuario;
+    }
+
     public Persona getPersona() {
         return persona;
     }
@@ -121,6 +133,7 @@ public class Usuario implements Serializable {
                 "idUsuario=" + idUsuario +
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
+                ", tipoUsuario='" + tipoUsuario + '\'' +
                 " |\n" + "-> Persona asociada{" + persona +
                 '}' + "\n";
     }

@@ -5,10 +5,7 @@ import domain.Empleado;
 import domain.Paciente;
 import domain.Servicio;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -36,9 +33,9 @@ public class AsignacionDaoJDBC implements AsignacionDAO {
                     + "INNER JOIN empleado e ON a.id_empleado = e.id_empleado "
                     + "WHERE a.id_asignacion = ?";
     private static final String SQL_INSERT =
-            "INSERT INTO asignacion (cargo) VALUES (?)";
+            "INSERT INTO asignacion (id_paciente, id_servicio, id_empleado) VALUES (?, ?, ?)";
     private static final String SQL_UPDATE =
-            "UPDATE asignacion SET cargo = ? WHERE id_asignacion = ?";
+            "UPDATE asignacion SET id_paciente = ?, id_servicio = ?, id_empleado = ? WHERE id_asignacion = ?";
     private static final String SQL_DELETE =
             "DELETE FROM asignacion WHERE id_asignacion = ?";
 
@@ -175,17 +172,20 @@ public class AsignacionDaoJDBC implements AsignacionDAO {
         try {
             conn = this.conexionTransaccional != null ? this.conexionTransaccional : getConnection();
             System.out.println("Ejecutando query = " + SQL_INSERT);
-            ps = conn.prepareStatement(SQL_INSERT);
-            ps.setInt(1, asignacion.getIdAsignacion());
-            ps.setInt(2, asignacion.getPaciente().getIdPaciente());
-            ps.setInt(3, asignacion.getServicio().getIdServicio());
-            ps.setInt(4, asignacion.getEmpleado().getIdEmpleado());
+            ps = conn.prepareStatement(SQL_INSERT, Statement.RETURN_GENERATED_KEYS);
+            ps.setInt(1, asignacion.getPaciente().getIdPaciente());
+            ps.setInt(2, asignacion.getServicio().getIdServicio());
+            ps.setInt(3, asignacion.getEmpleado().getIdEmpleado());
 
             registros = ps.executeUpdate();
             System.out.println("Registros insertados = " + registros);
-        }
-        // Se ejecuta el bloque finally para cerrar la conexión
-        finally {
+
+            try (ResultSet generatedKeys = ps.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    asignacion.setIdAsignacion(generatedKeys.getInt(1));
+                }
+            }
+        } finally {
             close(ps);
             if (this.conexionTransaccional == null) {
                 close(conn);
@@ -211,9 +211,7 @@ public class AsignacionDaoJDBC implements AsignacionDAO {
 
             registros = ps.executeUpdate();
             System.out.println("Registros actualizados = " + registros);
-        }
-        // Se ejecuta el bloque finally para cerrar la conexión
-        finally {
+        } finally {
             close(ps);
             if (this.conexionTransaccional == null) {
                 close(conn);
@@ -237,9 +235,7 @@ public class AsignacionDaoJDBC implements AsignacionDAO {
 
             registros = ps.executeUpdate();
             System.out.println("Registros eliminados = " + registros);
-        }
-        // Se ejecuta el bloque finally para cerrar la conexión
-        finally {
+        } finally {
             close(ps);
             if (this.conexionTransaccional == null) {
                 close(conn);

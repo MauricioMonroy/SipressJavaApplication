@@ -26,7 +26,7 @@ import jakarta.persistence.OneToMany;
         @NamedQuery(name = "Empleado.findAll", query = "SELECT e FROM Empleado e"),
         @NamedQuery(name = "Empleado.findByIdEmpleado", query = "SELECT e FROM Empleado e WHERE e.idEmpleado = :idEmpleado"),
         @NamedQuery(name = "Empleado.findByCargo", query = "SELECT e FROM Empleado e WHERE e.cargo = :cargo")})
-public class Empleado implements Serializable {
+public class Empleado extends Persona implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
@@ -105,6 +105,7 @@ public class Empleado implements Serializable {
     public void setPersona(Persona persona) {
         this.persona = persona;
     }
+
 
     public List<Funcion> getFuncionList() {
         return funcionList;

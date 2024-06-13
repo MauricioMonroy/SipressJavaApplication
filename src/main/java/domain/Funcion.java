@@ -6,10 +6,18 @@
  */
 package domain;
 
-import jakarta.persistence.*;
 import java.io.Serial;
 import java.io.Serializable;
-import java.util.List;
+import jakarta.persistence.Basic;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.NamedQueries;
+import jakarta.persistence.NamedQuery;
 
 @Entity
 @NamedQueries({
@@ -26,8 +34,6 @@ public class Funcion implements Serializable {
     @Column(name = "id_funcion")
     private Integer idFuncion;
     private String descripcion;
-    @OneToMany(mappedBy = "funcion")
-    private List<Asignacion> asignacionList;
     @JoinColumn(name = "id_empleado", referencedColumnName = "id_empleado")
     @ManyToOne
     private Empleado empleado;
@@ -43,15 +49,14 @@ public class Funcion implements Serializable {
         this.descripcion = descripcion;
     }
 
-    public Funcion(Integer idFuncion, String descripcion) {
-        this.idFuncion = idFuncion;
+    public Funcion(String descripcion, Empleado empleado) {
         this.descripcion = descripcion;
+        this.empleado = empleado;
     }
 
-    public Funcion(Integer idFuncion, String descripcion, List<Asignacion> asignacionList, Empleado empleado) {
+    public Funcion(Integer idFuncion, String descripcion, Empleado empleado) {
         this.idFuncion = idFuncion;
         this.descripcion = descripcion;
-        this.asignacionList = asignacionList;
         this.empleado = empleado;
     }
 
@@ -69,14 +74,6 @@ public class Funcion implements Serializable {
 
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
-    }
-
-    public List<Asignacion> getAsignacionList() {
-        return asignacionList;
-    }
-
-    public void setAsignacionList(List<Asignacion> asignacionList) {
-        this.asignacionList = asignacionList;
     }
 
     public Empleado getEmpleado() {
@@ -97,10 +94,14 @@ public class Funcion implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Funcion other)) {
+        if (!(object instanceof Funcion)) {
             return false;
         }
-        return (this.idFuncion != null || other.idFuncion == null) && (this.idFuncion == null || this.idFuncion.equals(other.idFuncion));
+        Funcion other = (Funcion) object;
+        if ((this.idFuncion == null && other.idFuncion != null) || (this.idFuncion != null && !this.idFuncion.equals(other.idFuncion))) {
+            return false;
+        }
+        return true;
     }
 
     @Override
@@ -108,7 +109,7 @@ public class Funcion implements Serializable {
         return "Funcion{" +
                 "idFuncion=" + idFuncion +
                 ", descripcion='" + descripcion + '\'' +
-                ", empleado=" + empleado +
+                "| Empleado relacionado{" + empleado +
                 '}';
     }
 }

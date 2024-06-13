@@ -18,7 +18,7 @@ import java.util.List;
         @NamedQuery(name = "Paciente.findByIdPaciente", query = "SELECT p FROM Paciente p WHERE p.idPaciente = :idPaciente"),
         @NamedQuery(name = "Paciente.findByDetalleEps", query = "SELECT p FROM Paciente p WHERE p.detalleEps = :detalleEps"),
         @NamedQuery(name = "Paciente.findByFechaConsulta", query = "SELECT p FROM Paciente p WHERE p.fechaConsulta = :fechaConsulta")})
-public class Paciente implements Serializable {
+public class Paciente extends Persona implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;

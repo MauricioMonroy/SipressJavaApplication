@@ -13,6 +13,7 @@ import java.io.Serializable;
 import java.util.List;
 
 @Entity
+@Inheritance(strategy = InheritanceType.JOINED)
 @NamedQueries({
         @NamedQuery(name = "Persona.findAll", query = "SELECT p FROM Persona p"),
         @NamedQuery(name = "Persona.findByIdPersona", query = "SELECT p FROM Persona p WHERE p.idPersona = :idPersona"),
@@ -21,7 +22,7 @@ import java.util.List;
         @NamedQuery(name = "Persona.findByIdentificacion", query = "SELECT p FROM Persona p WHERE p.identificacion = :identificacion"),
         @NamedQuery(name = "Persona.findByTelefono", query = "SELECT p FROM Persona p WHERE p.telefono = :telefono"),
         @NamedQuery(name = "Persona.findByEmail", query = "SELECT p FROM Persona p WHERE p.email = :email")})
-public class Persona implements Serializable {
+public abstract class Persona implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;

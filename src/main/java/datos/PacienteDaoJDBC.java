@@ -32,8 +32,11 @@ public class PacienteDaoJDBC implements PacienteDAO {
                     + "FROM paciente px INNER JOIN persona p ON px.id_persona = p.id_persona "
                     + "INNER JOIN historial h ON h.id_paciente = px.id_paciente "
                     + "WHERE px.id_paciente = ?";
+
     private static final String SQL_INSERT =
-            "INSERT INTO paciente (detalleEps) VALUES (?)";
+            "INSERT INTO historial (id_paciente, motivo_consulta, fecha_nacimiento, sexo, direccion, ocupacion, contacto_emergencia, "
+                    + "nombre_contacto_emergencia, alergias, condiciones_preexistentes, medicamentos_actuales, historial_vacunas, "
+                    + "grupo_sanguineo, notas_adicionales, ultima_actualizacion) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     private static final String SQL_UPDATE =
             "UPDATE paciente SET detalleEps = ? WHERE id_paciente = ?";
     private static final String SQL_DELETE =
@@ -47,230 +50,162 @@ public class PacienteDaoJDBC implements PacienteDAO {
         this.conexionTransaccional = conexionTransaccional;
     }
 
-    // Método que permite seleccionar y recuperar los objetos de la base de datos (SELECT)
+    private Paciente mapPaciente(ResultSet rs) throws SQLException {
+        Paciente paciente = new Paciente();
+        paciente.setIdPaciente(rs.getInt("id_paciente"));
+        paciente.setDetalleEps(rs.getString("detalle_eps"));
+        paciente.setFechaConsulta(rs.getDate("fecha_consulta"));
+
+        // Establecer los atributos de Persona en el objeto Paciente
+        paciente.setIdPersona(rs.getInt("id_persona"));
+        paciente.setNombre(rs.getString("nombre"));
+        paciente.setApellido(rs.getString("apellido"));
+        paciente.setIdentificacion(rs.getString("identificacion"));
+        paciente.setTelefono(rs.getString("telefono"));
+        paciente.setEmail(rs.getString("email"));
+
+        return paciente;
+    }
+
     @Override
     public List<Paciente> seleccionar() throws SQLException {
-        Connection conn = null;
-        PreparedStatement ps = null;
-        ResultSet rs = null;
         List<Paciente> pacientes = new ArrayList<>();
 
-        try {
-            conn = this.conexionTransaccional != null ? this.conexionTransaccional : getConnection();
+        try (Connection conn = this.conexionTransaccional != null ? this.conexionTransaccional : getConnection();
+             PreparedStatement ps = conn.prepareStatement(SQL_SELECT);
+             ResultSet rs = ps.executeQuery()) {
+
             System.out.println("Ejecutando query = " + SQL_SELECT);
-            ps = conn.prepareStatement(SQL_SELECT);
-            rs = ps.executeQuery();
 
-            // Iteración de los elementos para obtener todos los registros
             while (rs.next()) {
-                int idPaciente = rs.getInt("id_paciente");
-                String detalleEps = rs.getString("detalle_eps");
-                Date fechaConsulta = rs.getDate("fecha_consulta");
-                int idPersona = rs.getInt("id_persona");
-                String nombre = rs.getString("nombre");
-                String apellido = rs.getString("apellido");
-                String identificacion = rs.getString("identificacion");
-                String telefono = rs.getString("telefono");
-                String email = rs.getString("email");
-                int idHistorial = rs.getInt("id_historial");
-                String motivoConsulta = rs.getString("motivo_consulta");
-                Date fechaNacimiento = rs.getDate("fecha_nacimiento");
-                String sexo = rs.getString("sexo");
-                String direccion = rs.getString("direccion");
-                String ocupacion = rs.getString("ocupacion");
-                String contactoEmergencia = rs.getString("contacto_emergencia");
-                String nombreContactoEmergencia = rs.getString("nombre_contacto_emergencia");
-                String alergias = rs.getString("alergias");
-                String condicionesPreexistentes = rs.getString("condiciones_preexistentes");
-                String medicamentosActuales = rs.getString("medicamentos_actuales");
-                String historialVacunas = rs.getString("historial_vacunas");
-                String grupoSanguineo = rs.getString("grupo_sanguineo");
-                String notasAdicionales = rs.getString("notas_adicionales");
-                Timestamp ultimaActualizacion = rs.getTimestamp("ultima_actualizacion");
-
-                // Creación de un nuevo objeto de la clase o clases
-                var paciente = new Paciente();
-                paciente.setIdPaciente(idPaciente);
-                paciente.setDetalleEps(detalleEps);
-                paciente.setFechaConsulta(fechaConsulta);
-
-                var persona = new Persona();
-                persona.setIdPersona(idPersona);
-                persona.setNombre(nombre);
-                persona.setApellido(apellido);
-                persona.setIdentificacion(identificacion);
-                persona.setTelefono(telefono);
-                persona.setEmail(email);
-
-                var historial = new Historial();
-                historial.setIdHistorial(idHistorial);
-                historial.setMotivoConsulta(motivoConsulta);
-                historial.setFechaNacimiento(fechaNacimiento);
-                historial.setSexo(sexo);
-                historial.setDireccion(direccion);
-                historial.setOcupacion(ocupacion);
-                historial.setContactoEmergencia(contactoEmergencia);
-                historial.setNombreContactoEmergencia(nombreContactoEmergencia);
-                historial.setAlergias(alergias);
-                historial.setCondicionesPreexistentes(condicionesPreexistentes);
-                historial.setMedicamentosActuales(medicamentosActuales);
-                historial.setHistorialVacunas(historialVacunas);
-                historial.setGrupoSanguineo(grupoSanguineo);
-                historial.setNotasAdicionales(notasAdicionales);
-                historial.setUltimaActualizacion(ultimaActualizacion);
-
-                paciente.setPersona(persona);
-                paciente.setHistorial(historial);
-                pacientes.add(paciente);
-            }
-        }
-        // Se ejecuta el bloque finally para cerrar los objetos creados
-        finally {
-            close(rs);
-            close(ps);
-            if (this.conexionTransaccional == null) {
-                close(conn);
+                pacientes.add(mapPaciente(rs));
             }
         }
 
         return pacientes;
     }
 
-    // Método para recuperar solo uno de los registros en la base de datos
     @Override
     public Paciente seleccionarPorId(int idPaciente) throws SQLException {
-        Connection conn = null;
-        PreparedStatement ps = null;
-        ResultSet rs = null;
         Paciente paciente = null;
 
-        try {
-            conn = this.conexionTransaccional != null ? this.conexionTransaccional : getConnection();
-            ps = conn.prepareStatement(SQL_SELECT_ONE);
+        try (Connection conn = this.conexionTransaccional != null ? this.conexionTransaccional : getConnection();
+             PreparedStatement ps = conn.prepareStatement(SQL_SELECT_ONE)) {
+
             ps.setInt(1, idPaciente);
-            rs = ps.executeQuery();
+            System.out.println("Ejecutando query = " + SQL_SELECT_ONE);
 
-            // Si se encontró un registro, crear el objeto Paciente
-            if (rs.next()) {
-                paciente = new Paciente();
-                paciente.setIdPaciente(rs.getInt("id_paciente"));
-                paciente.setDetalleEps(rs.getString("detalle_eps"));
-                paciente.setFechaConsulta(rs.getDate("fecha_consulta"));
-                var persona = new Persona();
-                persona.setIdPersona(rs.getInt("id_persona"));
-                persona.setNombre(rs.getString("nombre"));
-                persona.setApellido(rs.getString("apellido"));
-                persona.setIdentificacion(rs.getString("identificacion"));
-                persona.setTelefono(rs.getString("telefono"));
-                persona.setEmail(rs.getString("email"));
-                var historial = new Historial();
-                historial.setIdHistorial(rs.getInt("id_historial"));
-                historial.setMotivoConsulta(rs.getString("motivo_consulta"));
-                historial.setFechaNacimiento(rs.getDate("fecha_nacimiento"));
-                historial.setSexo(rs.getString("sexo"));
-                historial.setDireccion(rs.getString("direccion"));
-                historial.setOcupacion(rs.getString("ocupacion"));
-                historial.setContactoEmergencia(rs.getString("contacto_emergencia"));
-                historial.setNombreContactoEmergencia(rs.getString("nombre_contacto_emergencia"));
-                historial.setAlergias(rs.getString("alergias"));
-                historial.setCondicionesPreexistentes(rs.getString("condiciones_preexistentes"));
-                historial.setMedicamentosActuales(rs.getString("medicamentos_actuales"));
-                historial.setHistorialVacunas(rs.getString("historial_vacunas"));
-                historial.setGrupoSanguineo(rs.getString("grupo_sanguineo"));
-                historial.setNotasAdicionales(rs.getString("notas_adicionales"));
-                historial.setUltimaActualizacion(rs.getTimestamp("ultima_actualizacion"));
-
-                paciente.setPersona(persona);
-                paciente.setHistorial(historial);
-            }
-        }
-        // Se ejecuta el bloque finally para cerrar los objetos creados
-        finally {
-            if (rs != null) {
-                close(rs);
-            }
-            close(ps);
-            if (this.conexionTransaccional == null) {
-                close(conn);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    paciente = mapPaciente(rs);
+                }
             }
         }
 
         return paciente;
     }
 
-    // Método que permite insertar objetos en la base de datos (INSERT)
     @Override
     public int insertar(Paciente paciente) throws SQLException {
-        Connection conn = null;
-        PreparedStatement ps = null;
         int registros = 0;
-        try {
-            conn = this.conexionTransaccional != null ? this.conexionTransaccional : getConnection();
-            System.out.println("Ejecutando query = " + SQL_INSERT);
-            ps = conn.prepareStatement(SQL_INSERT);
-            ps.setString(1, paciente.getDetalleEps());
 
-            registros = ps.executeUpdate();
+        try (Connection conn = this.conexionTransaccional != null ? this.conexionTransaccional : getConnection()) {
+            conn.setAutoCommit(false); // Iniciar la transacción
+
+            // Insertar Paciente
+            System.out.println("Ejecutando query = " + SQL_INSERT);
+            try (PreparedStatement ps = conn.prepareStatement(SQL_INSERT, Statement.RETURN_GENERATED_KEYS)) {
+                ps.setString(1, paciente.getDetalleEps());
+                ps.setDate(2, new java.sql.Date(paciente.getFechaConsulta().getTime()));
+                ps.setInt(3, paciente.getIdPersona());
+
+                ps.executeUpdate();
+
+                try (ResultSet rs = ps.getGeneratedKeys()) {
+                    if (rs.next()) {
+                        int idPaciente = rs.getInt(1);
+                        paciente.setIdPaciente(idPaciente);
+
+                        // Insertar Historial
+                        HistorialDaoJDBC historialDao = new HistorialDaoJDBC(conn);
+                        Historial historial = paciente.getHistorial();
+                        historial.setPaciente(paciente);
+                        historialDao.insertar(historial);
+                    }
+                }
+            }
+
+            conn.commit();
+            registros = 1;
             System.out.println("Registros insertados = " + registros);
-        }
-        // Se ejecuta el bloque finally para cerrar la conexión
-        finally {
-            close(ps);
-            if (this.conexionTransaccional == null) {
-                close(conn);
+        } catch (SQLException ex) {
+            ex.printStackTrace(System.out);
+            try (Connection conn = this.conexionTransaccional != null ? this.conexionTransaccional : getConnection()) {
+                System.out.println("Ejecutando rollback");
+                if (conn != null) {
+                    conn.rollback();
+                }
+            } catch (SQLException ex1) {
+                ex1.printStackTrace(System.out);
             }
         }
+
         return registros;
     }
 
-    // Método que permite actualizar objetos en la base de datos (UPDATE)
     @Override
     public int actualizar(Paciente paciente) throws SQLException {
-        Connection conn = null;
-        PreparedStatement ps = null;
         int registros = 0;
-        try {
-            conn = this.conexionTransaccional != null ? this.conexionTransaccional : getConnection();
-            System.out.println("Ejecutando query = " + SQL_UPDATE);
-            ps = conn.prepareStatement(SQL_UPDATE);
-            ps.setString(1, paciente.getDetalleEps());
-            ps.setInt(2, paciente.getIdPaciente());
 
-            registros = ps.executeUpdate();
+        try (Connection conn = this.conexionTransaccional != null ? this.conexionTransaccional : getConnection()) {
+            conn.setAutoCommit(false); // Iniciar la transacción
+
+            // Actualizar Paciente
+            System.out.println("Ejecutando query = " + SQL_UPDATE);
+            try (PreparedStatement ps = conn.prepareStatement(SQL_UPDATE)) {
+                ps.setString(1, paciente.getDetalleEps());
+                ps.setDate(2, new java.sql.Date(paciente.getFechaConsulta().getTime()));
+                ps.setInt(3, paciente.getIdPaciente());
+                registros = ps.executeUpdate();
+            }
+
+            // Actualizar Historial
+            HistorialDaoJDBC historialDao = new HistorialDaoJDBC(conn);
+            Historial historial = paciente.getHistorial();
+            historial.setPaciente(paciente);
+            historialDao.actualizar(historial);
+
+            conn.commit();
             System.out.println("Registros actualizados = " + registros);
-        }
-        // Se ejecuta el bloque finally para cerrar la conexión
-        finally {
-            close(ps);
-            if (this.conexionTransaccional == null) {
-                close(conn);
+        } catch (SQLException ex) {
+            ex.printStackTrace(System.out);
+            try (Connection conn = this.conexionTransaccional != null ? this.conexionTransaccional : getConnection()) {
+                System.out.println("Ejecutando rollback");
+                if (conn != null) {
+                    conn.rollback();
+                }
+            } catch (SQLException ex1) {
+                ex1.printStackTrace(System.out);
             }
         }
+
         return registros;
     }
 
-    // Método que permite eliminar objetos en la base de datos (DELETE)
     @Override
     public int eliminar(Paciente paciente) throws SQLException {
-        Connection conn = null;
-        PreparedStatement ps = null;
         int registros = 0;
-        try {
-            conn = this.conexionTransaccional != null ? this.conexionTransaccional : getConnection();
+
+        try (Connection conn = this.conexionTransaccional != null ? this.conexionTransaccional : getConnection();
+             PreparedStatement ps = conn.prepareStatement(SQL_DELETE)) {
+
             System.out.println("Ejecutando query = " + SQL_DELETE);
-            ps = conn.prepareStatement(SQL_DELETE);
             ps.setInt(1, paciente.getIdPaciente());
 
             registros = ps.executeUpdate();
             System.out.println("Registros eliminados = " + registros);
         }
-        // Se ejecuta el bloque finally para cerrar la conexión
-        finally {
-            close(ps);
-            if (this.conexionTransaccional == null) {
-                close(conn);
-            }
-        }
+
         return registros;
     }
 }

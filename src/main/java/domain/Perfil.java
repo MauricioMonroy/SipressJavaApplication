@@ -15,16 +15,21 @@ import java.io.Serializable;
         @NamedQuery(name = "Perfil.findAll", query = "SELECT p FROM Perfil p"),
         @NamedQuery(name = "Perfil.findByIdPerfil", query = "SELECT p FROM Perfil p WHERE p.idPerfil = :idPerfil"),
         @NamedQuery(name = "Perfil.findByRol", query = "SELECT p FROM Perfil p WHERE p.rol = :rol")})
+
 public class Perfil implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "id_perfil")
     private Integer idPerfil;
-    private String rol;
+
+    @Enumerated(EnumType.STRING)
+    private Rol rol;
+
     @JoinColumn(name = "id_usuario", referencedColumnName = "id_usuario")
     @ManyToOne
     private Usuario usuario;
@@ -36,16 +41,16 @@ public class Perfil implements Serializable {
         this.idPerfil = idPerfil;
     }
 
-    public Perfil(String rol) {
+    public Perfil(Rol rol) {
         this.rol = rol;
     }
 
-    public Perfil(Integer idPerfil, String rol) {
+    public Perfil(Integer idPerfil, Rol rol) {
         this.idPerfil = idPerfil;
         this.rol = rol;
     }
 
-    public Perfil(Integer idPerfil, String rol, Usuario usuario) {
+    public Perfil(Integer idPerfil, Rol rol, Usuario usuario) {
         this.idPerfil = idPerfil;
         this.rol = rol;
         this.usuario = usuario;
@@ -59,11 +64,11 @@ public class Perfil implements Serializable {
         this.idPerfil = idPerfil;
     }
 
-    public String getRol() {
+    public Rol getRol() {
         return rol;
     }
 
-    public void setRol(String rol) {
+    public void setRol(Rol rol) {
         this.rol = rol;
     }
 
@@ -84,7 +89,6 @@ public class Perfil implements Serializable {
 
     @Override
     public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
         if (!(object instanceof Perfil other)) {
             return false;
         }
@@ -95,9 +99,8 @@ public class Perfil implements Serializable {
     public String toString() {
         return "Perfil{" +
                 "idPerfil=" + idPerfil +
-                ", rol='" + rol + '\'' + ",\n" +
-                "| Usuario asociado{" + usuario +
+                ", rol=" + rol +
+                ", usuario=" + usuario +
                 '}';
     }
 }
-
