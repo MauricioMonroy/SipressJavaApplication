@@ -7,18 +7,14 @@
 package domain;
 
 import jakarta.persistence.*;
+
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-@Entity
-@NamedQueries({
-        @NamedQuery(name = "Paciente.findAll", query = "SELECT p FROM Paciente p"),
-        @NamedQuery(name = "Paciente.findByIdPaciente", query = "SELECT p FROM Paciente p WHERE p.idPaciente = :idPaciente"),
-        @NamedQuery(name = "Paciente.findByDetalleEps", query = "SELECT p FROM Paciente p WHERE p.detalleEps = :detalleEps"),
-        @NamedQuery(name = "Paciente.findByFechaConsulta", query = "SELECT p FROM Paciente p WHERE p.fechaConsulta = :fechaConsulta")})
-public class Paciente extends Persona implements Serializable {
+
+public class Paciente extends Usuario implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
@@ -34,9 +30,9 @@ public class Paciente extends Persona implements Serializable {
     private Date fechaConsulta;
     @OneToMany(mappedBy = "paciente")
     private List<Asignacion> asignacionList;
-    @JoinColumn(name = "id_persona", referencedColumnName = "id_persona")
-    @ManyToOne
-    private Persona persona;
+    @JoinColumn(name = "id_usuario", referencedColumnName = "id_usuario")
+    @OneToOne
+    private Usuario usuario;
     @OneToOne(mappedBy = "paciente")
     private Historial historial;
 
@@ -47,24 +43,59 @@ public class Paciente extends Persona implements Serializable {
         this.idPaciente = idPaciente;
     }
 
-    public Paciente(String detalleEps, Date fechaConsulta) {
+    public Paciente(Integer idUsuario, String detalleEps, Date fechaConsulta, Historial historial) {
+        super(idUsuario);
+        this.detalleEps = detalleEps;
+        this.fechaConsulta = fechaConsulta;
+        this.historial = historial;
+    }
+
+    public Paciente(Integer idUsuario, String detalleEps, Date fechaConsulta, List<Asignacion> asignacionList, Historial historial) {
+        super(idUsuario);
+        this.detalleEps = detalleEps;
+        this.fechaConsulta = fechaConsulta;
+        this.asignacionList = asignacionList;
+        this.historial = historial;
+    }
+
+    public Paciente(String username, String password, String nombre, String apellido, String identificacion, String telefono, String email, Boolean esPaciente, Boolean esEmpleado, String detalleEps, Date fechaConsulta) {
+        super(username, password, nombre, apellido, identificacion, telefono, email, esPaciente, esEmpleado);
         this.detalleEps = detalleEps;
         this.fechaConsulta = fechaConsulta;
     }
 
-    public Paciente(Integer idPaciente, String detalleEps, Date fechaConsulta) {
+    public Paciente(String username, String password, String nombre, String apellido, String identificacion, String telefono, String email, Boolean esPaciente, Boolean esEmpleado, String detalleEps, Date fechaConsulta, List<Asignacion> asignacionList, Historial historial) {
+        super(username, password, nombre, apellido, identificacion, telefono, email, esPaciente, esEmpleado);
+        this.detalleEps = detalleEps;
+        this.fechaConsulta = fechaConsulta;
+        this.asignacionList = asignacionList;
+        this.historial = historial;
+    }
+
+    public Paciente(String username, String password, String nombre, String apellido, String identificacion, String telefono, String email, Boolean esPaciente, Boolean esEmpleado, String detalleEps, Date fechaConsulta, List<Asignacion> asignacionList, Usuario usuario, Historial historial) {
+        super(username, password, nombre, apellido, identificacion, telefono, email, esPaciente, esEmpleado);
+        this.detalleEps = detalleEps;
+        this.fechaConsulta = fechaConsulta;
+        this.asignacionList = asignacionList;
+        this.usuario = usuario;
+        this.historial = historial;
+    }
+
+    public Paciente(int idUsuario, int idPaciente, String username, String password, String nombre, String apellido, String identificacion, String telefono, String email, Boolean esPaciente, Boolean esEmpleado, String detalleEps, Date fechaConsulta) {
+        super(idUsuario, username, password, nombre, apellido, identificacion, telefono, email, esPaciente, esEmpleado);
         this.idPaciente = idPaciente;
         this.detalleEps = detalleEps;
         this.fechaConsulta = fechaConsulta;
     }
 
-    public Paciente(Integer idPaciente, String detalleEps, Date fechaConsulta, List<Asignacion> asignacionList, Persona persona, Historial historial) {
+    public Paciente(Integer idUsuario, String username, String password, String nombre, String apellido, String identificacion, String telefono, String email, Boolean esPaciente, Boolean esEmpleado, Integer idPaciente, String detalleEps, Date fechaConsulta, List<Asignacion> asignacionList, Historial historial, Usuario usuario) {
+        super(idUsuario, username, password, nombre, apellido, identificacion, telefono, email, esPaciente, esEmpleado);
         this.idPaciente = idPaciente;
         this.detalleEps = detalleEps;
         this.fechaConsulta = fechaConsulta;
         this.asignacionList = asignacionList;
-        this.persona = persona;
         this.historial = historial;
+        this.usuario = usuario;
     }
 
     public Integer getIdPaciente() {
@@ -99,12 +130,12 @@ public class Paciente extends Persona implements Serializable {
         this.asignacionList = asignacionList;
     }
 
-    public Persona getPersona() {
-        return persona;
+    public Usuario getUsuario() {
+        return usuario;
     }
 
-    public void setPersona(Persona persona) {
-        this.persona = persona;
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
     }
 
     public Historial getHistorial() {
@@ -125,10 +156,14 @@ public class Paciente extends Persona implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Paciente other)) {
+        if (!(object instanceof Paciente)) {
             return false;
         }
-        return (this.idPaciente != null || other.idPaciente == null) && (this.idPaciente == null || this.idPaciente.equals(other.idPaciente));
+        Paciente other = (Paciente) object;
+        if ((this.idPaciente == null && other.idPaciente != null) || (this.idPaciente != null && !this.idPaciente.equals(other.idPaciente))) {
+            return false;
+        }
+        return true;
     }
 
     @Override
@@ -137,8 +172,9 @@ public class Paciente extends Persona implements Serializable {
                 "idPaciente=" + idPaciente +
                 ", detalleEps='" + detalleEps + '\'' +
                 ", fechaConsulta=" + fechaConsulta + ",\n" +
-                "| Persona asociada" + persona + ",\n" +
-                "| Historial clínico" + ",\n" + historial +
+                "| Usuario asociado{" + usuario + ",\n" +
+                "| Historial clínico{" + historial +
                 '}';
     }
 }
+

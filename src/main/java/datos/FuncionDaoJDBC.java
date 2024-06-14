@@ -1,7 +1,7 @@
 package datos;
 
-import domain.Funcion;
 import domain.Empleado;
+import domain.Funcion;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -13,8 +13,10 @@ public class FuncionDaoJDBC implements FuncionDAO {
 
     private Connection conexionTransaccional;
 
-    private static final String SQL_SELECT = "SELECT id_funcion, id_empleado, descripcion FROM funcion";
-    private static final String SQL_SELECT_BY_ID = "SELECT id_funcion, id_empleado, descripcion FROM funcion WHERE id_funcion = ?";
+    private static final String SQL_SELECT = "SELECT f.id_funcion, f.id_empleado, f.descripcion, e.id_usuario, e.cargo " +
+            "FROM funcion f LEFT JOIN empleado e ON f.id_empleado = e.id_empleado";
+    private static final String SQL_SELECT_BY_ID = "SELECT f.id_funcion, f.id_empleado, f.descripcion, e.id_usuario, e.cargo " +
+            "FROM funcion f LEFT JOIN empleado e ON f.id_empleado = e.id_empleado WHERE f.id_funcion = ?";
     private static final String SQL_INSERT = "INSERT INTO funcion (id_empleado, descripcion) VALUES (?, ?)";
     private static final String SQL_UPDATE = "UPDATE funcion SET id_empleado = ?, descripcion = ? WHERE id_funcion = ?";
     private static final String SQL_DELETE = "DELETE FROM funcion WHERE id_funcion = ?";
@@ -26,18 +28,19 @@ public class FuncionDaoJDBC implements FuncionDAO {
         this.conexionTransaccional = conexionTransaccional;
     }
 
-    private Empleado mapEmpleado(int idEmpleado) throws SQLException {
+    private Empleado mapEmpleado(ResultSet rs) throws SQLException {
         Empleado empleado = new Empleado();
-        empleado.setIdEmpleado(idEmpleado);
+        empleado.setIdEmpleado(rs.getInt("id_empleado"));
+        empleado.setIdUsuario(rs.getInt("id_usuario"));
+        empleado.setCargo(rs.getString("cargo"));
         return empleado;
     }
 
     private Funcion mapFuncion(ResultSet rs) throws SQLException {
         int idFuncion = rs.getInt("id_funcion");
-        int idEmpleado = rs.getInt("id_empleado");
         String descripcion = rs.getString("descripcion");
 
-        Empleado empleado = mapEmpleado(idEmpleado);
+        Empleado empleado = mapEmpleado(rs);
         Funcion funcion = new Funcion();
         funcion.setIdFuncion(idFuncion);
         funcion.setEmpleado(empleado);

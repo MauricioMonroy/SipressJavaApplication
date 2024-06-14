@@ -6,24 +6,11 @@
  */
 package domain;
 
+import jakarta.persistence.*;
+
 import java.io.Serial;
 import java.io.Serializable;
-import jakarta.persistence.Basic;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.NamedQueries;
-import jakarta.persistence.NamedQuery;
 
-@Entity
-@NamedQueries({
-        @NamedQuery(name = "Funcion.findAll", query = "SELECT f FROM Funcion f"),
-        @NamedQuery(name = "Funcion.findByIdFuncion", query = "SELECT f FROM Funcion f WHERE f.idFuncion = :idFuncion"),
-        @NamedQuery(name = "Funcion.findByDescripcion", query = "SELECT f FROM Funcion f WHERE f.descripcion = :descripcion")})
 public class Funcion implements Serializable {
 
     @Serial
@@ -94,21 +81,17 @@ public class Funcion implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Funcion)) {
+        if (!(object instanceof Funcion other)) {
             return false;
         }
-        Funcion other = (Funcion) object;
-        if ((this.idFuncion == null && other.idFuncion != null) || (this.idFuncion != null && !this.idFuncion.equals(other.idFuncion))) {
-            return false;
-        }
-        return true;
+        return (this.idFuncion != null || other.idFuncion == null) && (this.idFuncion == null || this.idFuncion.equals(other.idFuncion));
     }
 
     @Override
     public String toString() {
         return "Funcion{" +
                 "idFuncion=" + idFuncion +
-                ", descripcion='" + descripcion + '\'' +
+                ", descripcion='" + descripcion + '\'' + ",\n" +
                 "| Empleado relacionado{" + empleado +
                 '}';
     }

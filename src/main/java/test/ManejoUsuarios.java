@@ -2,12 +2,10 @@ package test;
 
 import datos.Conexion;
 import datos.UsuarioDaoJDBC;
-import domain.Persona;
 import domain.Usuario;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.List;
 
 public class ManejoUsuarios {
 
@@ -23,7 +21,7 @@ public class ManejoUsuarios {
             UsuarioDaoJDBC usuarioDAO = new UsuarioDaoJDBC(conexion);
 
             // Insertar un nuevo objeto de la clase en la base de datos
-            Usuario usuarioNuevo = new Usuario();
+            /*Usuario usuarioNuevo = new Usuario();
             usuarioNuevo.setUsername("marko.aguirre");
             usuarioNuevo.setPassword("321");
 
@@ -36,7 +34,7 @@ public class ManejoUsuarios {
 
             usuarioNuevo.setPersona(personaNueva);
 
-            usuarioDAO.insertar(usuarioNuevo);
+            usuarioDAO.insertar(usuarioNuevo);*/
 
             // Actualizar un registro existente en la base de datos
 //            Usuario usuarioModificado = new Usuario();
@@ -63,15 +61,15 @@ public class ManejoUsuarios {
             conexion.commit();
             System.out.println("Se ha hecho el commit de la transacción");
 
-            // Listar los registros existentes en la base de datos
-            List<Usuario> usuarios = usuarioDAO.seleccionar();
-            for (int i = 0; i < usuarios.size(); i++) {
-                System.out.println("Registro " + (i + 1) + ": " + usuarios.get(i));
-            }
+//            // Listar los registros existentes en la base de datos
+//            List<Usuario> usuarios = usuarioDAO.seleccionar();
+//            for (int i = 0; i < usuarios.size(); i++) {
+//                System.out.println("Registro " + (i + 1) + ": " + usuarios.get(i));
+//            }
 
             // Obtener y mostrar un solo registro
-            //Usuario usuario = usuarioDAO.seleccionarPorId(3);
-            //System.out.println("Usuario: " + usuario);
+            Usuario usuario = usuarioDAO.seleccionarPorId(3);
+            System.out.println("Usuario: " + usuario);
 
         } catch (SQLException ex) {
             ex.printStackTrace(System.out);

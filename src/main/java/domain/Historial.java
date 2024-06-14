@@ -7,23 +7,11 @@
 package domain;
 
 import jakarta.persistence.*;
+
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.Date;
 
-@Entity
-@NamedQueries({
-        @NamedQuery(name = "Historial.findAll", query = "SELECT h FROM Historial h"),
-        @NamedQuery(name = "Historial.findByIdHistorial", query = "SELECT h FROM Historial h WHERE h.idHistorial = :idHistorial"),
-        @NamedQuery(name = "Historial.findByMotivoConsulta", query = "SELECT h FROM Historial h WHERE h.motivoConsulta = :motivoConsulta"),
-        @NamedQuery(name = "Historial.findByFechaNacimiento", query = "SELECT h FROM Historial h WHERE h.fechaNacimiento = :fechaNacimiento"),
-        @NamedQuery(name = "Historial.findBySexo", query = "SELECT h FROM Historial h WHERE h.sexo = :sexo"),
-        @NamedQuery(name = "Historial.findByDireccion", query = "SELECT h FROM Historial h WHERE h.direccion = :direccion"),
-        @NamedQuery(name = "Historial.findByOcupacion", query = "SELECT h FROM Historial h WHERE h.ocupacion = :ocupacion"),
-        @NamedQuery(name = "Historial.findByContactoEmergencia", query = "SELECT h FROM Historial h WHERE h.contactoEmergencia = :contactoEmergencia"),
-        @NamedQuery(name = "Historial.findByNombreContactoEmergencia", query = "SELECT h FROM Historial h WHERE h.nombreContactoEmergencia = :nombreContactoEmergencia"),
-        @NamedQuery(name = "Historial.findByGrupoSanguineo", query = "SELECT h FROM Historial h WHERE h.grupoSanguineo = :grupoSanguineo"),
-        @NamedQuery(name = "Historial.findByUltimaActualizacion", query = "SELECT h FROM Historial h WHERE h.ultimaActualizacion = :ultimaActualizacion")})
 public class Historial implements Serializable {
 
     @Serial

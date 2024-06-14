@@ -2,6 +2,8 @@ package datos;
 
 import domain.Empleado;
 import domain.Funcion;
+import domain.Funcion;
+import domain.Empleado;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -17,20 +19,27 @@ public class EmpleadoDaoJDBC implements EmpleadoDAO {
 
     // Creación de las sentencias para recuperar la información de la base de datos
     private static final String SQL_SELECT =
-            "SELECT e.id_empleado, e.id_persona, e.cargo, p.id_persona, p.nombre, p.apellido, p.identificacion, "
-                    + "p.telefono, p.email FROM empleado e INNER JOIN persona p ON e.id_persona = p.id_persona";
+            "SELECT e.id_empleado, e.id_usuario, e.cargo, u.id_usuario, u.nombre, u.apellido, u.identificacion, "
+                    + "u.telefono, u.email, u.es_paciente, u.es_empleado, f.id_funcion, f.id_empleado, f.descripcion "
+                    + "FROM empleado e INNER JOIN usuario u ON e.id_usuario = u.id_usuario "
+                    + "INNER JOIN funcion f ON f.id_empleado = e.id_empleado ";
     private static final String SQL_SELECT_ONE =
-            "SELECT e.id_empleado, e.id_persona, e.cargo, p.id_persona, p.nombre, p.apellido, p.identificacion, "
-                    + "p.telefono, p.email FROM empleado e INNER JOIN persona p ON e.id_persona = p.id_persona "
+            "SELECT e.id_empleado, e.id_usuario, e.cargo, u.id_usuario, u.nombre, u.apellido, u.identificacion, "
+                    + "u.telefono, u.email, u.es_paciente, u.es_empleado, f.id_funcion, f.id_empleado, f.descripcion "
+                    + "FROM empleado e INNER JOIN usuario u ON e.id_usuario = u.id_usuario "
+                    + "INNER JOIN funcion f ON f.id_empleado = e.id_empleado "
                     + "WHERE e.id_empleado = ?";
+    private static final String SQL_INSERT_USUARIO =
+            "INSERT INTO empleado (id_usuario, nombre, apellido, identificacion, telefono, email, cargo, es_paciente, es_empleado) "
+                    + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
     private static final String SQL_INSERT_EMPLEADO =
-            "INSERT INTO empleado (id_persona, nombre, apellido, identificacion, telefono, email, cargo) VALUES (?, ?, ?, ?, ?, ?, ?)";
+            "INSERT INTO paciente (cargo, id_usuario) VALUES (?, ?)";
     private static final String SQL_INSERT_FUNCION =
             "INSERT INTO funcion (id_empleado, descripcion) VALUES (?, ?)";
     private static final String SQL_UPDATE_EMPLEADO =
             "UPDATE empleado SET cargo = ? WHERE id_empleado = ?";
-    private static final String SQL_UPDATE_PERSONA =
-            "UPDATE persona SET nombre = ?, apellido = ?, identificacion = ?, telefono = ?, email = ? WHERE id_persona = ?";
+    private static final String SQL_UPDATE_USUARIO =
+            "UPDATE usuario SET nombre = ?, apellido = ?, identificacion = ?, telefono = ?, email = ? WHERE id_usuario = ?";
     private static final String SQL_UPDATE_FUNCION =
             "UPDATE funcion SET descripcion = ? WHERE id_funcion = ?";
     private static final String SQL_DELETE =
@@ -46,26 +55,38 @@ public class EmpleadoDaoJDBC implements EmpleadoDAO {
 
     // Método que se encarga de mapear el ResultSet a un objeto de la clase
     private Empleado mapEmpleado(ResultSet rs) throws SQLException {
-        int idEmpleado = rs.getInt("id_empleado");
-        String cargo = rs.getString("cargo");
-        int idPersona = rs.getInt("id_persona");
-        String nombre = rs.getString("nombre");
-        String apellido = rs.getString("apellido");
-        String identificacion = rs.getString("identificacion");
-        String telefono = rs.getString("telefono");
-        String email = rs.getString("email");
-
         Empleado empleado = new Empleado();
-        empleado.setIdEmpleado(idEmpleado);
-        empleado.setCargo(cargo);
 
-        // Establecer los atributos de Persona en el objeto Empleado
-        empleado.setIdPersona(idPersona);
-        empleado.setNombre(nombre);
-        empleado.setApellido(apellido);
-        empleado.setIdentificacion(identificacion);
-        empleado.setTelefono(telefono);
-        empleado.setEmail(email);
+        // Llenar atributos específicos de Empleado
+        empleado.setIdEmpleado(rs.getInt("id_empleado"));
+        empleado.setCargo(rs.getString("cargo"));
+
+        // Llenar atributos heredados de Usuario
+        empleado.setIdUsuario(rs.getInt("id_usuario"));
+        empleado.setNombre(rs.getString("nombre"));
+        empleado.setApellido(rs.getString("apellido"));
+        empleado.setIdentificacion(rs.getString("identificacion"));
+        empleado.setTelefono(rs.getString("telefono"));
+        empleado.setEmail(rs.getString("email"));
+
+        // Crear una lista para almacenar las funciones del empleado
+        List<Funcion> funciones = new ArrayList<>();
+
+        do {
+            // Llenar atributos específicos de la funcion
+            Funcion funcion = new Funcion();
+            funcion.setIdFuncion(rs.getInt("id_funcion"));
+            funcion.setDescripcion(rs.getString("descripcion"));
+
+            // Establecer la relación entre Empleado y Funcion
+            funcion.setEmpleado(empleado);
+
+            // Añadir la función a la lista de funciones del empleado
+            funciones.add(funcion);
+        } while (rs.next());  // Continuar mientras haya más funciones para este empleado en el ResultSet
+
+        // Establecer la lista de funciones en el empleado
+        empleado.setFuncionList(funciones);
 
         return empleado;
     }
@@ -130,7 +151,7 @@ public class EmpleadoDaoJDBC implements EmpleadoDAO {
             // Insertar Empleado
             System.out.println("Ejecutando query = " + SQL_INSERT_EMPLEADO);
             psEmpleado = conn.prepareStatement(SQL_INSERT_EMPLEADO, Statement.RETURN_GENERATED_KEYS);
-            psEmpleado.setInt(1, empleado.getIdPersona());
+            psEmpleado.setInt(1, empleado.getIdUsuario());
             psEmpleado.setString(2, empleado.getNombre());
             psEmpleado.setString(3, empleado.getApellido());
             psEmpleado.setString(4, empleado.getIdentificacion());
@@ -188,7 +209,7 @@ public class EmpleadoDaoJDBC implements EmpleadoDAO {
             // Actualizar Empleado
             System.out.println("Ejecutando query = " + SQL_UPDATE_EMPLEADO);
             psEmpleado = conn.prepareStatement(SQL_UPDATE_EMPLEADO);
-            psEmpleado.setInt(1, empleado.getIdPersona());
+            psEmpleado.setInt(1, empleado.getIdUsuario());
             psEmpleado.setString(2, empleado.getNombre());
             psEmpleado.setString(3, empleado.getApellido());
             psEmpleado.setString(4, empleado.getIdentificacion());

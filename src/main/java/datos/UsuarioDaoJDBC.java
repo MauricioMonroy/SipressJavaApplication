@@ -4,15 +4,15 @@
  */
 package datos;
 
-import domain.*;
+import domain.Empleado;
+import domain.Paciente;
+import domain.Usuario;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import static datos.Conexion.close;
 import static datos.Conexion.getConnection;
 
 public class UsuarioDaoJDBC implements UsuarioDAO {
@@ -22,16 +22,26 @@ public class UsuarioDaoJDBC implements UsuarioDAO {
 
     // Creación de las sentencias para recuperar la información de la base de datos
     private static final String SQL_SELECT =
-            "SELECT u.id_usuario, u.username, u.password, u.tipo_usuario, p.id_persona, p.nombre, p.apellido, p.identificacion, "
-                    + "p.telefono, p.email FROM usuario u INNER JOIN persona p ON u.id_persona = p.id_persona";
+            "SELECT u.id_usuario, u.username, u.password, u.nombre, u.apellido, u.identificacion, "
+                    + "u.telefono, u.email, u.es_paciente, u.es_empleado, e.id_empleado, e.cargo, "
+                    + "pac.id_paciente, pac.detalle_eps, pac.fecha_consulta "
+                    + "FROM usuario u "
+                    + "LEFT JOIN empleado e ON u.id_usuario = e.id_usuario "
+                    + "LEFT JOIN paciente pac ON u.id_usuario = pac.id_usuario";
     private static final String SQL_SELECT_ONE =
-            "SELECT u.id_usuario, u.username, u.password, u.tipo_usuario, p.id_persona, p.nombre, p.apellido, p.identificacion, "
-                    + "p.telefono, p.email FROM usuario u INNER JOIN persona p ON u.id_persona = p.id_persona "
+            "SELECT u.id_usuario, u.username, u.password, u.nombre, u.apellido, u.identificacion, "
+                    + "u.telefono, u.email, u.es_paciente, u.es_empleado, e.id_empleado, e.cargo, "
+                    + "pac.id_paciente, pac.detalle_eps, pac.fecha_consulta "
+                    + "FROM usuario u "
+                    + "LEFT JOIN empleado e ON u.id_usuario = e.id_usuario "
+                    + "LEFT JOIN paciente pac ON u.id_usuario = pac.id_usuario "
                     + "WHERE u.id_usuario = ?";
     private static final String SQL_INSERT =
-            "INSERT INTO usuario (username, password, tipo_usuario) VALUES (?, ?, ?)";
-    private static final String SQL_UPDATE =
-            "UPDATE usuario SET username = ?, password = ?, tipo_usuario = ? WHERE id_usuario = ?";
+            "INSERT INTO usuario(username, password, nombre, apellido, identificacion, telefono, email, "
+                    + "es_paciente, es_empleado) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    private static final String SQL_UPDATE = "UPDATE usuario SET username = ?, password = ?, nombre = ?, "
+            + "apellido = ?, identificacion = ?, telefono = ?, email = ?, es_paciente = ?, es_empleado = ? "
+            + "WHERE id_usuario = ?";
     private static final String SQL_DELETE =
             "DELETE FROM usuario WHERE id_usuario = ?";
 
@@ -43,77 +53,92 @@ public class UsuarioDaoJDBC implements UsuarioDAO {
         this.conexionTransaccional = conexionTransaccional;
     }
 
-    private Persona mapPersona(ResultSet rs, String tipoUsuario) throws SQLException {
-        if (tipoUsuario.equals("Empleado")) {
+    private Usuario mapUsuario(ResultSet rs) throws SQLException {
+        Usuario usuario = new Usuario();
+        usuario.setIdUsuario(rs.getInt("id_usuario"));
+        usuario.setUsername(rs.getString("username"));
+        usuario.setPassword(rs.getString("password"));
+        usuario.setNombre(rs.getString("nombre"));
+        usuario.setApellido(rs.getString("apellido"));
+        usuario.setIdentificacion(rs.getString("identificacion"));
+        usuario.setTelefono(rs.getString("telefono"));
+        usuario.setEmail(rs.getString("email"));
+        usuario.setEsPaciente(rs.getBoolean("es_paciente"));
+        usuario.setEsEmpleado(rs.getBoolean("es_empleado"));
+
+        if (usuario.isEsEmpleado()) {
             Empleado empleado = new Empleado();
-            empleado.setNombre(rs.getString("nombre"));
-            empleado.setApellido(rs.getString("apellido"));
-            empleado.setIdentificacion(rs.getString("identificacion"));
-            empleado.setTelefono(rs.getString("telefono"));
-            empleado.setEmail(rs.getString("email"));
+            empleado.setIdEmpleado(rs.getInt("id_empleado"));
             empleado.setCargo(rs.getString("cargo"));
-            return empleado;
-        } else if (tipoUsuario.equals("Paciente")) {
+            empleado.setUsuario(usuario);
+            usuario.setEmpleado(empleado);
+        }
+
+        if (usuario.isEsPaciente()) {
             Paciente paciente = new Paciente();
-            paciente.setNombre(rs.getString("nombre"));
-            paciente.setApellido(rs.getString("apellido"));
-            paciente.setIdentificacion(rs.getString("identificacion"));
-            paciente.setTelefono(rs.getString("telefono"));
-            paciente.setEmail(rs.getString("email"));
+            paciente.setIdPaciente(rs.getInt("id_paciente"));
             paciente.setDetalleEps(rs.getString("detalle_eps"));
             paciente.setFechaConsulta(rs.getDate("fecha_consulta"));
-            return paciente;
-        } else {
-            throw new IllegalArgumentException("Tipo de persona no soportado");
+            paciente.setUsuario(usuario);
+            usuario.setPaciente(paciente);
         }
+
+        return usuario;
     }
 
     // Método que permite seleccionar los objetos de la base de datos (SELECT)
     @Override
     public List<Usuario> seleccionar() throws SQLException {
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
         List<Usuario> usuarios = new ArrayList<>();
 
-        try (Connection conn = this.conexionTransaccional != null ? this.conexionTransaccional : getConnection();
-             PreparedStatement ps = conn.prepareStatement(SQL_SELECT);
-             ResultSet rs = ps.executeQuery()) {
+        try {
+            conn = this.conexionTransaccional != null ? this.conexionTransaccional : getConnection();
+            System.out.println("Ejecutando query = " + SQL_SELECT);
+            stmt = conn.prepareStatement(SQL_SELECT);
+            rs = stmt.executeQuery();
 
             while (rs.next()) {
-                Usuario usuario = new Usuario();
-                usuario.setIdUsuario(rs.getInt("id_usuario"));
-                usuario.setUsername(rs.getString("username"));
-                usuario.setPassword(rs.getString("password"));
-
-                String tipoUsuario = rs.getString("tipoUsuario");  // obtener el tipo de Usuario
-                usuario.setPersona(mapPersona(rs, tipoUsuario));
+                Usuario usuario = mapUsuario(rs);
                 usuarios.add(usuario);
+            }
+        } finally {
+            close(rs);
+            close(stmt);
+            if (this.conexionTransaccional == null) {
+                close(conn);
             }
         }
         return usuarios;
     }
 
-
     // Método para recuperar solo uno de los registros en la base de datos
     @Override
     public Usuario seleccionarPorId(int idUsuario) throws SQLException {
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
         Usuario usuario = null;
 
-        try (Connection conn = this.conexionTransaccional != null ? this.conexionTransaccional : getConnection();
-             PreparedStatement ps = conn.prepareStatement(SQL_SELECT_ONE)) {
+        try {
+            conn = this.conexionTransaccional != null ? this.conexionTransaccional : Conexion.getConnection();
+            stmt = conn.prepareStatement(SQL_SELECT_ONE);
+            stmt.setInt(1, usuario.getIdUsuario());
+            rs = stmt.executeQuery();
 
-            ps.setInt(1, idUsuario);
-
-            try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) {
-                    usuario = new Usuario();
-                    usuario.setIdUsuario(rs.getInt("id_usuario"));
-                    usuario.setUsername(rs.getString("username"));
-                    usuario.setPassword(rs.getString("password"));
-                    usuario.setTipoUsuario(rs.getString("tipo_usuario"));
-
-                    usuario.setPersona(mapPersona(rs, usuario.getTipoUsuario()));
-                }
+            if (rs.next()) {
+                usuario = mapUsuario(rs);
+            }
+        } finally {
+            close(rs);
+            close(stmt);
+            if (this.conexionTransaccional == null) {
+                close(conn);
             }
         }
+
         return usuario;
     }
 
@@ -121,94 +146,127 @@ public class UsuarioDaoJDBC implements UsuarioDAO {
     // Método que permite insertar objetos en la base de datos (INSERT)
     @Override
     public int insertar(Usuario usuario) throws SQLException {
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
         int registros = 0;
 
-        try (Connection conn = this.conexionTransaccional != null ? this.conexionTransaccional : getConnection()) {
-            conn.setAutoCommit(false);
+        try {
+            conn = this.conexionTransaccional != null ? this.conexionTransaccional : Conexion.getConnection();
+            stmt = conn.prepareStatement(SQL_INSERT, Statement.RETURN_GENERATED_KEYS);
+            stmt.setString(1, usuario.getUsername());
+            stmt.setString(2, usuario.getPassword());
+            stmt.setString(3, usuario.getNombre());
+            stmt.setString(4, usuario.getApellido());
+            stmt.setString(5, usuario.getIdentificacion());
+            stmt.setString(6, usuario.getTelefono());
+            stmt.setString(7, usuario.getEmail());
+            stmt.setBoolean(8, usuario.isEsPaciente());
+            stmt.setBoolean(9, usuario.isEsEmpleado());
+            registros = stmt.executeUpdate();
 
-            System.out.println("Insertando Usuario...");
-            try (PreparedStatement ps = conn.prepareStatement(SQL_INSERT)) {
-                ps.setString(1, usuario.getUsername());
-                ps.setString(2, usuario.getPassword());
-                ps.setString(3, usuario.getTipoUsuario());
-                ps.setString(4, usuario.getPersona().getNombre());
-                ps.setString(5, usuario.getPersona().getApellido());
-                ps.setString(6, usuario.getPersona().getIdentificacion());
-                ps.setString(7, usuario.getPersona().getTelefono());
-                ps.setString(8, usuario.getPersona().getEmail());
-                registros = ps.executeUpdate();
-                try (ResultSet rs = ps.getGeneratedKeys()) {
-                    if (rs.next()) {
-                        int idUsuario = rs.getInt(1);
-                        usuario.setIdUsuario(idUsuario);
-                        PerfilDaoJDBC perfilDao = new PerfilDaoJDBC(conn);
-                        Perfil perfil = (Perfil) usuario.getPerfilList();
-                        perfil.setUsuario(usuario);
-                        perfilDao.insertar(perfil);
-                    }
-                }
+            rs = stmt.getGeneratedKeys();
+            if (rs.next()) {
+                usuario.setIdUsuario(rs.getInt(1));
             }
 
-            conn.commit();
-            registros = 1;
-            System.out.println("Registros insertados = " + registros);
-        } catch (SQLException ex) {
-            ex.printStackTrace(System.out);
-            try (Connection conn = this.conexionTransaccional != null ? this.conexionTransaccional : getConnection()) {
-                System.out.println("Ejecutando rollback");
-                if (conn != null) {
-                    conn.rollback();
-                }
-            } catch (SQLException ex1) {
-                ex1.printStackTrace(System.out);
+            if (usuario.getEmpleado() != null) {
+                EmpleadoDaoJDBC empleadoDao = new EmpleadoDaoJDBC(conn);
+                usuario.getEmpleado().setUsuario(usuario);
+                empleadoDao.insertar(usuario.getEmpleado());
+            }
+
+            if (usuario.getPaciente() != null) {
+                PacienteDaoJDBC pacienteDao = new PacienteDaoJDBC(conn);
+                usuario.getPaciente().setUsuario(usuario);
+                pacienteDao.insertar(usuario.getPaciente());
+            }
+
+        } finally {
+            close(rs);
+            close(stmt);
+            if (this.conexionTransaccional == null) {
+                close(conn);
             }
         }
 
         return registros;
     }
 
-
     // Método que permite actualizar objetos en la base de datos (UPDATE)
     @Override
     public int actualizar(Usuario usuario) throws SQLException {
+        Connection conn = null;
+        PreparedStatement stmt = null;
         int registros = 0;
 
-        try (Connection conn = this.conexionTransaccional != null ? this.conexionTransaccional : getConnection()) {
-            conn.setAutoCommit(false);
+        try {
+            conn = this.conexionTransaccional != null ? this.conexionTransaccional : Conexion.getConnection();
+            stmt = conn.prepareStatement(SQL_UPDATE);
+            stmt.setString(1, usuario.getUsername());
+            stmt.setString(2, usuario.getPassword());
+            stmt.setString(3, usuario.getNombre());
+            stmt.setString(4, usuario.getApellido());
+            stmt.setString(5, usuario.getIdentificacion());
+            stmt.setString(6, usuario.getTelefono());
+            stmt.setString(7, usuario.getEmail());
+            stmt.setBoolean(8, usuario.isEsPaciente());
+            stmt.setBoolean(9, usuario.isEsEmpleado());
+            stmt.setInt(10, usuario.getIdUsuario());
+            registros = stmt.executeUpdate();
 
-            // Actualizar Usuario
-            try (PreparedStatement ps = conn.prepareStatement(SQL_UPDATE)) {
-                ps.setString(1, usuario.getUsername());
-                ps.setString(2, usuario.getPassword());
-                ps.setString(3, usuario.getTipoUsuario());
-                ps.setInt(4, usuario.getIdUsuario());
-                registros = ps.executeUpdate();
+            if (usuario.getEmpleado() != null) {
+                EmpleadoDaoJDBC empleadoDao = new EmpleadoDaoJDBC(conn);
+                usuario.getEmpleado().setUsuario(usuario);
+                empleadoDao.actualizar(usuario.getEmpleado());
             }
 
-            conn.commit();
-        } catch (SQLException ex) {
+            if (usuario.getPaciente() != null) {
+                PacienteDaoJDBC pacienteDao = new PacienteDaoJDBC(conn);
+                usuario.getPaciente().setUsuario(usuario);
+                pacienteDao.actualizar(usuario.getPaciente());
+            }
+
+        } finally {
+            close(stmt);
             if (this.conexionTransaccional == null) {
-                try (Connection conn = getConnection()) {
-                    conn.rollback();
-                }
-            } else {
-                this.conexionTransaccional.rollback();
+                close(conn);
             }
-            throw ex;
         }
+
         return registros;
     }
 
     // Método que permite eliminar objetos en la base de datos (DELETE)
     @Override
     public int eliminar(Usuario usuario) throws SQLException {
+        Connection conn = null;
+        PreparedStatement stmt = null;
         int registros = 0;
 
-        try (Connection conn = this.conexionTransaccional != null ? this.conexionTransaccional : getConnection();
-             PreparedStatement ps = conn.prepareStatement(SQL_DELETE)) {
-            ps.setInt(1, usuario.getIdUsuario());
-            registros = ps.executeUpdate();
+        try {
+            conn = this.conexionTransaccional != null ? this.conexionTransaccional : Conexion.getConnection();
+            stmt = conn.prepareStatement(SQL_DELETE);
+            stmt.setInt(1, usuario.getIdUsuario());
+            registros = stmt.executeUpdate();
+
+            if (usuario.getEmpleado() != null) {
+                EmpleadoDaoJDBC empleadoDao = new EmpleadoDaoJDBC(conn);
+                empleadoDao.eliminar(usuario.getEmpleado());
+            }
+
+            if (usuario.getPaciente() != null) {
+                PacienteDaoJDBC pacienteDao = new PacienteDaoJDBC(conn);
+                pacienteDao.eliminar(usuario.getPaciente());
+            }
+
+        } finally {
+            Conexion.close(stmt);
+            if (this.conexionTransaccional == null) {
+                Conexion.close(conn);
+            }
         }
+
         return registros;
     }
 }

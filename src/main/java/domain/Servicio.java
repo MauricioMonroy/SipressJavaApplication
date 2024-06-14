@@ -7,15 +7,11 @@
 package domain;
 
 import jakarta.persistence.*;
+
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.List;
 
-@Entity
-@NamedQueries({
-        @NamedQuery(name = "Servicio.findAll", query = "SELECT s FROM Servicio s"),
-        @NamedQuery(name = "Servicio.findByIdServicio", query = "SELECT s FROM Servicio s WHERE s.idServicio = :idServicio"),
-        @NamedQuery(name = "Servicio.findByNombre", query = "SELECT s FROM Servicio s WHERE s.nombre = :nombre")})
 public class Servicio implements Serializable {
 
     @Serial

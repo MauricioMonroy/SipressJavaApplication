@@ -2,8 +2,7 @@ package datos;
 
 import domain.Historial;
 import domain.Paciente;
-import domain.Paciente;
-import domain.Persona;
+import domain.Usuario;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -20,31 +19,32 @@ public class HistorialDaoJDBC implements HistorialDAO {
             "SELECT h.id_historial, h.id_paciente, h.motivo_consulta, h.fecha_nacimiento, h.sexo, h.direccion, "
                     + "h.ocupacion, h.contacto_emergencia, h.nombre_contacto_emergencia, h.alergias, h.condiciones_preexistentes, "
                     + "h.medicamentos_actuales, h.historial_vacunas, h.grupo_sanguineo, h.notas_adicionales, h.ultima_actualizacion, "
-                    + "px.id_paciente, px.id_persona, px.detalle_eps, px.fecha_consulta, p.id_persona, p.nombre, p.apellido, "
-                    + "p.identificacion, p.telefono, p.email "
+                    + "px.id_paciente, px.id_usuario, px.detalle_eps, px.fecha_consulta, u.id_usuario, u.nombre, u.apellido, "
+                    + "u.identificacion, u.telefono, u.email "
                     + "FROM historial h "
                     + "INNER JOIN paciente px ON h.id_paciente = px.id_paciente "
-                    + "INNER JOIN persona p ON px.id_persona = p.id_persona";
+                    + "INNER JOIN usuario u ON px.id_usuario = u.id_usuario";
 
     private static final String SQL_SELECT_ONE =
             "SELECT h.id_historial, h.id_paciente, h.motivo_consulta, h.fecha_nacimiento, h.sexo, h.direccion, "
                     + "h.ocupacion, h.contacto_emergencia, h.nombre_contacto_emergencia, h.alergias, h.condiciones_preexistentes, "
                     + "h.medicamentos_actuales, h.historial_vacunas, h.grupo_sanguineo, h.notas_adicionales, h.ultima_actualizacion, "
-                    + "px.id_paciente, px.id_persona, px.detalle_eps, px.fecha_consulta, p.id_persona, p.nombre, p.apellido, "
-                    + "p.identificacion, p.telefono, p.email "
+                    + "px.id_paciente, px.id_usuario, px.detalle_eps, px.fecha_consulta, u.id_usuario, u.nombre, u.apellido, "
+                    + "u.identificacion, u.telefono, u.email "
                     + "FROM historial h "
                     + "INNER JOIN paciente px ON h.id_paciente = px.id_paciente "
-                    + "INNER JOIN persona p ON px.id_persona = p.id_persona "
+                    + "INNER JOIN usuario u ON px.id_usuario = u.id_usuario "
                     + "WHERE h.id_historial = ?";
 
-    private static final String SQL_INSERT =
+    private static final String SQL_INSERT_HISTORIAL =
             "INSERT INTO historial (id_paciente, motivo_consulta, fecha_nacimiento, sexo, direccion, ocupacion, contacto_emergencia, "
                     + "nombre_contacto_emergencia, alergias, condiciones_preexistentes, medicamentos_actuales, historial_vacunas, grupo_sanguineo, "
                     + "notas_adicionales, ultima_actualizacion) "
                     + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-    private static final String SQL_UPDATE_PERSONA =
-            "UPDATE persona SET nombre = ?, apellido = ?, identificacion = ?, telefono = ?, email = ? WHERE id_persona = ?";
+    private static final String SQL_UPDATE_USUARIO =
+            "UPDATE usuario SET nombre = ?, apellido = ?, identificacion = ?, telefono = ?, email = ? WHERE id_usuario = ?";
+
     private static final String SQL_UPDATE_PACIENTE =
             "UPDATE paciente SET detalle_eps = ?, fecha_consulta = ? WHERE id_paciente = ?";
 
@@ -71,8 +71,8 @@ public class HistorialDaoJDBC implements HistorialDAO {
         paciente.setDetalleEps(rs.getString("detalle_eps"));
         paciente.setFechaConsulta(rs.getDate("fecha_consulta"));
 
-        // Establecer los atributos de Persona en el objeto Paciente
-        paciente.setIdPersona(rs.getInt("id_persona"));
+        // Establecer los atributos de Usuario en el objeto Paciente
+        paciente.setIdUsuario(rs.getInt("id_usuario"));
         paciente.setNombre(rs.getString("nombre"));
         paciente.setApellido(rs.getString("apellido"));
         paciente.setIdentificacion(rs.getString("identificacion"));
@@ -146,7 +146,7 @@ public class HistorialDaoJDBC implements HistorialDAO {
         int registros = 0;
 
         try (Connection conn = this.conexionTransaccional != null ? this.conexionTransaccional : getConnection();
-             PreparedStatement ps = conn.prepareStatement(SQL_INSERT, Statement.RETURN_GENERATED_KEYS)) {
+             PreparedStatement ps = conn.prepareStatement(SQL_INSERT_HISTORIAL, Statement.RETURN_GENERATED_KEYS)) {
 
             ps.setInt(1, historial.getPaciente().getIdPaciente());
             ps.setString(2, historial.getMotivoConsulta());
@@ -176,7 +176,6 @@ public class HistorialDaoJDBC implements HistorialDAO {
                 }
             }
         }
-
         return registros;
     }
 
@@ -185,7 +184,21 @@ public class HistorialDaoJDBC implements HistorialDAO {
         int registros = 0;
 
         try (Connection conn = this.conexionTransaccional != null ? this.conexionTransaccional : getConnection()) {
-            conn.setAutoCommit(false);  // Empezar transacción
+            conn.setAutoCommit(false);
+
+            // Actualizar tabla usuario
+            System.out.println("Ejecutando query = " + SQL_UPDATE_USUARIO);
+            try (PreparedStatement psUsuario = conn.prepareStatement(SQL_UPDATE_USUARIO)) {
+                Paciente paciente = historial.getPaciente();
+                Usuario usuario = paciente.getUsuario();
+                psUsuario.setString(1, usuario.getNombre());
+                psUsuario.setString(2, usuario.getApellido());
+                psUsuario.setString(3, usuario.getIdentificacion());
+                psUsuario.setString(4, usuario.getTelefono());
+                psUsuario.setString(5, usuario.getEmail());
+                psUsuario.setInt(6, usuario.getIdUsuario());
+                registros += psUsuario.executeUpdate();
+            }
 
             // Actualizar tabla paciente
             System.out.println("Ejecutando query = " + SQL_UPDATE_PACIENTE);
@@ -194,12 +207,6 @@ public class HistorialDaoJDBC implements HistorialDAO {
                 psPaciente.setString(1, paciente.getDetalleEps());
                 psPaciente.setDate(2, new java.sql.Date(paciente.getFechaConsulta().getTime()));
                 psPaciente.setInt(3, paciente.getIdPaciente());
-                psPaciente.setInt(4, paciente.getIdPersona());
-                psPaciente.setString(5, paciente.getNombre());
-                psPaciente.setString(6, paciente.getApellido());
-                psPaciente.setString(7, paciente.getIdentificacion());
-                psPaciente.setString(8, paciente.getEmail());
-                psPaciente.setString(9, paciente.getTelefono());
                 registros += psPaciente.executeUpdate();
             }
 

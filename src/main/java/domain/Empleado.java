@@ -6,27 +6,13 @@
  */
 package domain;
 
+import jakarta.persistence.*;
+
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.List;
-import jakarta.persistence.Basic;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.NamedQueries;
-import jakarta.persistence.NamedQuery;
-import jakarta.persistence.OneToMany;
 
-@Entity
-@NamedQueries({
-        @NamedQuery(name = "Empleado.findAll", query = "SELECT e FROM Empleado e"),
-        @NamedQuery(name = "Empleado.findByIdEmpleado", query = "SELECT e FROM Empleado e WHERE e.idEmpleado = :idEmpleado"),
-        @NamedQuery(name = "Empleado.findByCargo", query = "SELECT e FROM Empleado e WHERE e.cargo = :cargo")})
-public class Empleado extends Persona implements Serializable {
+public class Empleado extends Usuario implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
@@ -38,9 +24,9 @@ public class Empleado extends Persona implements Serializable {
     private String cargo;
     @OneToMany(mappedBy = "empleado")
     private List<Asignacion> asignacionList;
-    @JoinColumn(name = "id_persona", referencedColumnName = "id_persona")
-    @ManyToOne
-    private Persona persona;
+    @JoinColumn(name = "id_usuario", referencedColumnName = "id_usuario")
+    @OneToOne
+    private Usuario usuario;
     @OneToMany(mappedBy = "empleado")
     private List<Funcion> funcionList;
 
@@ -51,26 +37,49 @@ public class Empleado extends Persona implements Serializable {
         this.idEmpleado = idEmpleado;
     }
 
-    public Empleado(String cargo) {
+    public Empleado(Integer idUsuario, String cargo) {
+        super(idUsuario);
         this.cargo = cargo;
     }
 
-    public Empleado(Integer idEmpleado, String cargo) {
+    public Empleado(Integer idUsuario, String cargo, List<Asignacion> asignacionList, List<Funcion> funcionList) {
+        super(idUsuario);
+        this.cargo = cargo;
+        this.asignacionList = asignacionList;
+        this.funcionList = funcionList;
+    }
+
+    public Empleado(Integer idUsuario, String cargo, List<Asignacion> asignacionList, Usuario usuario, List<Funcion> funcionList) {
+        super(idUsuario);
+        this.cargo = cargo;
+        this.asignacionList = asignacionList;
+        this.usuario = usuario;
+        this.funcionList = funcionList;
+    }
+
+    public Empleado(String username, String password, String nombre, String apellido, String identificacion, String telefono, String email, Boolean esPaciente, Boolean esEmpleado, String cargo) {
+        super(username, password, nombre, apellido, identificacion, telefono, email, esPaciente, esEmpleado);
+        this.cargo = cargo;
+    }
+
+    public Empleado(String username, String password, String nombre, String apellido, String identificacion, String telefono, String email, Boolean esPaciente, Boolean esEmpleado, String cargo, Usuario usuario) {
+        super(username, password, nombre, apellido, identificacion, telefono, email, esPaciente, esEmpleado);
+        this.cargo = cargo;
+        this.usuario = usuario;
+    }
+
+    public Empleado(Integer idUsuario, String username, String password, String nombre, String apellido, String identificacion, String telefono, String email, Boolean esPaciente, Boolean esEmpleado, Integer idEmpleado, String cargo) {
+        super(idUsuario, username, password, nombre, apellido, identificacion, telefono, email, esPaciente, esEmpleado);
         this.idEmpleado = idEmpleado;
         this.cargo = cargo;
     }
 
-    public Empleado(Integer idEmpleado, String cargo, Persona persona) {
-        this.idEmpleado = idEmpleado;
-        this.cargo = cargo;
-        this.persona = persona;
-    }
-
-    public Empleado(Integer idEmpleado, String cargo, List<Asignacion> asignacionList, Persona persona, List<Funcion> funcionList) {
+    public Empleado(Integer idUsuario, String username, String password, String nombre, String apellido, String identificacion, String telefono, String email, Boolean esPaciente, Boolean esEmpleado, Integer idEmpleado, String cargo, List<Asignacion> asignacionList, Usuario usuario, List<Funcion> funcionList) {
+        super(idUsuario, username, password, nombre, apellido, identificacion, telefono, email, esPaciente, esEmpleado);
         this.idEmpleado = idEmpleado;
         this.cargo = cargo;
         this.asignacionList = asignacionList;
-        this.persona = persona;
+        this.usuario = usuario;
         this.funcionList = funcionList;
     }
 
@@ -98,14 +107,13 @@ public class Empleado extends Persona implements Serializable {
         this.asignacionList = asignacionList;
     }
 
-    public Persona getPersona() {
-        return persona;
+    public Usuario getUsuario() {
+        return usuario;
     }
 
-    public void setPersona(Persona persona) {
-        this.persona = persona;
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
     }
-
 
     public List<Funcion> getFuncionList() {
         return funcionList;
@@ -140,7 +148,7 @@ public class Empleado extends Persona implements Serializable {
         return "Empleado{" +
                 "idEmpleado=" + idEmpleado +
                 ", cargo='" + cargo + '\'' + ",\n" +
-                "| Persona asociada{" + persona +
+                "| Usuario asociado{" + usuario +
                 '}';
     }
 }
