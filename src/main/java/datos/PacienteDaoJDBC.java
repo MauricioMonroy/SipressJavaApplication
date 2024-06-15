@@ -16,18 +16,19 @@ public class PacienteDaoJDBC implements PacienteDAO {
 
     // Creación de las sentencias para recuperar la información de la base de datos
     private static final String SQL_SELECT =
-            "SELECT pac.id_paciente, pac.id_usuario, pac.detalle_eps, pac.fecha_consulta, u.id_usuario, u.nombre, u.apellido, u.identificacion, "
+            "SELECT pac.id_paciente, pac.id_usuario, pac.detalle_eps, pac.fecha_consulta, u.id_usuario, u.nombre, u.username, u.password, u.apellido, u.identificacion, "
                     + "u.telefono, u.email, u.es_paciente, u.es_empleado, h.id_historial, h.id_paciente, h.motivo_consulta, h.fecha_nacimiento, h.sexo, h.direccion, "
                     + "h.ocupacion, h.contacto_emergencia, h.nombre_contacto_emergencia, h.alergias, h.condiciones_preexistentes, "
                     + "h.medicamentos_actuales, h.historial_vacunas, h.grupo_sanguineo, h.notas_adicionales, h.ultima_actualizacion "
                     + " FROM paciente pac INNER JOIN usuario u ON pac.id_usuario = u.id_usuario "
                     + "INNER JOIN historial h ON h.id_paciente = pac.id_paciente ";
     private static final String SQL_SELECT_ONE =
-            "SELECT pac.id_paciente, pac.id_usuario, pac.detalle_eps, pac.fecha_consulta, u.nombre, u.apellido, u.identificacion, "
+            "SELECT pac.id_paciente, pac.id_usuario, pac.detalle_eps, pac.fecha_consulta, u.id_usuario, u.nombre, u.username, u.password, u.apellido, u.identificacion, "
                     + "u.telefono, u.email, u.es_paciente, u.es_empleado, h.id_historial, h.id_paciente, h.motivo_consulta, h.fecha_nacimiento, h.sexo, h.direccion, "
                     + "h.ocupacion, h.contacto_emergencia, h.nombre_contacto_emergencia, h.alergias, h.condiciones_preexistentes, "
                     + "h.medicamentos_actuales, h.historial_vacunas, h.grupo_sanguineo, h.notas_adicionales, h.ultima_actualizacion "
-                    + "FROM paciente pac INNER JOIN historial h ON pac.id_paciente = h.id_paciente "
+                    + " FROM paciente pac INNER JOIN usuario u ON pac.id_usuario = u.id_usuario "
+                    + "INNER JOIN historial h ON h.id_paciente = pac.id_paciente "
                     + "WHERE pac.id_paciente = ?";
 
     private static final String SQL_INSERT_USUARIO =
@@ -60,13 +61,21 @@ public class PacienteDaoJDBC implements PacienteDAO {
         paciente.setDetalleEps(rs.getString("detalle_eps"));
         paciente.setFechaConsulta(rs.getDate("fecha_consulta"));
 
-        // Llenar atributos heredados de Usuario
-        paciente.setIdUsuario(rs.getInt("id_usuario"));
-        paciente.setNombre(rs.getString("nombre"));
-        paciente.setApellido(rs.getString("apellido"));
-        paciente.setIdentificacion(rs.getString("identificacion"));
-        paciente.setTelefono(rs.getString("telefono"));
-        paciente.setEmail(rs.getString("email"));
+        // Crear un nuevo objeto Usuario y llenar sus atributos
+        Usuario usuario = new Usuario();
+        usuario.setIdUsuario(rs.getInt("id_usuario"));
+        usuario.setUsername(rs.getString("username"));
+        usuario.setPassword(rs.getString("password"));
+        usuario.setNombre(rs.getString("nombre"));
+        usuario.setApellido(rs.getString("apellido"));
+        usuario.setIdentificacion(rs.getString("identificacion"));
+        usuario.setTelefono(rs.getString("telefono"));
+        usuario.setEmail(rs.getString("email"));
+        usuario.setEsPaciente(rs.getBoolean("es_paciente"));
+        usuario.setEsEmpleado(rs.getBoolean("es_empleado"));
+
+        // Establecer el objeto Usuario en el objeto Paciente
+        paciente.setUsuario(usuario);
 
         // Llenar atributos específicos del historial médico
         Historial historial = new Historial();
@@ -92,6 +101,7 @@ public class PacienteDaoJDBC implements PacienteDAO {
 
         return paciente;
     }
+
 
     @Override
     public List<Paciente> seleccionar() throws SQLException {
@@ -119,7 +129,7 @@ public class PacienteDaoJDBC implements PacienteDAO {
              PreparedStatement ps = conn.prepareStatement(SQL_SELECT_ONE)) {
 
             ps.setInt(1, idPaciente);
-            System.out.println("Ejecutando query = " + SQL_SELECT_ONE);
+            System.out.println("Ejecutando query... ");
 
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {

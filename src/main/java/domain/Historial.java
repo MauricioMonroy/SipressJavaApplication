@@ -7,10 +7,21 @@
 package domain;
 
 import jakarta.persistence.*;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.Date;
+
+@Getter
+@Setter
+@NoArgsConstructor
+@RequiredArgsConstructor
+@EqualsAndHashCode
+@Slf4j
+@SuperBuilder
 
 public class Historial implements Serializable {
 
@@ -56,210 +67,6 @@ public class Historial implements Serializable {
     @OneToOne
     private Paciente paciente;
 
-    public Historial() {
-    }
-
-    public Historial(Integer idHistorial) {
-        this.idHistorial = idHistorial;
-    }
-
-    public Historial(String motivoConsulta, Date fechaNacimiento, String sexo, String direccion, String ocupacion, String contactoEmergencia, String nombreContactoEmergencia, String alergias, String condicionesPreexistentes, String medicamentosActuales, String historialVacunas, String grupoSanguineo, String notasAdicionales, Date ultimaActualizacion) {
-        this.motivoConsulta = motivoConsulta;
-        this.fechaNacimiento = fechaNacimiento;
-        this.sexo = sexo;
-        this.direccion = direccion;
-        this.ocupacion = ocupacion;
-        this.contactoEmergencia = contactoEmergencia;
-        this.nombreContactoEmergencia = nombreContactoEmergencia;
-        this.alergias = alergias;
-        this.condicionesPreexistentes = condicionesPreexistentes;
-        this.medicamentosActuales = medicamentosActuales;
-        this.historialVacunas = historialVacunas;
-        this.grupoSanguineo = grupoSanguineo;
-        this.notasAdicionales = notasAdicionales;
-        this.ultimaActualizacion = ultimaActualizacion;
-    }
-
-    public Historial(Integer idHistorial, String motivoConsulta, Date fechaNacimiento, String sexo, String direccion, String ocupacion, String contactoEmergencia, String nombreContactoEmergencia, String alergias, String condicionesPreexistentes, String medicamentosActuales, String historialVacunas, String grupoSanguineo, String notasAdicionales, Date ultimaActualizacion) {
-        this.idHistorial = idHistorial;
-        this.motivoConsulta = motivoConsulta;
-        this.fechaNacimiento = fechaNacimiento;
-        this.sexo = sexo;
-        this.direccion = direccion;
-        this.ocupacion = ocupacion;
-        this.contactoEmergencia = contactoEmergencia;
-        this.nombreContactoEmergencia = nombreContactoEmergencia;
-        this.alergias = alergias;
-        this.condicionesPreexistentes = condicionesPreexistentes;
-        this.medicamentosActuales = medicamentosActuales;
-        this.historialVacunas = historialVacunas;
-        this.grupoSanguineo = grupoSanguineo;
-        this.notasAdicionales = notasAdicionales;
-        this.ultimaActualizacion = ultimaActualizacion;
-    }
-
-    public Historial(Integer idHistorial, String motivoConsulta, Date fechaNacimiento, String sexo, String direccion, String ocupacion, String contactoEmergencia, String nombreContactoEmergencia, String alergias, String condicionesPreexistentes, String medicamentosActuales, String historialVacunas, String grupoSanguineo, String notasAdicionales, Date ultimaActualizacion, Paciente paciente) {
-        this.idHistorial = idHistorial;
-        this.motivoConsulta = motivoConsulta;
-        this.fechaNacimiento = fechaNacimiento;
-        this.sexo = sexo;
-        this.direccion = direccion;
-        this.ocupacion = ocupacion;
-        this.contactoEmergencia = contactoEmergencia;
-        this.nombreContactoEmergencia = nombreContactoEmergencia;
-        this.alergias = alergias;
-        this.condicionesPreexistentes = condicionesPreexistentes;
-        this.medicamentosActuales = medicamentosActuales;
-        this.historialVacunas = historialVacunas;
-        this.grupoSanguineo = grupoSanguineo;
-        this.notasAdicionales = notasAdicionales;
-        this.ultimaActualizacion = ultimaActualizacion;
-        this.paciente = paciente;
-    }
-
-    public Integer getIdHistorial() {
-        return idHistorial;
-    }
-
-    public void setIdHistorial(Integer idHistorial) {
-        this.idHistorial = idHistorial;
-    }
-
-    public String getMotivoConsulta() {
-        return motivoConsulta;
-    }
-
-    public void setMotivoConsulta(String motivoConsulta) {
-        this.motivoConsulta = motivoConsulta;
-    }
-
-    public Date getFechaNacimiento() {
-        return fechaNacimiento;
-    }
-
-    public void setFechaNacimiento(Date fechaNacimiento) {
-        this.fechaNacimiento = fechaNacimiento;
-    }
-
-    public String getSexo() {
-        return sexo;
-    }
-
-    public void setSexo(String sexo) {
-        this.sexo = sexo;
-    }
-
-    public String getDireccion() {
-        return direccion;
-    }
-
-    public void setDireccion(String direccion) {
-        this.direccion = direccion;
-    }
-
-    public String getOcupacion() {
-        return ocupacion;
-    }
-
-    public void setOcupacion(String ocupacion) {
-        this.ocupacion = ocupacion;
-    }
-
-    public String getContactoEmergencia() {
-        return contactoEmergencia;
-    }
-
-    public void setContactoEmergencia(String contactoEmergencia) {
-        this.contactoEmergencia = contactoEmergencia;
-    }
-
-    public String getNombreContactoEmergencia() {
-        return nombreContactoEmergencia;
-    }
-
-    public void setNombreContactoEmergencia(String nombreContactoEmergencia) {
-        this.nombreContactoEmergencia = nombreContactoEmergencia;
-    }
-
-    public String getAlergias() {
-        return alergias;
-    }
-
-    public void setAlergias(String alergias) {
-        this.alergias = alergias;
-    }
-
-    public String getCondicionesPreexistentes() {
-        return condicionesPreexistentes;
-    }
-
-    public void setCondicionesPreexistentes(String condicionesPreexistentes) {
-        this.condicionesPreexistentes = condicionesPreexistentes;
-    }
-
-    public String getMedicamentosActuales() {
-        return medicamentosActuales;
-    }
-
-    public void setMedicamentosActuales(String medicamentosActuales) {
-        this.medicamentosActuales = medicamentosActuales;
-    }
-
-    public String getHistorialVacunas() {
-        return historialVacunas;
-    }
-
-    public void setHistorialVacunas(String historialVacunas) {
-        this.historialVacunas = historialVacunas;
-    }
-
-    public String getGrupoSanguineo() {
-        return grupoSanguineo;
-    }
-
-    public void setGrupoSanguineo(String grupoSanguineo) {
-        this.grupoSanguineo = grupoSanguineo;
-    }
-
-    public String getNotasAdicionales() {
-        return notasAdicionales;
-    }
-
-    public void setNotasAdicionales(String notasAdicionales) {
-        this.notasAdicionales = notasAdicionales;
-    }
-
-    public Date getUltimaActualizacion() {
-        return ultimaActualizacion;
-    }
-
-    public void setUltimaActualizacion(Date ultimaActualizacion) {
-        this.ultimaActualizacion = ultimaActualizacion;
-    }
-
-    public Paciente getPaciente() {
-        return paciente;
-    }
-
-    public void setPaciente(Paciente paciente) {
-        this.paciente = paciente;
-    }
-
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (idHistorial != null ? idHistorial.hashCode() : 0);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Historial other)) {
-            return false;
-        }
-        return (this.idHistorial != null || other.idHistorial == null) && (this.idHistorial == null || this.idHistorial.equals(other.idHistorial));
-    }
 
     @Override
     public String toString() {
