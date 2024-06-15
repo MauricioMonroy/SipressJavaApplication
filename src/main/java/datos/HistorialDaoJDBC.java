@@ -20,7 +20,7 @@ public class HistorialDaoJDBC implements HistorialDAO {
                     + "h.ocupacion, h.contacto_emergencia, h.nombre_contacto_emergencia, h.alergias, h.condiciones_preexistentes, "
                     + "h.medicamentos_actuales, h.historial_vacunas, h.grupo_sanguineo, h.notas_adicionales, h.ultima_actualizacion, "
                     + "px.id_paciente, px.id_usuario, px.detalle_eps, px.fecha_consulta, u.id_usuario, u.nombre, u.apellido, "
-                    + "u.identificacion, u.telefono, u.email "
+                    + "u.identificacion, u.telefono, u.email, u.es_paciente, u.es_empleado "
                     + "FROM historial h "
                     + "INNER JOIN paciente px ON h.id_paciente = px.id_paciente "
                     + "INNER JOIN usuario u ON px.id_usuario = u.id_usuario";
@@ -30,7 +30,7 @@ public class HistorialDaoJDBC implements HistorialDAO {
                     + "h.ocupacion, h.contacto_emergencia, h.nombre_contacto_emergencia, h.alergias, h.condiciones_preexistentes, "
                     + "h.medicamentos_actuales, h.historial_vacunas, h.grupo_sanguineo, h.notas_adicionales, h.ultima_actualizacion, "
                     + "px.id_paciente, px.id_usuario, px.detalle_eps, px.fecha_consulta, u.id_usuario, u.nombre, u.apellido, "
-                    + "u.identificacion, u.telefono, u.email "
+                    + "u.identificacion, u.telefono, u.email, u.es_paciente, u.es_empleado "
                     + "FROM historial h "
                     + "INNER JOIN paciente px ON h.id_paciente = px.id_paciente "
                     + "INNER JOIN usuario u ON px.id_usuario = u.id_usuario "
@@ -71,13 +71,17 @@ public class HistorialDaoJDBC implements HistorialDAO {
         paciente.setDetalleEps(rs.getString("detalle_eps"));
         paciente.setFechaConsulta(rs.getDate("fecha_consulta"));
 
-        // Establecer los atributos de Usuario en el objeto Paciente
-        paciente.setIdUsuario(rs.getInt("id_usuario"));
-        paciente.setNombre(rs.getString("nombre"));
-        paciente.setApellido(rs.getString("apellido"));
-        paciente.setIdentificacion(rs.getString("identificacion"));
-        paciente.setTelefono(rs.getString("telefono"));
-        paciente.setEmail(rs.getString("email"));
+        // Crear atributos de Usuario
+        Usuario usuario = new Usuario();
+        usuario.setIdUsuario(rs.getInt("id_usuario"));
+        usuario.setNombre(rs.getString("nombre"));
+        usuario.setApellido(rs.getString("apellido"));
+        usuario.setIdentificacion(rs.getString("identificacion"));
+        usuario.setTelefono(rs.getString("telefono"));
+        usuario.setEmail(rs.getString("email"));
+        usuario.setEsPaciente(rs.getBoolean("es_paciente"));
+        usuario.setEsEmpleado(rs.getBoolean("es_empleado"));
+        paciente.setUsuario(usuario);
 
         return paciente;
     }
@@ -111,7 +115,7 @@ public class HistorialDaoJDBC implements HistorialDAO {
              PreparedStatement ps = conn.prepareStatement(SQL_SELECT);
              ResultSet rs = ps.executeQuery()) {
 
-            System.out.println("Ejecutando query = " + SQL_SELECT);
+            System.out.println("Ejecutando query SELECT");
 
             while (rs.next()) {
                 historiales.add(mapHistorial(rs));
@@ -129,7 +133,7 @@ public class HistorialDaoJDBC implements HistorialDAO {
              PreparedStatement ps = conn.prepareStatement(SQL_SELECT_ONE)) {
 
             ps.setInt(1, idHistorial);
-            System.out.println("Ejecutando query = " + SQL_SELECT_ONE);
+            System.out.println("Ejecutando query SELECT_ONE");
 
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {

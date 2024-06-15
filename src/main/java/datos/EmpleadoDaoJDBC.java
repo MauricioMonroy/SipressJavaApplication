@@ -1,9 +1,9 @@
 package datos;
 
+import domain.Asignacion;
 import domain.Empleado;
 import domain.Funcion;
-import domain.Funcion;
-import domain.Empleado;
+import domain.Usuario;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -19,21 +19,25 @@ public class EmpleadoDaoJDBC implements EmpleadoDAO {
 
     // Creación de las sentencias para recuperar la información de la base de datos
     private static final String SQL_SELECT =
-            "SELECT e.id_empleado, e.id_usuario, e.cargo, u.id_usuario, u.nombre, u.apellido, u.identificacion, "
-                    + "u.telefono, u.email, u.es_paciente, u.es_empleado, f.id_funcion, f.id_empleado, f.descripcion "
-                    + "FROM empleado e INNER JOIN usuario u ON e.id_usuario = u.id_usuario "
-                    + "INNER JOIN funcion f ON f.id_empleado = e.id_empleado ";
-    private static final String SQL_SELECT_ONE =
-            "SELECT e.id_empleado, e.id_usuario, e.cargo, u.id_usuario, u.nombre, u.apellido, u.identificacion, "
-                    + "u.telefono, u.email, u.es_paciente, u.es_empleado, f.id_funcion, f.id_empleado, f.descripcion "
+            "SELECT e.id_empleado, e.id_usuario, e.cargo, u.id_usuario, u.username, u.password, u.nombre, u.apellido, u.identificacion, "
+                    + "u.telefono, u.email, u.es_paciente, u.es_empleado, f.id_funcion, f.id_empleado, f.descripcion, "
+                    + "a.id_asignacion, a.id_paciente, a.id_servicio, a.id_empleado "
                     + "FROM empleado e INNER JOIN usuario u ON e.id_usuario = u.id_usuario "
                     + "INNER JOIN funcion f ON f.id_empleado = e.id_empleado "
+                    + "INNER JOIN asignacion a ON a.id_empleado = e.id_empleado ";
+    private static final String SQL_SELECT_ONE =
+            "SELECT e.id_empleado, e.id_usuario, e.cargo, u.id_usuario, u.username, u.password, u.nombre, u.apellido, u.identificacion, "
+                    + "u.telefono, u.email, u.es_paciente, u.es_empleado, f.id_funcion, f.id_empleado, f.descripcion, "
+                    + "a.id_asignacion, a.id_paciente, a.id_servicio, a.id_empleado "
+                    + "FROM empleado e INNER JOIN usuario u ON e.id_usuario = u.id_usuario "
+                    + "INNER JOIN funcion f ON f.id_empleado = e.id_empleado "
+                    + "INNER JOIN asignacion a ON a.id_empleado = e.id_empleado "
                     + "WHERE e.id_empleado = ?";
-    private static final String SQL_INSERT_USUARIO =
-            "INSERT INTO empleado (id_usuario, nombre, apellido, identificacion, telefono, email, cargo, es_paciente, es_empleado) "
-                    + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
     private static final String SQL_INSERT_EMPLEADO =
             "INSERT INTO paciente (cargo, id_usuario) VALUES (?, ?)";
+    private static final String SQL_INSERT_USUARIO =
+            "INSERT INTO empleado(id_usuario, cargo) VALUES(?, ?)";
     private static final String SQL_INSERT_FUNCION =
             "INSERT INTO funcion (id_empleado, descripcion) VALUES (?, ?)";
     private static final String SQL_UPDATE_EMPLEADO =
@@ -53,81 +57,129 @@ public class EmpleadoDaoJDBC implements EmpleadoDAO {
         this.conexionTransaccional = conexionTransaccional;
     }
 
+    // Método para recuperar las funciones del empleado
+    private List<Funcion> getFuncionesPorEmpleadoId(int idEmpleado) throws SQLException {
+        List<Funcion> funciones = new ArrayList<>();
+        String SQL_SELECT_FUNCIONES = "SELECT * FROM funcion WHERE id_empleado = ?";
+
+        try (Connection conn = getConnection();
+             PreparedStatement ps = conn.prepareStatement(SQL_SELECT_FUNCIONES)) {
+
+            ps.setInt(1, idEmpleado);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    Funcion funcion = new Funcion();
+                    funcion.setIdFuncion(rs.getInt("id_funcion"));
+                    funcion.setDescripcion(rs.getString("descripcion"));
+                    funciones.add(funcion);
+                }
+            }
+        }
+        return funciones;
+    }
+
+    // Método para recuperar las asignaciones del empleado
+    private List<Asignacion> getAsignacionesPorEmpleadoId(int idEmpleado) throws SQLException {
+        List<Asignacion> asignaciones = new ArrayList<>();
+        String SQL_SELECT_ASIGNACIONES = "SELECT * FROM asignacion WHERE id_empleado = ?";
+
+        try (Connection conn = getConnection();
+             PreparedStatement ps = conn.prepareStatement(SQL_SELECT_ASIGNACIONES)) {
+
+            ps.setInt(1, idEmpleado);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    Asignacion asignacion = new Asignacion();
+                    asignacion.setIdAsignacion(rs.getInt("id_asignacion"));
+                    asignaciones.add(asignacion);
+                }
+            }
+        }
+        return asignaciones;
+    }
+
+
     // Método que se encarga de mapear el ResultSet a un objeto de la clase
-    private Empleado mapEmpleado(ResultSet rs) throws SQLException {
+    private Empleado mapEmpleado(ResultSet rs, List<Funcion> funciones, List<Asignacion> asignaciones) throws SQLException {
         Empleado empleado = new Empleado();
 
         // Llenar atributos específicos de Empleado
         empleado.setIdEmpleado(rs.getInt("id_empleado"));
+        empleado.setIdUsuario(rs.getInt("id_usuario"));
         empleado.setCargo(rs.getString("cargo"));
 
-        // Llenar atributos heredados de Usuario
-        empleado.setIdUsuario(rs.getInt("id_usuario"));
-        empleado.setNombre(rs.getString("nombre"));
-        empleado.setApellido(rs.getString("apellido"));
-        empleado.setIdentificacion(rs.getString("identificacion"));
-        empleado.setTelefono(rs.getString("telefono"));
-        empleado.setEmail(rs.getString("email"));
+        // Crear un nuevo objeto Usuario y llenar sus atributos
+        Usuario usuario = new Usuario();
+        usuario.setIdUsuario(rs.getInt("id_usuario"));
+        usuario.setUsername(rs.getString("username"));
+        usuario.setPassword(rs.getString("password"));
+        usuario.setNombre(rs.getString("nombre"));
+        usuario.setApellido(rs.getString("apellido"));
+        usuario.setIdentificacion(rs.getString("identificacion"));
+        usuario.setTelefono(rs.getString("telefono"));
+        usuario.setEmail(rs.getString("email"));
+        usuario.setEsPaciente(rs.getBoolean("es_paciente"));
+        usuario.setEsEmpleado(rs.getBoolean("es_empleado"));
 
-        // Crear una lista para almacenar las funciones del empleado
-        List<Funcion> funciones = new ArrayList<>();
+        // Establecer el objeto Usuario en el objeto Empleado
+        empleado.setUsuario(usuario);
 
-        do {
-            // Llenar atributos específicos de la funcion
-            Funcion funcion = new Funcion();
-            funcion.setIdFuncion(rs.getInt("id_funcion"));
-            funcion.setDescripcion(rs.getString("descripcion"));
+        // Crear atributos específicos de Función
+        Funcion funcion = new Funcion();
+        funcion.setIdFuncion(rs.getInt("id_funcion"));
+        funcion.setDescripcion(rs.getString("descripcion"));
 
-            // Establecer la relación entre Empleado y Funcion
-            funcion.setEmpleado(empleado);
+        // Crear atributos específicos de Asignación
+        Asignacion asignacion = new Asignacion();
+        asignacion.setIdAsignacion(rs.getInt("id_asignacion"));
 
-            // Añadir la función a la lista de funciones del empleado
-            funciones.add(funcion);
-        } while (rs.next());  // Continuar mientras haya más funciones para este empleado en el ResultSet
-
-        // Establecer la lista de funciones en el empleado
+        // Establecer la relación entre Empleado, Función y Asignacion
+        funcion.setEmpleado(empleado);
+        asignacion.setEmpleado(empleado);
         empleado.setFuncionList(funciones);
+        empleado.setAsignacionList(asignaciones);
 
         return empleado;
     }
 
-
-    // Método que permite seleccionar y listar todos los objetos de la base de datos (SELECT)
+// Método que permite seleccionar y listar todos los objetos de la base de datos (SELECT)
     @Override
     public List<Empleado> seleccionar() throws SQLException {
         List<Empleado> empleados = new ArrayList<>();
-        String sql = SQL_SELECT;
 
         try (Connection conn = this.conexionTransaccional != null ? this.conexionTransaccional : getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql);
+             PreparedStatement ps = conn.prepareStatement(SQL_SELECT);
              ResultSet rs = ps.executeQuery()) {
 
-            System.out.println("Ejecutando query = " + sql);
+            System.out.println("Ejecutando query...");
 
             while (rs.next()) {
-                empleados.add(mapEmpleado(rs));
+                int idEmpleado = rs.getInt("id_empleado");
+                List<Funcion> funciones = getFuncionesPorEmpleadoId(idEmpleado);
+                List<Asignacion> asignaciones = getAsignacionesPorEmpleadoId(idEmpleado);
+                empleados.add(mapEmpleado(rs, funciones, asignaciones));
             }
         }
 
         return empleados;
     }
 
-
     // Método para recuperar solo uno de los registros en la base de datos
     @Override
     public Empleado seleccionarPorId(int idEmpleado) throws SQLException {
         Empleado empleado = null;
-        String sql = SQL_SELECT_ONE;
 
         try (Connection conn = this.conexionTransaccional != null ? this.conexionTransaccional : getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+             PreparedStatement ps = conn.prepareStatement(SQL_SELECT_ONE)) {
 
             ps.setInt(1, idEmpleado);
-            System.out.println("Ejecutando query = " + sql);
+            System.out.println("Ejecutando query... ");
 
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
-                    empleado = mapEmpleado(rs);
+                    List<Funcion> funciones = getFuncionesPorEmpleadoId(idEmpleado);
+                    List<Asignacion> asignaciones = getAsignacionesPorEmpleadoId(idEmpleado);
+                    empleado = mapEmpleado(rs, funciones, asignaciones);
                 }
             }
         }

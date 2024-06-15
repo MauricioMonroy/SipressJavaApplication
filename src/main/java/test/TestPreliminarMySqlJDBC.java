@@ -13,17 +13,21 @@ public class TestPreliminarMySqlJDBC {
             Statement sentencia = conexion.createStatement();
 
             // Ejecución de la sentencia SQL
-            var sql = "SELECT id_persona, nombre, apellido, identificacion, telefono, email FROM persona";
+            var sql = "SELECT id_usuario, username, password, nombre, apellido, identificacion, telefono, email, es_paciente, es_empleado FROM usuario";
             ResultSet resultado = sentencia.executeQuery(sql);
 
             // Iteración de los elementos para obtener todos los registros
             while (resultado.next()) {
-                System.out.print("Id Persona: " + resultado.getInt("id_persona"));
+                System.out.print("Id Usuario: " + resultado.getInt("id_usuario"));
+                System.out.println("|Username: " + resultado.getString("username"));
+                System.out.println("|Password: " + resultado.getString("password"));
                 System.out.print(" |Nombre: " + resultado.getString("nombre"));
                 System.out.print(" |Apellido: " + resultado.getString("apellido"));
                 System.out.print(" |Identificación: " + resultado.getString("identificacion"));
                 System.out.print(" |Teléfono: " + resultado.getString("telefono"));
                 System.out.print(" |Email: " + resultado.getString("email"));
+                System.out.println("|Es paciente: " + resultado.getBoolean("es_paciente"));
+                System.out.println("|Es empleado: " + resultado.getBoolean("es_empleado"));
                 System.out.println();
             }
 

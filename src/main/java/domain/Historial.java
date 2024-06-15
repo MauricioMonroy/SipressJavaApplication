@@ -8,8 +8,6 @@ package domain;
 
 import jakarta.persistence.*;
 import lombok.*;
-import lombok.experimental.SuperBuilder;
-import lombok.extern.slf4j.Slf4j;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -17,11 +15,10 @@ import java.util.Date;
 
 @Getter
 @Setter
+@AllArgsConstructor
 @NoArgsConstructor
-@RequiredArgsConstructor
 @EqualsAndHashCode
-@Slf4j
-@SuperBuilder
+@Builder
 
 public class Historial implements Serializable {
 
@@ -86,6 +83,7 @@ public class Historial implements Serializable {
                 ", grupoSanguineo='" + grupoSanguineo + '\'' + ",\n" +
                 ", notasAdicionales='" + notasAdicionales + '\'' + ",\n" +
                 ", ultimaActualizacion=" + ultimaActualizacion + ",\n" +
+                ", paciente=" + paciente + ",\n" +
                 '}';
     }
 }

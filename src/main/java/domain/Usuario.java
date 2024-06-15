@@ -8,8 +8,8 @@ package domain;
 
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.Accessors;
 import lombok.experimental.SuperBuilder;
-import lombok.extern.slf4j.Slf4j;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -18,12 +18,9 @@ import java.io.Serializable;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@RequiredArgsConstructor
 @EqualsAndHashCode
-@SuperBuilder
-@Slf4j
+@Accessors(chain = true)
 
-@Inheritance(strategy = InheritanceType.JOINED)
 public class Usuario implements Serializable {
 
     @Serial
@@ -48,6 +45,23 @@ public class Usuario implements Serializable {
     private Paciente paciente;
     @OneToOne(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
     private Empleado empleado;
+
+    public Usuario(Integer idUsuario) {
+    }
+
+    public Usuario(String username, String password, String nombre, String apellido,
+                   String identificacion, String telefono, String email,
+                   Boolean esPaciente, Boolean esEmpleado) {
+        this.username = username;
+        this.password = password;
+        this.nombre = nombre;
+        this.apellido = apellido;
+        this.identificacion = identificacion;
+        this.telefono = telefono;
+        this.email = email;
+        this.esPaciente = esPaciente;
+        this.esEmpleado = esEmpleado;
+    }
 
     @Override
     public String toString() {

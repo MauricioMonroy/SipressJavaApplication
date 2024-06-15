@@ -16,14 +16,14 @@ public class PacienteDaoJDBC implements PacienteDAO {
 
     // Creación de las sentencias para recuperar la información de la base de datos
     private static final String SQL_SELECT =
-            "SELECT pac.id_paciente, pac.id_usuario, pac.detalle_eps, pac.fecha_consulta, u.id_usuario, u.nombre, u.username, u.password, u.apellido, u.identificacion, "
+            "SELECT pac.id_paciente, pac.id_usuario, pac.detalle_eps, pac.fecha_consulta, u.id_usuario, u.username, u.password, u.nombre, u.apellido, u.identificacion, "
                     + "u.telefono, u.email, u.es_paciente, u.es_empleado, h.id_historial, h.id_paciente, h.motivo_consulta, h.fecha_nacimiento, h.sexo, h.direccion, "
                     + "h.ocupacion, h.contacto_emergencia, h.nombre_contacto_emergencia, h.alergias, h.condiciones_preexistentes, "
                     + "h.medicamentos_actuales, h.historial_vacunas, h.grupo_sanguineo, h.notas_adicionales, h.ultima_actualizacion "
                     + " FROM paciente pac INNER JOIN usuario u ON pac.id_usuario = u.id_usuario "
                     + "INNER JOIN historial h ON h.id_paciente = pac.id_paciente ";
     private static final String SQL_SELECT_ONE =
-            "SELECT pac.id_paciente, pac.id_usuario, pac.detalle_eps, pac.fecha_consulta, u.id_usuario, u.nombre, u.username, u.password, u.apellido, u.identificacion, "
+            "SELECT pac.id_paciente, pac.id_usuario, pac.detalle_eps, pac.fecha_consulta, u.id_usuario, u.username, u.password, u.nombre, u.apellido, u.identificacion, "
                     + "u.telefono, u.email, u.es_paciente, u.es_empleado, h.id_historial, h.id_paciente, h.motivo_consulta, h.fecha_nacimiento, h.sexo, h.direccion, "
                     + "h.ocupacion, h.contacto_emergencia, h.nombre_contacto_emergencia, h.alergias, h.condiciones_preexistentes, "
                     + "h.medicamentos_actuales, h.historial_vacunas, h.grupo_sanguineo, h.notas_adicionales, h.ultima_actualizacion "
@@ -77,7 +77,7 @@ public class PacienteDaoJDBC implements PacienteDAO {
         // Establecer el objeto Usuario en el objeto Paciente
         paciente.setUsuario(usuario);
 
-        // Llenar atributos específicos del historial médico
+        // Crear atributos específicos del historial médico
         Historial historial = new Historial();
         historial.setIdHistorial(rs.getInt("id_historial"));
         historial.setMotivoConsulta(rs.getString("motivo_consulta"));
@@ -111,7 +111,7 @@ public class PacienteDaoJDBC implements PacienteDAO {
              PreparedStatement ps = conn.prepareStatement(SQL_SELECT);
              ResultSet rs = ps.executeQuery()) {
 
-            System.out.println("Ejecutando query = " + SQL_SELECT);
+            System.out.println("Ejecutando query... ");
 
             while (rs.next()) {
                 pacientes.add(mapPaciente(rs));
@@ -159,8 +159,8 @@ public class PacienteDaoJDBC implements PacienteDAO {
                 psUsuario.setString(5, usuario.getIdentificacion());
                 psUsuario.setString(6, usuario.getTelefono());
                 psUsuario.setString(7, usuario.getEmail());
-                psUsuario.setBoolean(8, usuario.isEsPaciente());
-                psUsuario.setBoolean(9, usuario.isEsEmpleado());
+                psUsuario.setBoolean(8, usuario.getEsPaciente());
+                psUsuario.setBoolean(9, usuario.getEsEmpleado());
 
                 psUsuario.executeUpdate();
 

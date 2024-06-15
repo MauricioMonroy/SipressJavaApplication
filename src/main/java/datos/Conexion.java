@@ -27,34 +27,43 @@ public class Conexion {
 
     // Métodos para cerrar la conexión
     public static void close(ResultSet rs) {
-        try {
-            rs.close();
-        } catch (SQLException ex) {
-            ex.printStackTrace(System.out);
+        if (rs != null) {
+            try {
+                rs.close();
+            } catch (SQLException ex) {
+                ex.printStackTrace(System.out);
+            }
         }
     }
 
     public static void close(Statement stmt) {
-        try {
-            stmt.close();
-        } catch (SQLException ex) {
-            ex.printStackTrace(System.out);
+        if (stmt != null) {
+            try {
+                stmt.close();
+            } catch (SQLException ex) {
+                ex.printStackTrace(System.out);
+            }
         }
     }
 
     public static void close(PreparedStatement ps) {
-        try {
-            ps.close();
-        } catch (SQLException ex) {
-            ex.printStackTrace(System.out);
+        if (ps != null) {
+            try {
+                ps.close();
+            } catch (SQLException ex) {
+                ex.printStackTrace(System.out);
+            }
         }
     }
 
     public static void close(Connection conn) {
-        try {
-            conn.close();
-        } catch (SQLException ex) {
-            ex.printStackTrace(System.out);
+        if (conn != null) {
+            try {
+                conn.close();
+            } catch (SQLException ex) {
+                ex.printStackTrace(System.out);
+            }
         }
     }
 }
+

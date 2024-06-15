@@ -8,19 +8,16 @@ package domain;
 
 import jakarta.persistence.*;
 import lombok.*;
-import lombok.experimental.SuperBuilder;
-import lombok.extern.slf4j.Slf4j;
 
 import java.io.Serial;
 import java.io.Serializable;
 
 @Getter
 @Setter
+@AllArgsConstructor
 @NoArgsConstructor
-@RequiredArgsConstructor
 @EqualsAndHashCode
-@Slf4j
-@SuperBuilder
+@Builder
 
 public class Asignacion implements Serializable {
 
@@ -45,10 +42,7 @@ public class Asignacion implements Serializable {
     public String toString() {
         return "Asignacion{" +
                 "idAsignacion=" + idAsignacion + ",\n" +
-                "| Empleado asociado{" + empleado + ",\n" +
-                "| Paciente asociado{" + paciente + ",\n" +
-                "| Servicio asociado{" + servicio +
-                '}' + "\n";
+                '}';
     }
 }
 

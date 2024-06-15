@@ -8,8 +8,8 @@ package domain;
 
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.Accessors;
 import lombok.experimental.SuperBuilder;
-import lombok.extern.slf4j.Slf4j;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -19,10 +19,8 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
-@RequiredArgsConstructor
+@AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-@Slf4j
-@SuperBuilder
 
 public class Paciente extends Usuario implements Serializable {
 
@@ -45,6 +43,53 @@ public class Paciente extends Usuario implements Serializable {
     private Usuario usuario;
     @OneToOne(mappedBy = "paciente")
     private Historial historial;
+
+    public Paciente(String username, String password, String nombre, String apellido, String identificacion, String telefono, String email, Boolean esPaciente, Boolean esEmpleado, String detalleEps, Date fechaConsulta) {
+        super(username, password, nombre, apellido, identificacion, telefono, email, esPaciente, esEmpleado);
+        this.detalleEps = detalleEps;
+        this.fechaConsulta = fechaConsulta;
+    }
+
+    public Paciente(String username, String password, String nombre, String apellido, String identificacion, String telefono, String email, Boolean esPaciente, Boolean esEmpleado, String detalleEps, Date fechaConsulta, Usuario usuario) {
+        super(username, password, nombre, apellido, identificacion, telefono, email, esPaciente, esEmpleado);
+        this.detalleEps = detalleEps;
+        this.fechaConsulta = fechaConsulta;
+        this.usuario = usuario;
+    }
+
+    public Paciente(Integer idUsuario, String username, String password, String nombre, String apellido, String identificacion, String telefono, String email, Boolean esPaciente, Boolean esEmpleado, Paciente paciente, Empleado empleado, String detalleEps, Date fechaConsulta, Usuario usuario) {
+        super(idUsuario, username, password, nombre, apellido, identificacion, telefono, email, esPaciente, esEmpleado, paciente, empleado);
+        this.detalleEps = detalleEps;
+        this.fechaConsulta = fechaConsulta;
+        this.usuario = usuario;
+    }
+
+    public Paciente(Integer idUsuario, String username, String password, String nombre, String apellido, String identificacion, String telefono, String email, Boolean esPaciente, Boolean esEmpleado, Paciente paciente, Empleado empleado, String detalleEps, Date fechaConsulta) {
+        super(idUsuario, username, password, nombre, apellido, identificacion, telefono, email, esPaciente, esEmpleado, paciente, empleado);
+        this.detalleEps = detalleEps;
+        this.fechaConsulta = fechaConsulta;
+    }
+
+    public Paciente(String username, String password, String nombre, String apellido, String identificacion, String telefono, String email, Boolean esPaciente, Boolean esEmpleado, String detalleEps, Date fechaConsulta, Historial historial) {
+        super(username, password, nombre, apellido, identificacion, telefono, email, esPaciente, esEmpleado);
+        this.detalleEps = detalleEps;
+        this.fechaConsulta = fechaConsulta;
+        this.historial = historial;
+    }
+
+    public Paciente(Integer idUsuario, String username, String password, String nombre, String apellido, String identificacion, String telefono, String email, Boolean esPaciente, Boolean esEmpleado, Paciente paciente, Empleado empleado, String detalleEps, Date fechaConsulta, Historial historial) {
+        super(idUsuario, username, password, nombre, apellido, identificacion, telefono, email, esPaciente, esEmpleado, paciente, empleado);
+        this.detalleEps = detalleEps;
+        this.fechaConsulta = fechaConsulta;
+        this.historial = historial;
+    }
+
+    public Paciente(Usuario usuario, String detalleEps, Date fechaConsulta, Historial historial) {
+        this.usuario = usuario;
+        this.detalleEps = detalleEps;
+        this.fechaConsulta = fechaConsulta;
+        this.historial = historial;
+    }
 
     @Override
     public String toString() {

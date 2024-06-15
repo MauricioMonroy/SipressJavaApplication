@@ -8,8 +8,6 @@ package domain;
 
 import jakarta.persistence.*;
 import lombok.*;
-import lombok.experimental.SuperBuilder;
-import lombok.extern.slf4j.Slf4j;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -18,10 +16,8 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
-@RequiredArgsConstructor
+@AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-@Slf4j
-@SuperBuilder
 
 public class Empleado extends Usuario implements Serializable {
 
@@ -41,12 +37,59 @@ public class Empleado extends Usuario implements Serializable {
     @OneToMany(mappedBy = "empleado")
     private List<Funcion> funcionList;
 
+    public Empleado(String username, String password, String nombre, String apellido, String identificacion, String telefono, String email, Boolean esPaciente, Boolean esEmpleado, String cargo) {
+        super(username, password, nombre, apellido, identificacion, telefono, email, esPaciente, esEmpleado);
+        this.cargo = cargo;
+    }
+
+    public Empleado(String username, String password, String nombre, String apellido, String identificacion, String telefono, String email, Boolean esPaciente, Boolean esEmpleado, String cargo, List<Asignacion> asignacionList, Usuario usuario, List<Funcion> funcionList) {
+        super(username, password, nombre, apellido, identificacion, telefono, email, esPaciente, esEmpleado);
+        this.cargo = cargo;
+        this.asignacionList = asignacionList;
+        this.usuario = usuario;
+        this.funcionList = funcionList;
+    }
+
+
+    public Empleado(String username, String password, String nombre, String apellido, String identificacion, String telefono, String email, Boolean esPaciente, Boolean esEmpleado, String cargo, List<Funcion> funcionList) {
+        super(username, password, nombre, apellido, identificacion, telefono, email, esPaciente, esEmpleado);
+        this.cargo = cargo;
+        this.funcionList = funcionList;
+    }
+
+    public Empleado(Integer idUsuario, String username, String password, String nombre, String apellido, String identificacion, String telefono, String email, Boolean esPaciente, Boolean esEmpleado, Paciente paciente, Empleado empleado, String cargo) {
+        super(idUsuario, username, password, nombre, apellido, identificacion, telefono, email, esPaciente, esEmpleado, paciente, empleado);
+        this.cargo = cargo;
+    }
+
+    public Empleado(Integer idUsuario, String username, String password, String nombre, String apellido, String identificacion, String telefono, String email, Boolean esPaciente, Boolean esEmpleado, Paciente paciente, Empleado empleado, String cargo, Usuario usuario) {
+        super(idUsuario, username, password, nombre, apellido, identificacion, telefono, email, esPaciente, esEmpleado, paciente, empleado);
+        this.cargo = cargo;
+        this.usuario = usuario;
+    }
+
+    public Empleado(Integer idUsuario, String username, String password, String nombre, String apellido, String identificacion, String telefono, String email, Boolean esPaciente, Boolean esEmpleado, Paciente paciente, Empleado empleado, String cargo, List<Asignacion> asignacionList, Usuario usuario, List<Funcion> funcionList) {
+        super(idUsuario, username, password, nombre, apellido, identificacion, telefono, email, esPaciente, esEmpleado, paciente, empleado);
+        this.cargo = cargo;
+        this.asignacionList = asignacionList;
+        this.usuario = usuario;
+        this.funcionList = funcionList;
+    }
+
+    public Empleado(Usuario usuario, String cargo, List<Funcion> funcionList) {
+        this.usuario = usuario;
+        this.cargo = cargo;
+        this.funcionList = funcionList;
+    }
+
     @Override
     public String toString() {
         return "Empleado{" +
                 "idEmpleado=" + idEmpleado +
                 ", cargo='" + cargo + '\'' + ",\n" +
-                "| Usuario asociado{" + usuario +
+                ", asignacionList=" + asignacionList +
+                ", usuario=" + usuario + ",\n" +
+                ", funcionList=" + funcionList + ",\n" +
                 '}';
     }
 }

@@ -1,15 +1,14 @@
 package test;
 
 import datos.Conexion;
-import datos.UsuarioDaoJDBC;
-import domain.Usuario;
+import datos.HistorialDaoJDBC;
+import domain.Historial;
 
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 
-public class ManejoUsuarios {
-
+public class ManejoHistorial {
     public static void main(String[] args) {
 
         Connection conexion = null;
@@ -18,38 +17,25 @@ public class ManejoUsuarios {
             if (conexion.getAutoCommit()) {
                 conexion.setAutoCommit(false);
             }
-            UsuarioDaoJDBC usuarioDAO = new UsuarioDaoJDBC(conexion);
+            HistorialDaoJDBC historialDAO = new HistorialDaoJDBC(conexion);
 
             // Inserciones, actualizaciones o eliminaciones
+            // ...
 
-            // Crear un nuevo objeto Usuario
-            Usuario usuarioNuevo = new Usuario(
-                    "pedro.rulfo",
-                    "987",
-                    "Pedro",
-                    "Rulfo",
-                    "47663124",
-                    "3145962544",
-                    "pedrulfo@mail.com",
-                    true, // esPaciente
-                    false  // esEmpleado
-            );
-            // Insertar el nuevo usuario
-            usuarioDAO.insertar(usuarioNuevo);
 
             // Commit de la transacción
             conexion.commit();
             System.out.println("Se ha hecho el commit de la transacción");
 
             // Listar los registros existentes en la base de datos
-            List<Usuario> usuarios = usuarioDAO.seleccionar();
-            for (int i = 0; i < usuarios.size(); i++) {
-                System.out.println("Registro " + (i + 1) + ": " + usuarios.get(i));
+            List<Historial> historiales = historialDAO.seleccionar();
+            for (int i = 0; i < historiales.size(); i++) {
+                System.out.println("Registro " + (i + 1) + ": " + historiales.get(i));
             }
 
             // Obtener y mostrar un solo registro
-//            Usuario usuario = usuarioDAO.seleccionarPorId(3);
-//            System.out.println("Usuario: " + usuario);
+//            Historial historial = historialDAO.seleccionarPorId(3);
+//            System.out.println("Historial: " + historial);
 
         } catch (SQLException ex) {
             ex.printStackTrace(System.out);
