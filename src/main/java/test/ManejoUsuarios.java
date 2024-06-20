@@ -23,33 +23,33 @@ public class ManejoUsuarios {
             // Inserciones, actualizaciones o eliminaciones
 
             // Crear un nuevo objeto Usuario
-            Usuario usuarioNuevo = new Usuario(
-                    "pedro.rulfo",
-                    "987",
-                    "Pedro",
-                    "Rulfo",
-                    "47663124",
-                    "3145962544",
-                    "pedrulfo@mail.com",
-                    true, // esPaciente
-                    false  // esEmpleado
-            );
+//            Usuario usuarioNuevo = new Usuario(
+//                    "pedro.rulfo",
+//                    "987",
+//                    "Pedro",
+//                    "Rulfo",
+//                    "47663124",
+//                    "3145962544",
+//                    "pedrulfo@mail.com",
+//                    true, // esPaciente
+//                    false  // esEmpleado
+//            );
             // Insertar el nuevo usuario
-            usuarioDAO.insertar(usuarioNuevo);
+//            usuarioDAO.insertar(usuarioNuevo);
 
             // Commit de la transacción
             conexion.commit();
             System.out.println("Se ha hecho el commit de la transacción");
 
             // Listar los registros existentes en la base de datos
-            List<Usuario> usuarios = usuarioDAO.seleccionar();
-            for (int i = 0; i < usuarios.size(); i++) {
-                System.out.println("Registro " + (i + 1) + ": " + usuarios.get(i));
-            }
+//            List<Usuario> usuarios = usuarioDAO.seleccionar();
+//            for (int i = 0; i < usuarios.size(); i++) {
+//                System.out.println("Registro " + (i + 1) + ": " + usuarios.get(i));
+//            }
 
             // Obtener y mostrar un solo registro
-//            Usuario usuario = usuarioDAO.seleccionarPorId(3);
-//            System.out.println("Usuario: " + usuario);
+            Usuario usuario = usuarioDAO.seleccionarPorId(4);
+            System.out.println("Usuario: " + usuario);
 
         } catch (SQLException ex) {
             ex.printStackTrace(System.out);

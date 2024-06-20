@@ -5,7 +5,7 @@
     <meta
             name="viewport"
             content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
-    <title>Página de Inicio - SIPRESS</title>
+    <title>Inicio - SIPRESS</title>
     <!-- Bootstrap core CSS -->
     <link
             href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
@@ -51,25 +51,25 @@
                     >
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="../templates/register.html"
-                    >Registrarse</a
-                    >
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="../templates/services.html"
+                    <a class="nav-link" href="servicios.jsp"
                     >Servicios</a
                     >
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="../templates/users.html">Usuarios</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="../templates/doctors.html"
-                    >Staff Médico</a
+                    <a class="nav-link" href="pacientes.jsp"
+                    >Pacientes</a
                     >
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="../templates/contact.html">Contacto</a>
+                    <a class="nav-link" href="pacientes.jsp">Usuarios</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="empleados.jsp"
+                    >Personal Médico</a
+                    >
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="contacto.jsp">Contacto</a>
                 </li>
                 <li class="nav-item">
                     <a href="#" class="nav-link text-light"
@@ -79,7 +79,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="../login-sipress.html" class="nav-link text-light"
+                    <a href="login.jsp" class="nav-link text-light"
                     ><i class="fas fa-user-times"></i>
                         <span>Salir</span>
                     </a>
@@ -93,10 +93,11 @@
     <div class="container px-lg-3">
         <div class="p-2 p-lg-3 bg-light rounded-3 text-center">
             <div class="m-2 m-lg-3">
-                <h1 class="fs-3 fw-bold">${pageContext.request.contextPath}/ServletControlador/mensaje</h1>
+                <h1 class="fs-3 fw-bold">
+                    ¡Bienvenido a <span class="text-success fw-bold fs-3">SIPRESS</span>!
+                </h1>
                 <p class="fs-6">
-                    <span class="text-success fw-bold fs-5">SIPRESS</span> es una
-                    aplicación que simplifica la gestión de las Instituciones
+                    SIPRESS es una aplicación que simplifica la gestión de las Instituciones
                     Prestadoras de Salud (IPS). Facilita el registro de pacientes, la
                     programación de citas y el control de recursos médicos. Su
                     objetivo es: mejorar la atención y la eficiencia en la prestación
@@ -113,77 +114,67 @@
         <div class="row gx-lg-5" id="gestion-salud">
             <div class="row mt-3">
                 <div class="col-md-3 col-sm-6">
-                    <a href="../templates/users.html" class="text-decoration-none">
+                    <a href="servicios.jsp" class="text-decoration-none">
                         <div class="card text-center h-100">
-                            <img
-                                    src="images/Users.png"
-                                    alt="users.png"
-                                    class="card-img-top"/>
-
+                            <div class="card-header">
+                                <h3 class="card-title">Servicios Disponibles</h3>
+                            </div>
                             <div class="card-body">
-                                <h5 class="card-title">Usuarios</h5>
-                                <p>
-                                    Aquí se puede crear, editar y eliminar su cuenta, además
-                                    de consultar trámites relacionados.
-                                </p>
+                                <img
+                                        src="images/servicios.png"
+                                        alt="servicios.png"
+                                        class="card-img-top"/>
                             </div>
                         </div>
                     </a>
                 </div>
-
                 <div class="col-md-3 col-sm-6">
-                    <a href="../templates/doctors.html" class="text-decoration-none">
+                    <a href="pacientes.jsp" class="text-decoration-none">
                         <div class="card text-center h-100">
-                            <img
-                                    src="images/equipo-medico.png"
-                                    alt="equipo-medico.png"
-                                    class="card-img-top"/>
+                            <div class="card-header">
+                                <h3 class="card-title">Pacientes</h3>
+                            </div>
+
                             <div class="card-body">
-                                <h5 class="card-title">Staff Médico</h5>
-                                <p>
-                                    Aquí se pueden conocer los detalles del staff médico, sus
-                                    funciones y horarios disponibles.
-                                </p>
+                                <img
+                                        src="images/patients.png"
+                                        alt="patients.png"
+                                        class="card-img-top"/>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-md-3 col-sm-6">
+                    <a href="usuarios.jsp" class="text-decoration-none">
+                        <div class="card text-center h-100">
+                            <div class="card-header">
+                                <h3 class="card-title">Usuarios</h3>
+                            </div>
+                            <div class="card-body">
+                                <img
+                                        src="images/Users.png"
+                                        alt="users.png"
+                                        class="card-img-top"/>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-md-3 col-sm-6">
+                    <a href="empleados.jsp" class="text-decoration-none">
+                        <div class="card text-center h-100">
+                            <div class="card-header">
+                                <h3 class="card-title">Personal Médico</h3>
+                            </div>
+                            <div class="card-body">
+                                <img
+                                        src="images/equipo-medico.png"
+                                        alt="equipo-medico.png"
+                                        class="card-img-top"/>
                             </div>
                         </div>
                     </a>
                 </div>
 
-                <div class="col-md-3 col-sm-6">
-                    <a href="../templates/services.html" class="text-decoration-none">
-                        <div class="card text-center h-100">
-                            <img
-                                    src="images/servicios.png"
-                                    alt="servicios.png"
-                                    class="card-img-top"/>
-                            <div class="card-body">
-                                <h5 class="card-title">Servicios Disponibles</h5>
-                                <p>
-                                    Aquí se puede conocer el portafolio de servicios y
-                                    gestionar trámites médicos de la institución.
-                                </p>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-
-                <div class="col-md-3 col-sm-6">
-                    <a href="../templates/contact.html" class="text-decoration-none">
-                        <div class="card text-center h-100">
-                            <img
-                                    src="images/contacto.png"
-                                    alt="contacto.png"
-                                    class="card-img-top"/>
-                            <div class="card-body">
-                                <h5 class="card-title">Contacto</h5>
-                                <p>
-                                    Aquí se pueden gestionar sus PQRS y consultar cualquier
-                                    inconveniente con los servicios prestados.
-                                </p>
-                            </div>
-                        </div>
-                    </a>
-                </div>
             </div>
         </div>
     </div>

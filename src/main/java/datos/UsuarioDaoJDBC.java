@@ -133,13 +133,12 @@ public class UsuarioDaoJDBC implements UsuarioDAO {
                 usuario = mapUsuario(rs);
             }
         } finally {
-            Conexion.close(rs);
-            Conexion.close(ps);
+            close(rs);
+            close(ps);
             if (this.conexionTransaccional == null) {
-                Conexion.close(conn);
+                close(conn);
             }
         }
-
         return usuario;
     }
 
@@ -148,11 +147,11 @@ public class UsuarioDaoJDBC implements UsuarioDAO {
     public int insertar(Usuario usuario) throws SQLException {
         Connection conn = null;
         PreparedStatement ps = null;
-        ResultSet rs = null;
-        int registros = 0;
+        int registros;
 
         try {
             conn = this.conexionTransaccional != null ? this.conexionTransaccional : Conexion.getConnection();
+            System.out.println("Ejecutando query SELECT_INSERT");
             ps = conn.prepareStatement(SQL_INSERT, Statement.RETURN_GENERATED_KEYS);
             ps.setString(1, usuario.getUsername());
             ps.setString(2, usuario.getPassword());
@@ -166,13 +165,11 @@ public class UsuarioDaoJDBC implements UsuarioDAO {
             registros = ps.executeUpdate();
 
         } finally {
-            close(rs);
             close(ps);
             if (this.conexionTransaccional == null) {
                 close(conn);
             }
         }
-
         return registros;
     }
 
@@ -181,10 +178,11 @@ public class UsuarioDaoJDBC implements UsuarioDAO {
     public int actualizar(Usuario usuario) throws SQLException {
         Connection conn = null;
         PreparedStatement ps = null;
-        int registros = 0;
+        int registros;
 
         try {
             conn = this.conexionTransaccional != null ? this.conexionTransaccional : Conexion.getConnection();
+            System.out.println("Ejecutando query SELECT_UPDATE");
             ps = conn.prepareStatement(SQL_UPDATE);
             ps.setString(1, usuario.getUsername());
             ps.setString(2, usuario.getPassword());
@@ -198,25 +196,12 @@ public class UsuarioDaoJDBC implements UsuarioDAO {
             ps.setInt(10, usuario.getIdUsuario());
             registros = ps.executeUpdate();
 
-            if (usuario.getEmpleado() != null) {
-                EmpleadoDaoJDBC empleadoDao = new EmpleadoDaoJDBC(conn);
-                usuario.getEmpleado().setUsuario(usuario);
-                empleadoDao.actualizar(usuario.getEmpleado());
-            }
-
-            if (usuario.getPaciente() != null) {
-                PacienteDaoJDBC pacienteDao = new PacienteDaoJDBC(conn);
-                usuario.getPaciente().setUsuario(usuario);
-                pacienteDao.actualizar(usuario.getPaciente());
-            }
-
         } finally {
             close(ps);
             if (this.conexionTransaccional == null) {
                 close(conn);
             }
         }
-
         return registros;
     }
 
@@ -229,6 +214,7 @@ public class UsuarioDaoJDBC implements UsuarioDAO {
 
         try {
             conn = this.conexionTransaccional != null ? this.conexionTransaccional : Conexion.getConnection();
+            System.out.println("Ejecutando query SELECT_DELETE");
             ps = conn.prepareStatement(SQL_DELETE);
             ps.setInt(1, usuario.getIdUsuario());
             registros = ps.executeUpdate();
@@ -244,9 +230,9 @@ public class UsuarioDaoJDBC implements UsuarioDAO {
             }
 
         } finally {
-            Conexion.close(ps);
+            close(ps);
             if (this.conexionTransaccional == null) {
-                Conexion.close(conn);
+                close(conn);
             }
         }
 
