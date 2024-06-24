@@ -23,71 +23,7 @@
 </head>
 <body>
 <!-- Navbar con función responsive -->
-<nav class="navbar navbar-expand-lg navbar-dark" id="menu">
-    <div class="container px-lg-5">
-        <a class="navbar-brand" href="index.jsp">
-            <img
-                    src="images/nb-logo.png"
-                    width="384"
-                    height="116"
-                    class="logo-imagen"
-                    alt="sipress-logo"/>
-        </a>
-        <button
-                class="navbar-toggler"
-                type="button"
-                data-bs-toggle="collapse"
-                data-bs-target="#navbarSupportedContent"
-                aria-controls="navbarSupportedContent"
-                aria-expanded="false"
-                aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="index.jsp"
-                    >Inicio</a
-                    >
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="servicios.jsp"
-                    >Servicios</a
-                    >
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="pacientes.jsp"
-                    >Pacientes</a
-                    >
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="pacientes.jsp">Usuarios</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="empleados.jsp"
-                    >Personal Médico</a
-                    >
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="contacto.jsp">Contacto</a>
-                </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link text-light"
-                    ><i class="fas fa-user"></i>
-                        <span>Usuario:</span>
-                        <span>Current user</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="login.jsp" class="nav-link text-light"
-                    ><i class="fas fa-user-times"></i>
-                        <span>Salir</span>
-                    </a>
-                </li>
-            </ul>
-        </div>
-    </div>
-</nav>
+<jsp:include page="WEB-INF/paginas/comunes/navbar.jsp"/>
 <!-- Cabecero -->
 <header class="py-3">
     <div class="container px-lg-3">
@@ -181,37 +117,7 @@
     <br/>
 </section>
 <!-- Pie de página -->
-<footer class="py-5" id="iconos">
-    <div class="py-2 text-center">
-        <span class="text-light"> Codelicht Software Solutions&copy;</span>
-        <p class="text-light text-center mb-0 p-2 fs-6">
-            Todos los derechos reservados 2024
-        </p>
-        <div class="text-center">
-            <a
-                    href="https://zajuna.sena.edu.co/"
-                    aria-label="Plataforma Zajuna SENA"
-                    rel="noopener"
-                    target="_blank"
-            ><i class="fa-solid fa-globe"></i
-            ></a>
-            <a
-                    href="https://call.whatsapp.com/voice/JqIwkDwqS2qpUUqbFjMwwd"
-                    aria-label="Contacto Whatsapp"
-                    rel="noopener"
-                    target="_blank"
-            ><i class="fa-brands fa-whatsapp"></i
-            ></a>
-            <a
-                    href="https://t.me/+GVvMDQ4p8p84ZWJh"
-                    aria-label="Contacto Telegram"
-                    rel="noopener"
-                    target="_blank"
-            ><i class="fa-brands fa-telegram"></i
-            ></a>
-        </div>
-    </div>
-</footer>
+<jsp:include page="WEB-INF/paginas/comunes/footer.jsp"/>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <!-- Enlace a Bootstrap JS -->
 <script

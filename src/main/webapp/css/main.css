@@ -134,25 +134,25 @@ body {
     }
 }
 
-/* Reglas para registro de usuarios */
-#contenedor-registro {
+/* Reglas para listas */
+#contenedor-lista {
     padding: 20px 0;
 }
 
-#contenedor-registro .card {
+#contenedor-lista .card {
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-#contenedor-registro .card-header {
+#contenedor-lista .card-header {
     border-radius: 10px 10px 0 0;
 }
 
-#contenedor-registro .form-floating .form-control {
+#contenedor-lista .form-floating .form-control {
     padding: 1.5rem 0.75rem;
 }
 
-#contenedor-registro .btn-register {
+#contenedor-lista .btn-register {
     padding: 0.75rem 1rem;
     font-size: 1rem;
 }
@@ -203,14 +203,28 @@ body {
 
 #menu li > a {
     font-size: 17px;
-    font-weight: lighter;
+    font-weight: normal;
+    color: rgba(255, 255, 255, 0.9);
+    text-decoration: none;
+    transition: color 0.3s ease, background-color 0.3s ease;
 }
 
 #menu form > button {
     font-size: 15px;
-    font-weight: lighter;
+    font-weight: normal;
+    color: rgba(255, 255, 255, 0.9);
+    text-decoration: none;
+    transition: color 0.3s ease, background-color 0.3s ease;
 }
 
+/* Efecto on-hover */
+#menu li > a:hover,
+#menu form > button:hover {
+    color: #fff;
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Estilo para la imagen del logo */
 .logo-imagen {
     max-width: 160px;
     max-height: 50px;

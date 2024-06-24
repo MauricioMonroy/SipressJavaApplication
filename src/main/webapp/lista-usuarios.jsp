@@ -1,10 +1,8 @@
-<%@ page contentType="text/html;charset=UTF-8" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
-<html lang="es">
+<html>
 <head>
-    <meta charset="UTF-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Usuarios - SIPRESS</title>
+    <title>Lista de Usuarios - SIPRESS</title>
     <!-- Bootstrap core CSS -->
     <link
             href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
@@ -20,56 +18,36 @@
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="images/favicon.ico"/>
 </head>
-<body class="background-repeat">
-<!-- Navbar con función responsive-->
-<jsp:include page="WEB-INF/paginas/comunes/navbar.jsp"/>
-<!-- Contenido de la página-->
-<section>
-    <div class="container my-5">
-        <div class="card">
-            <div id="gestion-salud">
-                <div class="card-header">
-                    <h2 class="text-center">
-                        <i class="fa-solid fa-users"></i> Control de Usuarios
-                    </h2>
-                </div>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-md-6 mb-4">
-                            <a
-                                    href="#"
-                                    class="text-decoration-none"
-                                    data-bs-toggle="modal"
-                                    data-bs-target="#registrarUsuarioModal">
-                                <div class="card text-center h-100 text-bg-info">
-                                    <div class="card-header">
-                                        <h5 class="card-title">Registro de Usuarios</h5>
-                                    </div>
-                                    <div class="card-body">
-                                        <img
-                                                src="images/users-register.png"
-                                                class="card-img-top"
-                                                alt="users-register.png"/>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-                        <div class="col-md-6 mb-4">
-                            <a href="lista-usuarios.jsp" class="text-decoration-none">
-                                <div class="card text-center h-100 text-bg-success">
-                                    <div class="card-header">
-                                        <h5 class="card-title">Lista de Usuarios</h5>
-                                    </div>
-                                    <div class="card-body">
-                                        <img
-                                                src="images/users-list.png"
-                                                class="card-img-top"
-                                                alt="users-list.png"/>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
+<body>
+<!-- Navbar con función responsive -->
+<jsp:include page="/WEB-INF/paginas/comunes/navbar.jsp"/>
+<!-- Botones de navegación -->
+<jsp:include page="/WEB-INF/paginas/comunes/botonesNavegacion.jsp"/>
 
+<section id="contenedor-lista">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header bg-primary text-light">
+                        <h2 class="text-center">
+                            <i class="fa-regular fa-address-book"></i> Lista de Usuarios
+                        </h2>
+                    </div>
+                    <div class="card-body">
+                        <ul>
+                            <c:forEach var="usuario" items="${usuarios}">
+                                <li>
+                                        ${usuario.idUsuario}
+                                        ${usuario.username}
+                                        ${usuario.nombre}
+                                        ${usuario.apellido}
+                                        ${usuario.identificacion}
+                                        ${usuario.telefono}
+                                        ${usuario.email}
+                                </li>
+                            </c:forEach>
+                        </ul>
                     </div>
                 </div>
             </div>
@@ -158,11 +136,8 @@
         </div>
     </div>
 </div>
-
 <!-- Pie de página -->
 <jsp:include page="WEB-INF/paginas/comunes/footer.jsp"/>
-<!-- Enlace al archivo JavaScript -->
-<script src="../static/js/app.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <!-- Enlace a Bootstrap JS -->
 <script
