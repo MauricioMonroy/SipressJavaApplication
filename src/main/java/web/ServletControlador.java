@@ -26,9 +26,9 @@ public class ServletControlador extends HttpServlet {
                     case "actualizar":
                         this.actualizarUsuario(request, response);
                         break;
-//                    case "eliminar":
-//                        this.eliminarUsuario(request, response);
-//                        break;
+                    case "eliminar":
+                        this.eliminarUsuario(request, response);
+                        break;
                     default:
                         this.accionDefault(request, response);
                         break;
@@ -60,4 +60,83 @@ public class ServletControlador extends HttpServlet {
         request.getRequestDispatcher(jspActualizar).forward(request, response);
     }
 
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        String accion = request.getParameter("accion");
+        try {
+            if (accion != null) {
+                switch (accion) {
+                    case "insertar":
+                        this.insertarUsuario(request, response);
+                        break;
+                    case "modificar":
+                        this.modificarUsuario(request, response);
+                        break;
+                    default:
+                        this.accionDefault(request, response);
+                }
+            } else {
+                this.accionDefault(request, response);
+            }
+        } catch (SQLException e) {
+            System.out.println("e = " + e);
+        }
+    }
+
+    private void insertarUsuario(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException, SQLException {
+        String username = request.getParameter("username");
+        String password = request.getParameter("password");
+        String nombre = request.getParameter("nombre");
+        String apellido = request.getParameter("apellido");
+        String identificacion = request.getParameter("identificacion");
+        String telefono = request.getParameter("telefono");
+        String email = request.getParameter("email");
+        Boolean esPaciente = request.getParameter("esPaciente") != null ? Boolean.valueOf(request.getParameter("esPaciente")) : Boolean.FALSE;
+        Boolean esEmpleado = request.getParameter("esEmpleado") != null ? Boolean.valueOf(request.getParameter("esEmpleado")) : Boolean.FALSE;
+
+        System.out.println("esPaciente = " + esPaciente);
+        System.out.println("esEmpleado = " + esEmpleado);
+
+        Usuario usuario = new Usuario(username, password, nombre, apellido, identificacion, telefono, email, esPaciente, esEmpleado);
+
+        int registrosModificados = new UsuarioDaoJDBC().insertar(usuario);
+        System.out.println("registrosModificados = " + registrosModificados);
+
+        this.accionDefault(request, response);
+    }
+
+    private void modificarUsuario(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException, SQLException {
+        int idUsuario = Integer.parseInt(request.getParameter("idUsuario"));
+        String username = request.getParameter("username");
+        String password = request.getParameter("password");
+        String nombre = request.getParameter("nombre");
+        String apellido = request.getParameter("apellido");
+        String identificacion = request.getParameter("identificacion");
+        String telefono = request.getParameter("telefono");
+        String email = request.getParameter("email");
+        Boolean esPaciente = request.getParameter("esPaciente") != null ? Boolean.valueOf(request.getParameter("esPaciente")) : Boolean.FALSE;
+        Boolean esEmpleado = request.getParameter("esEmpleado") != null ? Boolean.valueOf(request.getParameter("esEmpleado")) : Boolean.FALSE;
+
+        Usuario usuario = new Usuario(idUsuario, username, password, nombre, apellido, identificacion, telefono, email, esPaciente, esEmpleado);
+
+        int registrosModificados = new UsuarioDaoJDBC().actualizar(usuario);
+        System.out.println("registrosModificados = " + registrosModificados);
+
+        this.accionDefault(request, response);
+    }
+
+    private void eliminarUsuario(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException, SQLException {
+        int idUsuario = Integer.parseInt(request.getParameter("idUsuario"));
+
+        Usuario usuario = new Usuario(idUsuario);
+
+        int registrosModificados = new UsuarioDaoJDBC().eliminar(usuario);
+        System.out.println("registrosModificados = " + registrosModificados);
+
+        this.accionDefault(request, response);
+    }
 }
