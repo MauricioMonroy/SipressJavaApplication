@@ -2,6 +2,10 @@
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <html>
 <head>
+    <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <meta content="0;url=${pageContext.request.contextPath}/ServletControlador">
     <title>Lista de Usuarios - SIPRESS</title>
     <!-- Bootstrap core CSS -->
     <link
@@ -24,12 +28,12 @@
 <!-- Botones de navegación -->
 <jsp:include page="/WEB-INF/paginas/comunes/botonesNavegacion.jsp"/>
 
-<section id="contenedor-lista">
-    <div class="container">
+<section>
+    <div class="container" id="contenedor-lista">
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <div class="card">
-                    <div class="card-header bg-primary text-light">
+                    <div class="card-header">
                         <h2 class="text-center">
                             <i class="fa-regular fa-address-book"></i> Lista de Usuarios
                         </h2>

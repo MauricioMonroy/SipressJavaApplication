@@ -134,6 +134,31 @@ body {
     }
 }
 
+/* Reglas para la sección de botones de navegación */
+#actions {
+    background: linear-gradient(75deg, #008a8a 10%, #55a78d);
+    padding: 20px 0;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+#actions .btn {
+    font-size: 1rem;
+    font-family: var(--bs-font-sans-serif), 'Monserrat', sans-serif;
+    border-radius: 5px;
+}
+
+#actions .btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+}
+
+#actions .btn-primary:hover {
+    background-color: #0056b3;
+    border-color: #0056b3;
+}
+
+
 /* Reglas para listas */
 #contenedor-lista {
     padding: 20px 0;
@@ -146,6 +171,8 @@ body {
 
 #contenedor-lista .card-header {
     border-radius: 10px 10px 0 0;
+    background-color: #113733;
+    color: #f3f3f3;
 }
 
 #contenedor-lista .form-floating .form-control {
@@ -291,17 +318,27 @@ a:active {
 
 /*FOOTER*/
 footer {
-    background: #123834;
-    min-height: 80px;
+    background: #113733;
+    max-height: fit-content;
+    min-height: fit-content;
 }
 
 footer p {
     color: #f3f3f3;
     text-align: center;
+    font-weight: lighter;
+    font-size: 17px;
+}
+
+footer span {
+    color: #f3f3f3;
+    text-align: center;
+    font-weight: bold;
+    font-size: 19px;
 }
 
 #iconos i {
-    font-size: 26px;
+    font-size: 22px;
     padding: 0 8px;
     color: #f3f3f3;
 }
