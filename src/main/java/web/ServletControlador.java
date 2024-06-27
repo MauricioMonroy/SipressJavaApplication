@@ -41,14 +41,12 @@ public class ServletControlador extends HttpServlet {
         }
     }
 
-
-    private void accionDefault(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
+    private void accionDefault(HttpServletRequest request, HttpServletResponse response)
+            throws IOException, SQLException {
         List<Usuario> usuarios = new UsuarioDaoJDBC().seleccionar();
-        System.out.println("usuarios = " + usuarios);
         HttpSession session = request.getSession();
         session.setAttribute("usuarios", usuarios);
-        session.setAttribute("totalUsuarios", usuarios.size());
-        response.sendRedirect("lista-usuarios.jsp");
+        response.sendRedirect("usuarios.jsp");
     }
 
     private void actualizarUsuario(HttpServletRequest request, HttpServletResponse response)
@@ -56,13 +54,13 @@ public class ServletControlador extends HttpServlet {
         int idUsuario = Integer.parseInt(request.getParameter("idUsuario"));
         Usuario usuario = new UsuarioDaoJDBC().seleccionarPorId(new Usuario(idUsuario).getIdUsuario());
         request.setAttribute("usuario", usuario);
-        String jspActualizar = "/WEB-INF/paginas/usuario/actualizarUsuario.jsp";
+        String jspActualizar = "/WEB-INF/paginas/usuarios/actualizarUsuario.jsp";
         request.getRequestDispatcher(jspActualizar).forward(request, response);
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws IOException, ServletException {
         String accion = request.getParameter("accion");
         try {
             if (accion != null) {
@@ -85,7 +83,7 @@ public class ServletControlador extends HttpServlet {
     }
 
     private void insertarUsuario(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException, SQLException {
+            throws IOException, SQLException, ServletException {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
         String nombre = request.getParameter("nombre");
@@ -108,7 +106,7 @@ public class ServletControlador extends HttpServlet {
     }
 
     private void modificarUsuario(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException, SQLException {
+            throws IOException, SQLException, ServletException {
         int idUsuario = Integer.parseInt(request.getParameter("idUsuario"));
         String username = request.getParameter("username");
         String password = request.getParameter("password");
@@ -129,7 +127,7 @@ public class ServletControlador extends HttpServlet {
     }
 
     private void eliminarUsuario(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException, SQLException {
+            throws IOException, SQLException, ServletException {
         int idUsuario = Integer.parseInt(request.getParameter("idUsuario"));
 
         Usuario usuario = new Usuario(idUsuario);

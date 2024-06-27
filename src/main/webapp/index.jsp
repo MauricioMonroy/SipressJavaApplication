@@ -1,6 +1,6 @@
-<%@ taglib prefix="c" uri="jakarta.tags.core" %>
-<%@ page contentType="text/html;charset=UTF-8" %>
-<html>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<!DOCTYPE html>
+<html lang="es">
 <head>
     <meta
             name="viewport"
@@ -81,7 +81,7 @@
                     </a>
                 </div>
                 <div class="col-md-3 col-sm-6">
-                    <a href="usuarios.jsp" class="text-decoration-none">
+                    <a href="ServletControlador" class="text-decoration-none">
                         <div class="card text-center h-100">
                             <div class="card-header">
                                 <h3 class="card-title">Usuarios</h3>

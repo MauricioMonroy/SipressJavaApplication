@@ -66,23 +66,6 @@ public class UsuarioDaoJDBC implements UsuarioDAO {
         usuario.setEsPaciente(rs.getBoolean("es_paciente"));
         usuario.setEsEmpleado(rs.getBoolean("es_empleado"));
 
-        if (usuario.getEsEmpleado()) {
-            Empleado empleado = new Empleado();
-            empleado.setIdEmpleado(rs.getInt("id_empleado"));
-            empleado.setCargo(rs.getString("cargo"));
-            empleado.setUsuario(usuario);
-            usuario.setEmpleado(empleado);
-        }
-
-        if (usuario.getEsPaciente()) {
-            Paciente paciente = new Paciente();
-            paciente.setIdPaciente(rs.getInt("id_paciente"));
-            paciente.setDetalleEps(rs.getString("detalle_eps"));
-            paciente.setFechaConsulta(rs.getDate("fecha_consulta"));
-            paciente.setUsuario(usuario);
-            usuario.setPaciente(paciente);
-        }
-
         return usuario;
     }
 

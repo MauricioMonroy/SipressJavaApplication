@@ -27,7 +27,7 @@
                     >
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="usuarios.jsp"
+                    <a class="nav-link" href="ServletControlador"
                     >Usuarios</a>
                 </li>
                 <li class="nav-item">
