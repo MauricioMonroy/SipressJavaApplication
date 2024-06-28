@@ -98,6 +98,41 @@ body {
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 
+/* Estilos personalizados para las tarjetas de index.jsp */
+.custom-card {
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    transition: transform 0.2s;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.custom-card:hover {
+    transform: translateY(-10px);
+}
+
+.custom-card .card-header {
+    background-color: var(--bs-dark-teal);
+    border-bottom: 1px solid #ddd;
+    padding: 20px;
+}
+
+.custom-card .card-title {
+    font-size: 1.25rem;
+    margin: 0;
+    color: var(--bs-light-rgb);
+}
+
+.custom-card .card-body {
+    padding: 20px;
+}
+
+.custom-card .card-img-top {
+    max-width: 100%;
+    height: auto;
+    border-bottom: 1px solid #ddd;
+    padding: 10px;
+}
+
 /*MEDIA QUERIES INDEX*/
 @media (max-width: 768px) {
     .row {
@@ -131,103 +166,6 @@ body {
 @media (max-width: 576px) {
     .card-text {
         display: none;
-    }
-}
-
-/* Reglas para la sección de botones de navegación */
-#actions {
-    background: var(--bs-gray-400);
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-#actions .btn {
-    font-size: 0.9rem;
-    border-radius: 5px;
-}
-
-#actions .btn-navegacion {
-    background-color: #007bff;
-    border-color: #007bff;
-    color: #f3f3f3;
-}
-
-#actions .btn-navegacion:hover {
-    background-color: #0056b3;
-    border-color: #0056b3;
-}
-
-/* Reglas Cabecero */
-#header-cabecero {
-    background: var(--bs-gray-dark);
-    padding-left: 20px;
-    padding-right: 20px;
-    color: #f3f3f3;
-    justify-content: left;
-}
-
-
-/* Reglas para listas */
-#contenedor-lista {
-    padding: 2px 0;
-}
-
-#contenedor-lista .card {
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-#contenedor-lista .card-header {
-    border-radius: 10px 10px 0 0;
-    background-color: #113733;
-    color: #f3f3f3;
-}
-
-#contenedor-lista .form-floating .form-control {
-    padding: 1.5rem 0.75rem;
-}
-
-#contenedor-lista .btn-register {
-    padding: 0.75rem 1rem;
-    font-size: 1rem;
-}
-
-
-/*MEDIA QUERIES REGISTRO USUARIOS*/
-@media (max-width: 768px) {
-    .card {
-        width: 90%;
-    }
-
-    .form-control {
-        font-size: 16px;
-    }
-
-    .btn-primary {
-        padding: 10px 20px;
-    }
-}
-
-@media (max-width: 576px) {
-    .card {
-        width: 100%;
-    }
-}
-
-@media (max-width: 768px) {
-    .form-group {
-        display: flex;
-        flex-direction: column;
-    }
-
-    .label {
-        margin-bottom: 10px;
-    }
-}
-
-@media (max-width: 768px) {
-    .form-group {
-        margin-bottom: 20px;
     }
 }
 
@@ -271,6 +209,261 @@ body {
         max-height: 30px;
     }
 }
+
+/* Reglas para la sección de botones de navegación */
+#actions {
+    background: var(--bs-gray-500);
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin: 5px auto;
+    padding: 4px;
+    width: 900px;
+}
+
+#actions .row {
+    align-items: center;
+    justify-content: center;
+}
+
+#actions .btn {
+    font-size: 1rem;
+    border-radius: 5px;
+    text-transform: none;
+    padding: 0.50rem 1rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    max-width: 250px;
+    min-width: 150px;
+    height: 50px;
+    margin: 0 auto;
+}
+
+#actions .btn i {
+    margin-right: 0.5rem;
+}
+
+#actions .btn-success {
+    background-color: #28a745;
+    border-color: #28a745;
+    color: #fff;
+}
+
+#actions .btn-success:hover {
+    background-color: #16772e;
+    border-color: #094d18;
+}
+
+#actions .btn-info {
+    background-color: #0590a9;
+    border-color: #0dcaf0;
+    color: #fff;
+}
+
+#actions .btn-info:hover {
+    background-color: #064f5d;
+    border-color: #1ba6c4;
+}
+
+#actions .btn-danger {
+    background-color: #d00e14;
+    border-color: #f5353b;
+    color: #fff;
+}
+
+#actions .btn-danger:hover {
+    background-color: #640204;
+    border-color: #91070b;
+}
+
+#actions .btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+    color: #fff;
+}
+
+#actions .btn-primary:hover {
+    background-color: #0056b3;
+    border-color: #004085;
+}
+
+/* Ajuste adicional para botones con iconos */
+#actions .btn i {
+    font-size: 1.4rem;
+    margin-right: 0.8rem;
+}
+
+/* Reglas Cabecero */
+#header-cabecero {
+    background: var(--bs-gray-dark);
+    padding-left: 20px;
+    padding-right: 20px;
+    color: #f3f3f3;
+    justify-content: left;
+}
+
+/* Reglas para listas */
+#contenedor-lista {
+    padding: unset;
+}
+
+#contenedor-lista .card {
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+#contenedor-lista .card-header {
+    border-radius: 10px 10px 0 0;
+    background-color: #113733;
+    color: #f3f3f3;
+}
+
+#contenedor-lista .form-floating .form-control {
+    padding: 0.5rem 0.25rem;
+}
+
+#contenedor-lista .btn-register {
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+}
+
+/* CSS para cambiar el tamaño de los checkboxes */
+.custom-checkbox {
+    width: 20px;
+    height: 20px;
+}
+
+.custom-checkbox:checked {
+    width: 20px;
+    height: 20px;
+}
+
+/*MEDIA QUERIES REGISTRO USUARIOS*/
+@media (max-width: 768px) {
+    .card {
+        width: 90%;
+    }
+
+    .form-control {
+        font-size: 16px;
+    }
+
+    .btn-primary {
+        padding: 10px 20px;
+    }
+}
+
+@media (max-width: 576px) {
+    .card {
+        width: 100%;
+    }
+}
+
+@media (max-width: 768px) {
+    .form-group {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .label {
+        margin-bottom: 10px;
+    }
+}
+
+@media (max-width: 768px) {
+    .form-group {
+        margin-bottom: 20px;
+    }
+}
+
+/* Estilos generales para el formulario de actualización */
+#details .card {
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+#details .card-header {
+    background-color: #007bff;
+    color: #fff;
+    border-bottom: 1px solid #007bff;
+    border-radius: 8px 8px 0 0;
+    padding: 1rem;
+    text-align: center;
+}
+
+#details .card-header h4 {
+    margin: 0;
+}
+
+#details .card-body {
+    padding: 1.5rem;
+}
+
+#details .form-group {
+    margin-bottom: 1.5rem;
+}
+
+#details .form-floating .form-control {
+    border-radius: 5px;
+    border: 1px solid #ced4da;
+}
+
+#details .form-floating .form-control:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.25);
+}
+
+#details .form-floating label {
+    color: #495057;
+    font-size: 0.9rem;
+}
+
+#details .form-check .h5 {
+    color: #007bff;
+    font-weight: 500;
+}
+
+#details .form-check .custom-checkbox {
+    margin-left: 0.5rem;
+}
+
+#details .form-check .custom-checkbox:checked {
+    background-color: #007bff;
+    border-color: #007bff;
+}
+
+#details .btn {
+    background-color: #007bff;
+    border: none;
+    border-radius: 5px;
+    color: #fff;
+    padding: 0.75rem 1.25rem;
+    transition: background-color 0.3s ease;
+}
+
+#details .btn:hover {
+    background-color: #0056b3;
+}
+
+/* Ajustes para dispositivos móviles */
+@media (max-width: 768px) {
+    #details .card {
+        margin-bottom: 1rem;
+    }
+
+    #details .form-group {
+        margin-bottom: 1rem;
+    }
+
+    #details .btn {
+        width: 100%;
+        margin-top: 1rem;
+    }
+}
+
 
 /* Reglas para formularios */
 #bg-contacto {
@@ -388,136 +581,6 @@ footer span {
 
 .carousel-inner .carousel-item a:hover .carousel-caption {
     background-color: rgba(0, 0, 0, 0.7);
-}
-
-
-/* Estilos para la sección Usuarios */
-#usuarios {
-    padding: 50px;
-    text-align: center;
-}
-
-/* Estilos para el formulario de modificación de perfil */
-#modificar-perfil {
-    margin-bottom: 50px;
-}
-
-#modificar-perfil form {
-    max-width: 400px;
-    margin: 0 auto;
-}
-
-#modificar-perfil label {
-    margin-bottom: 10px;
-}
-
-#modificar-perfil input[type="text"],
-#modificar-perfil input[type="email"],
-#modificar-perfil input[type="password"] {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 20px;
-}
-
-#modificar-perfil button {
-    display: flex;
-    width: 100%;
-    padding: 10px;
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-}
-
-#modificar-perfil button:hover {
-    background-color: #0056b3;
-}
-
-/*!* Estilos para la gestión de funciones relacionadas con los servicios de salud *!
-#gestion-salud ul {
-  list-style-type: none;
-  padding: 0;
-}
-
-#gestion-salud ul li {
-  margin-bottom: 10px;
-  display: flex;
-  align-items: center;
-  text-align: center;
-}
-
-#gestion-salud ul li a {
-  display: block;
-  flex: 2;
-  padding: 10px;
-  background-color: #f8f9fa;
-  color: #212529;
-  text-decoration: none;
-  border-radius: 5px;
-}
-
-#gestion-salud ul li a:hover {
-  background-color: #e2e6ea;
-}*/
-
-/* Estilos adicionales para las tarjetas de servicios */
-.card {
-    height: auto;
-}
-
-.card-body {
-    display: block;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    height: 100%;
-}
-
-.card-title {
-    font-size: 1.5rem;
-}
-
-.card-text {
-    font-size: 1rem;
-}
-
-#gestion-salud .card {
-    min-height: 300px;
-    transition: transform 0.3s;
-}
-
-#gestion-salud .card:hover {
-    transform: scale(1.05);
-}
-
-#gestion-salud .card-header {
-    background: #113733;
-}
-
-#gestion-salud .card-body {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    padding: 1.5rem;
-}
-
-#gestion-salud .row > div {
-    display: flex;
-    margin-bottom: 20px;
-}
-
-#gestion-salud .col-md-6 {
-    display: flex;
-    flex-direction: column;
-}
-
-#gestion-salud .col-md-6 .card {
-    flex: 1 1 auto;
-}
-
-.container.my-5 {
-    margin-bottom: 20px;
 }
 
 
@@ -697,7 +760,16 @@ textarea {
     box-shadow: inset 0px 1px 2px rgba(0, 0, 0, 0.1);
 }
 
-/* Estilos para la tabla de médicos */
+/* Estilos para la tabla */
+.table-responsive {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.table-responsive > .table {
+    margin-bottom: 0;
+}
+
 .table {
     width: 100%;
     border-collapse: collapse;

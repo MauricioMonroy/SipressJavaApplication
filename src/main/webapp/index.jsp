@@ -44,14 +44,14 @@
     </div>
 </header>
 <!-- Contenido de la página -->
-<section class="pt-2">
+<section class="index">
     <div class="container px-lg-3">
         <!-- Características de la página -->
-        <div class="row gx-lg-5" id="gestion-salud">
+        <div class="row gx-lg-5">
             <div class="row mt-3">
                 <div class="col-md-3 col-sm-6">
                     <a href="servicios.jsp" class="text-decoration-none">
-                        <div class="card text-center h-100">
+                        <div class="card text-center h-100 custom-card">
                             <div class="card-header">
                                 <h3 class="card-title">Servicios Disponibles</h3>
                             </div>
@@ -66,7 +66,7 @@
                 </div>
                 <div class="col-md-3 col-sm-6">
                     <a href="pacientes.jsp" class="text-decoration-none">
-                        <div class="card text-center h-100">
+                        <div class="card text-center h-100 custom-card">
                             <div class="card-header">
                                 <h3 class="card-title">Pacientes</h3>
                             </div>
@@ -82,7 +82,7 @@
                 </div>
                 <div class="col-md-3 col-sm-6">
                     <a href="ServletControlador" class="text-decoration-none">
-                        <div class="card text-center h-100">
+                        <div class="card text-center h-100 custom-card">
                             <div class="card-header">
                                 <h3 class="card-title">Usuarios</h3>
                             </div>
@@ -97,7 +97,7 @@
                 </div>
                 <div class="col-md-3 col-sm-6">
                     <a href="empleados.jsp" class="text-decoration-none">
-                        <div class="card text-center h-100">
+                        <div class="card text-center h-100 custom-card">
                             <div class="card-header">
                                 <h3 class="card-title">Personal Médico</h3>
                             </div>

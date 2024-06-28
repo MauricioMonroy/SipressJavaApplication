@@ -34,9 +34,6 @@
 
 <!-- Contenido de la página -->
 <jsp:include page="WEB-INF/paginas/usuario/listadoUsuarios.jsp"/>
-<%
-    System.out.println("Usuarios en JSP: " + request.getAttribute("usuarios"));
-%>
 
 <!-- Pie de página -->
 <jsp:include page="WEB-INF/paginas/comunes/footer.jsp"/>

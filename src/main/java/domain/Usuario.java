@@ -7,16 +7,17 @@
 package domain;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.experimental.Accessors;
-import lombok.experimental.SuperBuilder;
 
 import java.io.Serial;
 import java.io.Serializable;
 
 @Getter
 @Setter
-@NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode
 @Accessors(chain = true)
@@ -46,7 +47,11 @@ public class Usuario implements Serializable {
     @OneToOne(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
     private Empleado empleado;
 
+    public Usuario() {
+    }
+
     public Usuario(Integer idUsuario) {
+        this.idUsuario = idUsuario;
     }
 
     public Usuario(String username, String password, String nombre, String apellido,
@@ -69,6 +74,20 @@ public class Usuario implements Serializable {
         this.idUsuario = idUsuario;
         this.username = username;
         this.password = password;
+        this.nombre = nombre;
+        this.apellido = apellido;
+        this.identificacion = identificacion;
+        this.telefono = telefono;
+        this.email = email;
+        this.esPaciente = esPaciente;
+        this.esEmpleado = esEmpleado;
+    }
+
+    public Usuario(Integer idUsuario, String username, String nombre, String apellido,
+                   String identificacion, String telefono, String email,
+                   Boolean esPaciente, Boolean esEmpleado) {
+        this.idUsuario = idUsuario;
+        this.username = username;
         this.nombre = nombre;
         this.apellido = apellido;
         this.identificacion = identificacion;

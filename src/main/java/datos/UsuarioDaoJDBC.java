@@ -194,31 +194,18 @@ public class UsuarioDaoJDBC implements UsuarioDAO {
         Connection conn = null;
         PreparedStatement ps = null;
         int registros = 0;
-
         try {
             conn = this.conexionTransaccional != null ? this.conexionTransaccional : Conexion.getConnection();
             System.out.println("Ejecutando query SELECT_DELETE");
             ps = conn.prepareStatement(SQL_DELETE);
             ps.setInt(1, usuario.getIdUsuario());
             registros = ps.executeUpdate();
-
-            if (usuario.getEmpleado() != null) {
-                EmpleadoDaoJDBC empleadoDao = new EmpleadoDaoJDBC(conn);
-                empleadoDao.eliminar(usuario.getEmpleado());
-            }
-
-            if (usuario.getPaciente() != null) {
-                PacienteDaoJDBC pacienteDao = new PacienteDaoJDBC(conn);
-                pacienteDao.eliminar(usuario.getPaciente());
-            }
-
         } finally {
             close(ps);
             if (this.conexionTransaccional == null) {
                 close(conn);
             }
         }
-
         return registros;
     }
 }
