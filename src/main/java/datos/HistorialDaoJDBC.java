@@ -148,6 +148,12 @@ public class HistorialDaoJDBC implements HistorialDAO {
     @Override
     public int insertar(Historial historial) throws SQLException {
         int registros = 0;
+        Paciente paciente = historial.getPaciente();
+        HistorialDaoJDBC historialDao = new HistorialDaoJDBC();
+        if (historial != null) {
+            historial.setPaciente(paciente);
+            historialDao.insertar(historial);
+        }
 
         try (Connection conn = this.conexionTransaccional != null ? this.conexionTransaccional : getConnection();
              PreparedStatement ps = conn.prepareStatement(SQL_INSERT_HISTORIAL, Statement.RETURN_GENERATED_KEYS)) {
@@ -175,8 +181,8 @@ public class HistorialDaoJDBC implements HistorialDAO {
                 if (generatedKeys.next()) {
                     historial.setIdHistorial(generatedKeys.getInt(1));
                     PacienteDaoJDBC pacienteDao = new PacienteDaoJDBC(conn);
-                    Paciente paciente = historial.getPaciente();
-                    pacienteDao.insertar(paciente);
+                    Paciente paciente1 = historial.getPaciente();
+                    pacienteDao.insertar(paciente1);
                 }
             }
         }

@@ -30,7 +30,7 @@
 <jsp:include page="WEB-INF/paginas/usuario/cabecero.jsp"/>
 
 <!-- Botones de navegación -->
-<jsp:include page="WEB-INF/paginas/comunes/botonesNavegacion.jsp"/>
+<jsp:include page="WEB-INF/paginas/comunes/botonesNavegacionUsuarios.jsp"/>
 
 <!-- Contenido de la página -->
 <jsp:include page="WEB-INF/paginas/usuario/listadoUsuarios.jsp"/>

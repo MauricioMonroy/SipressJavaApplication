@@ -31,7 +31,7 @@
                     >Usuarios</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="pacientes.jsp"
+                    <a class="nav-link" href="ServletPaciente"
                     >Pacientes</a
                     >
                 </li>
@@ -42,7 +42,7 @@
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="empleados.jsp"
-                    >Personal Médico</a
+                    >Personal</a
                     >
                 </li>
                 <li class="nav-item">

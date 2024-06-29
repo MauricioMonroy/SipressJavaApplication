@@ -11,10 +11,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
+import java.sql.Date;
 import java.sql.SQLException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 @WebServlet("/ServletPaciente")
@@ -70,7 +68,7 @@ public class ServletPaciente extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws IOException, ServletException {
+            throws IOException {
         String accion = request.getParameter("accion");
         try {
             if (accion != null) {
@@ -94,40 +92,19 @@ public class ServletPaciente extends HttpServlet {
     }
 
     private void insertarPaciente(HttpServletRequest request, HttpServletResponse response)
-            throws IOException, SQLException, ServletException {
+            throws IOException, SQLException {
         String detalleEps = request.getParameter("detalleEps");
-        // Convierte la cadena de fecha a java.util.Date
-        String fechaConsultaStr = request.getParameter("fechaConsulta");
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        Date fechaConsulta = null;
-        try {
-            fechaConsulta = dateFormat.parse(fechaConsultaStr);
-        } catch (ParseException e) {
-            e.printStackTrace();
-            request.setAttribute("errorMessage", "Formato de fecha incorrecto.");
-            request.getRequestDispatcher("/WEB-INF/paginas/paciente/registrarPaciente.jsp").forward(request, response);
-            return;
-        }
+        Date fechaConsulta = Date.valueOf(request.getParameter("fechaConsulta"));
 
         // Datos del usuario asociado
-        String username = request.getParameter("username");
-        String password = request.getParameter("password");
-        String repeatPassword = request.getParameter("repeatPassword");
         String nombre = request.getParameter("nombre");
         String apellido = request.getParameter("apellido");
         String identificacion = request.getParameter("identificacion");
         String telefono = request.getParameter("telefono");
         String email = request.getParameter("email");
 
-        // Validación de contraseñas
-        if (!password.equals(repeatPassword)) {
-            request.setAttribute("errorMessage", "Las contraseñas no coinciden.");
-            request.getRequestDispatcher("/WEB-INF/paginas/paciente/registrarPaciente.jsp").forward(request, response);
-            return;
-        }
-
         // Crear objetos de dominio
-        Usuario usuario = new Usuario(username, password, nombre, apellido, identificacion, telefono, email, true, false);
+        Usuario usuario = new Usuario(nombre, apellido, identificacion, telefono, email, true, false);
         Paciente paciente = new Paciente(detalleEps, fechaConsulta, usuario);
 
         int registrosModificados = new PacienteDaoJDBC().insertar(paciente);
@@ -137,22 +114,10 @@ public class ServletPaciente extends HttpServlet {
     }
 
     private void modificarPaciente(HttpServletRequest request, HttpServletResponse response)
-            throws IOException, SQLException, ServletException {
+            throws IOException, SQLException {
         int idPaciente = Integer.parseInt(request.getParameter("idPaciente"));
         String detalleEps = request.getParameter("detalleEps");
-
-        // Convierte la cadena de fecha a java.util.Date
-        String fechaConsultaStr = request.getParameter("fechaConsulta");
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        Date fechaConsulta = null;
-        try {
-            fechaConsulta = dateFormat.parse(fechaConsultaStr);
-        } catch (ParseException e) {
-            e.printStackTrace();
-            request.setAttribute("errorMessage", "Formato de fecha incorrecto.");
-            request.getRequestDispatcher("/WEB-INF/paginas/paciente/registrarPaciente.jsp").forward(request, response);
-            return;
-        }
+        Date fechaConsulta = Date.valueOf(request.getParameter("fechaConsulta"));
 
         // Datos del usuario asociado
         String nombre = request.getParameter("nombre");
@@ -161,8 +126,7 @@ public class ServletPaciente extends HttpServlet {
         String telefono = request.getParameter("telefono");
         String email = request.getParameter("email");
 
-        Usuario usuario = new Usuario(nombre, apellido, identificacion, telefono, email);
-        Paciente paciente = new Paciente(idPaciente, detalleEps, fechaConsulta, usuario);
+        Paciente paciente = new Paciente(idPaciente, detalleEps, fechaConsulta, new Usuario(nombre, apellido, identificacion, telefono, email));
         int registrosModificados = new PacienteDaoJDBC().actualizar(paciente);
         System.out.println("registrosModificados = " + registrosModificados);
         this.accionDefault(request, response);

@@ -105,6 +105,17 @@ public class Usuario implements Serializable {
         this.esEmpleado = esEmpleado;
     }
 
+    public Usuario(String nombre, String apellido, String identificacion, String telefono,
+                   String email, boolean b, boolean b1) {
+        this.nombre = nombre;
+        this.apellido = apellido;
+        this.identificacion = identificacion;
+        this.telefono = telefono;
+        this.email = email;
+        this.esPaciente = b;
+        this.esEmpleado = b1;
+    }
+
     @Override
     public String toString() {
         return "Usuario{" +

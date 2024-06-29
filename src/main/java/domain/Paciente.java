@@ -7,13 +7,14 @@
 package domain;
 
 import jakarta.persistence.*;
-import lombok.*;
-import lombok.experimental.Accessors;
-import lombok.experimental.SuperBuilder;
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.util.Date;
+import java.sql.Date;
 import java.util.List;
 
 @Getter
@@ -48,6 +49,11 @@ public class Paciente extends Usuario implements Serializable {
 
     public Paciente(Integer idPaciente) {
         this.idPaciente = idPaciente;
+    }
+
+    public Paciente(String detalleEps, Usuario usuario) {
+        this.detalleEps = detalleEps;
+        this.usuario = usuario;
     }
 
     public Paciente(String detalleEps, Date fechaConsulta, Usuario usuario) {
@@ -130,7 +136,6 @@ public class Paciente extends Usuario implements Serializable {
                 ", detalleEps='" + detalleEps + '\'' +
                 ", fechaConsulta=" + fechaConsulta + ",\n" +
                 "| Usuario asociado{" + usuario + ",\n" +
-                "| Historial clínico{" + historial +
                 '}';
     }
 }

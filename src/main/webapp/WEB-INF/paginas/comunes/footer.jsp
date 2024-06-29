@@ -7,11 +7,11 @@
         </p>
         <div class="text-center">
             <a
-                    href="https://zajuna.sena.edu.co/"
-                    aria-label="Plataforma Zajuna SENA"
+                    href="https://github.com/MauricioMonroy"
+                    aria-label="Repositorio GitHub de Mauricio Monroy"
                     rel="noopener"
                     target="_blank"
-            ><i class="fa-solid fa-globe"></i
+            ><i class="fa-brands fa-github"></i
             ></a>
             <a
                     href="https://call.whatsapp.com/voice/JqIwkDwqS2qpUUqbFjMwwd"

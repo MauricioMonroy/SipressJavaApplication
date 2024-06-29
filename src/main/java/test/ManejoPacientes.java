@@ -43,14 +43,14 @@ public class ManejoPacientes {
             System.out.println("Se ha hecho el commit de la transacción");
 
             // Listar los registros existentes en la base de datos
-            /*List<Paciente> pacientes = pacienteDAO.seleccionar();
+            List<Paciente> pacientes = pacienteDAO.seleccionar();
             for (int i = 0; i < pacientes.size(); i++) {
                 System.out.println("Registro " + (i + 1) + ": " + pacientes.get(i));
-            }*/
+            }
 
             // Obtener y mostrar un solo registro
-            Paciente paciente = pacienteDAO.seleccionarPorId(8);
-            System.out.println("Paciente: " + paciente);
+//            Paciente paciente = pacienteDAO.seleccionarPorId(8);
+//            System.out.println("Paciente: " + paciente);
 
         } catch (SQLException ex) {
             ex.printStackTrace(System.out);
