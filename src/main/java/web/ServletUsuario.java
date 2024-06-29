@@ -13,8 +13,8 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 
-@WebServlet("/ServletControlador")
-public class ServletControlador extends HttpServlet {
+@WebServlet("/ServletUsuario")
+public class ServletUsuario extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)

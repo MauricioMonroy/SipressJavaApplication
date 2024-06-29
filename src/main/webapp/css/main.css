@@ -217,12 +217,8 @@ body {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     margin: 5px auto;
     padding: 4px;
-    width: 900px;
-}
-
-#actions .row {
-    align-items: center;
-    justify-content: center;
+    width: 100%;
+    max-width: 900px;
 }
 
 #actions .btn {
@@ -237,7 +233,7 @@ body {
     max-width: 250px;
     min-width: 150px;
     height: 50px;
-    margin: 0 auto;
+    margin: 10px;
 }
 
 #actions .btn i {
@@ -246,7 +242,7 @@ body {
 
 #actions .btn-success {
     background-color: #28a745;
-    border-color: #28a745;
+    border-color: #a6ffdd;
     color: #fff;
 }
 
@@ -268,7 +264,7 @@ body {
 
 #actions .btn-danger {
     background-color: #d00e14;
-    border-color: #f5353b;
+    border-color: #ff686b;
     color: #fff;
 }
 
@@ -293,6 +289,7 @@ body {
     font-size: 1.4rem;
     margin-right: 0.8rem;
 }
+
 
 /* Reglas Cabecero */
 #header-cabecero {

@@ -18,7 +18,6 @@ import java.util.List;
 
 @Getter
 @Setter
-@NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 
@@ -43,6 +42,39 @@ public class Paciente extends Usuario implements Serializable {
     private Usuario usuario;
     @OneToOne(mappedBy = "paciente")
     private Historial historial;
+
+    public Paciente() {
+    }
+
+    public Paciente(Integer idPaciente) {
+        this.idPaciente = idPaciente;
+    }
+
+    public Paciente(String detalleEps, Date fechaConsulta, Usuario usuario) {
+        this.detalleEps = detalleEps;
+        this.fechaConsulta = fechaConsulta;
+        this.usuario = usuario;
+    }
+
+    public Paciente(Integer idPaciente, String detalleEps, Date fechaConsulta) {
+        this.idPaciente = idPaciente;
+        this.detalleEps = detalleEps;
+        this.fechaConsulta = fechaConsulta;
+    }
+
+    public Paciente(int idPaciente, String detalleEps, Date fechaConsulta, Usuario usuario) {
+        super(usuario.getNombre(), usuario.getApellido(), usuario.getIdentificacion(), usuario.getTelefono(), usuario.getEmail());
+        this.idPaciente = idPaciente;
+        this.detalleEps = detalleEps;
+        this.fechaConsulta = fechaConsulta;
+    }
+
+    public Paciente(String nombre, String apellido, String identificacion, String telefono, String email, Integer idPaciente, String detalleEps, Date fechaConsulta) {
+        super(nombre, apellido, identificacion, telefono, email);
+        this.idPaciente = idPaciente;
+        this.detalleEps = detalleEps;
+        this.fechaConsulta = fechaConsulta;
+    }
 
     public Paciente(String username, String password, String nombre, String apellido, String identificacion, String telefono, String email, Boolean esPaciente, Boolean esEmpleado, String detalleEps, Date fechaConsulta) {
         super(username, password, nombre, apellido, identificacion, telefono, email, esPaciente, esEmpleado);

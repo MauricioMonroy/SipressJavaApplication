@@ -54,7 +54,7 @@
                                         </c:choose>
                                     </td>
                                     <td>
-                                        <a href="${pageContext.request.contextPath}/ServletControlador?accion=actualizar&idUsuario=${usuario.idUsuario}"
+                                        <a href="${pageContext.request.contextPath}/ServletUsuario?accion=actualizar&idUsuario=${usuario.idUsuario}"
                                            class="btn btn-secondary">
                                             <i class="fa-regular fa-pen-to-square"></i> Actualizar
                                         </a>

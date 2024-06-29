@@ -81,7 +81,7 @@
                     </a>
                 </div>
                 <div class="col-md-3 col-sm-6">
-                    <a href="ServletControlador" class="text-decoration-none">
+                    <a href="ServletUsuario" class="text-decoration-none">
                         <div class="card text-center h-100 custom-card">
                             <div class="card-header">
                                 <h3 class="card-title">Usuarios</h3>

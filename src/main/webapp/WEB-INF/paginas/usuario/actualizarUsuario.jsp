@@ -24,7 +24,7 @@
 <!--Cabecero-->
 <jsp:include page="/WEB-INF/paginas/usuario/cabecero.jsp"/>
 <!-- Contenido de la página -->
-<form action="${pageContext.request.contextPath}/ServletControlador?accion=modificar&idUsuario=${usuario.idUsuario}"
+<form action="${pageContext.request.contextPath}/ServletUsuario?accion=modificar&idUsuario=${usuario.idUsuario}"
       method="post" class="was-validated">
     <!-- Botones de navegación -->
     <jsp:include page="/WEB-INF/paginas/comunes/botonesNavegacionEdicion.jsp"/>

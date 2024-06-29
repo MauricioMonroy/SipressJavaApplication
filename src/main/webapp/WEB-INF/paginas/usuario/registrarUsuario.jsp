@@ -20,7 +20,7 @@
                     <span></span>
                 </button>
             </div>
-            <form action="${pageContext.request.contextPath}/ServletControlador?accion=insertar"
+            <form action="${pageContext.request.contextPath}/ServletUsuario?accion=insertar"
                   method="post" class="was-validated">
                 <div class="modal-body">
                     <c:if test="${not empty errorMessage}">

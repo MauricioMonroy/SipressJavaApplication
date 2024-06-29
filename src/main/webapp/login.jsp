@@ -37,7 +37,7 @@
                                 <form
                                     name="form-login"
                                     id="loginForm"
-                                    action="/login/ServletControlador"
+                                    action="/login/ServletUsuario"
                                     method="post">
                                     <div class="form-floating mb-3 text-dark">
                                         <input
