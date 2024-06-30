@@ -9,14 +9,15 @@
 
 <!-- Cabecero -->
 <header class="py-3">
-    <div class="container px-lg-3">
-        <div class="p-2 p-lg-3 bg-light rounded-3 text-center">
+    <div class="container">
+        <div class="row bg-light rounded-3 text-center">
             <div class="m-2 m-lg-3">
-                <h1 class="fs-2 fw-bold">
+                <h1 class="fs-3 fw-bold">
                     Bienvenido a <span class="text-success fw-bold fs-2">SIPRESS</span>
                 </h1>
-                <p class="fs-5">
-                    SIPRESS es una aplicación diseñada para simplificar la gestión de las
+                <p class="fs-6">
+                    SIPRESS (Sistema Integral para la Prestación de Servicios de Salud)
+                    es una aplicación diseñada para simplificar la gestión de las
                     Instituciones Prestadoras de Salud (IPS). Facilita el registro de pacientes
                     y usuarios, así como la manipulación de historiales médicos y el control de
                     la información relacionada. Su objetivo principal es mejorar la atención
@@ -29,71 +30,69 @@
 
 <!-- Contenido de la página -->
 <section class="index">
-    <div class="container px-lg-3">
+    <div class="container">
         <!-- Características de la página -->
         <div class="row gx-lg-5">
-            <div class="row mt-3">
-                <div class="col-md-3 col-sm-6">
-                    <a href="ServletUsuario" class="text-decoration-none">
-                        <div class="card text-center h-100 custom-card">
-                            <div class="card-header">
-                                <h3 class="card-title">Usuarios</h3>
-                            </div>
-                            <div class="card-body">
-                                <img
-                                        src="images/Users.png"
-                                        alt="users.png"
-                                        class="card-img-top"/>
-                            </div>
+            <div class="col-md-3 col-sm-6">
+                <a href="ServletUsuario" class="text-decoration-none">
+                    <div class="card text-center h-100 custom-card">
+                        <div class="card-header">
+                            <h3 class="card-title">Usuarios</h3>
                         </div>
-                    </a>
-                </div>
-                <div class="col-md-3 col-sm-6">
-                    <a href="ServletPaciente" class="text-decoration-none">
-                        <div class="card text-center h-100 custom-card">
-                            <div class="card-header">
-                                <h3 class="card-title">Pacientes</h3>
-                            </div>
+                        <div class="card-body">
+                            <img
+                                    src="images/Users.png"
+                                    alt="users.png"
+                                    class="card-img-top"/>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="col-md-3 col-sm-6">
+                <a href="ServletPaciente" class="text-decoration-none">
+                    <div class="card text-center h-100 custom-card">
+                        <div class="card-header">
+                            <h3 class="card-title">Pacientes</h3>
+                        </div>
 
-                            <div class="card-body">
-                                <img
-                                        src="images/patients.png"
-                                        alt="patients.png"
-                                        class="card-img-top"/>
-                            </div>
+                        <div class="card-body">
+                            <img
+                                    src="images/patients.png"
+                                    alt="patients.png"
+                                    class="card-img-top"/>
                         </div>
-                    </a>
-                </div>
-                <div class="col-md-3 col-sm-6">
-                    <a href="empleados.jsp" class="text-decoration-none">
-                        <div class="card text-center h-100 custom-card">
-                            <div class="card-header">
-                                <h3 class="card-title">Personal</h3>
-                            </div>
-                            <div class="card-body">
-                                <img
-                                        src="images/equipo-medico.png"
-                                        alt="equipo-medico.png"
-                                        class="card-img-top"/>
-                            </div>
+                    </div>
+                </a>
+            </div>
+            <div class="col-md-3 col-sm-6">
+                <a href="empleados.jsp" class="text-decoration-none">
+                    <div class="card text-center h-100 custom-card">
+                        <div class="card-header">
+                            <h3 class="card-title">Personal</h3>
                         </div>
-                    </a>
-                </div>
-                <div class="col-md-3 col-sm-6">
-                    <a href="servicios.jsp" class="text-decoration-none">
-                        <div class="card text-center h-100 custom-card">
-                            <div class="card-header">
-                                <h3 class="card-title">Servicios</h3>
-                            </div>
-                            <div class="card-body">
-                                <img
-                                        src="images/servicios.png"
-                                        alt="servicios.png"
-                                        class="card-img-top"/>
-                            </div>
+                        <div class="card-body">
+                            <img
+                                    src="images/equipo-medico.png"
+                                    alt="equipo-medico.png"
+                                    class="card-img-top"/>
                         </div>
-                    </a>
-                </div>
+                    </div>
+                </a>
+            </div>
+            <div class="col-md-3 col-sm-6">
+                <a href="servicios.jsp" class="text-decoration-none">
+                    <div class="card text-center h-100 custom-card">
+                        <div class="card-header">
+                            <h3 class="card-title">Servicios</h3>
+                        </div>
+                        <div class="card-body">
+                            <img
+                                    src="images/servicios.png"
+                                    alt="servicios.png"
+                                    class="card-img-top"/>
+                        </div>
+                    </div>
+                </a>
             </div>
         </div>
     </div>

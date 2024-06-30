@@ -12,7 +12,7 @@
 <jsp:include page="WEB-INF/paginas/paciente/cabecero.jsp"/>
 
 <!-- Botones de navegación -->
-<jsp:include page="WEB-INF/paginas/comunes/botonesNavegacionPacientes.jsp"/>
+<jsp:include page="WEB-INF/paginas/paciente/botonesNavegacionPacientes.jsp"/>
 
 <!-- Contenido de la página -->
 <jsp:include page="WEB-INF/paginas/paciente/listadoPacientes.jsp"/>

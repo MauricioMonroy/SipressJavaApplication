@@ -9,13 +9,13 @@
 <jsp:include page="WEB-INF/paginas/comunes/navbar.jsp"/>
 
 <!--Cabecero-->
-<jsp:include page="WEB-INF/paginas/usuario/cabecero.jsp"/>
+<jsp:include page="WEB-INF/paginas/historial/cabecero.jsp"/>
 
 <!-- Botones de navegación -->
-<jsp:include page="WEB-INF/paginas/usuario/botonesNavegacionUsuarios.jsp"/>
+<jsp:include page="WEB-INF/paginas/historial/botonesNavegacionHistoriales.jsp"/>
 
 <!-- Contenido de la página -->
-<jsp:include page="WEB-INF/paginas/usuario/listadoUsuarios.jsp"/>
+<jsp:include page="WEB-INF/paginas/historial/listadoHistoriales.jsp"/>
 
 <!-- Pie de página -->
 <jsp:include page="WEB-INF/paginas/comunes/footer.jsp"/>

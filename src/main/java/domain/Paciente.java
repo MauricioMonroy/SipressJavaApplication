@@ -47,7 +47,7 @@ public class Paciente extends Usuario implements Serializable {
     public Paciente() {
     }
 
-    public Paciente(Integer idPaciente) {
+    public Paciente(int idPaciente) {
         this.idPaciente = idPaciente;
     }
 

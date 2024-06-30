@@ -15,7 +15,7 @@
 <form action="${pageContext.request.contextPath}/ServletUsuario?accion=modificar&idUsuario=${paciente.idPaciente}"
       method="post" class="was-validated">
     <!-- Botones de navegación -->
-    <jsp:include page="/WEB-INF/paginas/comunes/botonesEdicionUsuarios.jsp"/>
+    <jsp:include page="/WEB-INF/paginas/usuario/botonesEdicionUsuarios.jsp"/>
     <!-- Formulario de edición -->
     <section id="details">
         <div class="container">

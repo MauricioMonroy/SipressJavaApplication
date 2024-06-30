@@ -23,12 +23,6 @@
             <form action="${pageContext.request.contextPath}/ServletPaciente?accion=insertar"
                   method="post" class="was-validated">
                 <div class="modal-body">
-                    <c:if test="${not empty errorMessage}">
-                        <div class="alert alert-danger">
-                                ${errorMessage}
-                        </div>
-                    </c:if>
-
                     <div class="form-floating form-group mb-3">
                         <input type="text" class="form-control" id="detalleEps"
                                name="detalleEps" placeholder="Detalle Eps" required/>

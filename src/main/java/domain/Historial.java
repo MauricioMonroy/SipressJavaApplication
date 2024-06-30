@@ -11,7 +11,8 @@ import lombok.*;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.util.Date;
+import java.sql.Date;
+import java.sql.Timestamp;
 
 @Getter
 @Setter
@@ -58,12 +59,57 @@ public class Historial implements Serializable {
     @Column(name = "notas_adicionales")
     private String notasAdicionales;
     @Column(name = "ultima_actualizacion")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date ultimaActualizacion;
+    private Timestamp ultimaActualizacion;
     @JoinColumn(name = "id_paciente", referencedColumnName = "id_paciente")
     @OneToOne
     private Paciente paciente;
 
+    public Historial(int idHistorial) {
+        this.idHistorial = idHistorial;
+    }
+
+    public Historial(String motivoConsulta, Date fechaNacimiento, String sexo, String direccion, String ocupacion,
+                     String contactoEmergencia, String nombreContactoEmergencia, String alergias,
+                     String condicionesPreexistentes, String medicamentosActuales, String historialVacunas,
+                     String grupoSanguineo, String notasAdicionales, Timestamp ultimaActualizacion, Paciente paciente) {
+        this.motivoConsulta = motivoConsulta;
+        this.fechaNacimiento = fechaNacimiento;
+        this.sexo = sexo;
+        this.direccion = direccion;
+        this.ocupacion = ocupacion;
+        this.contactoEmergencia = contactoEmergencia;
+        this.nombreContactoEmergencia = nombreContactoEmergencia;
+        this.alergias = alergias;
+        this.condicionesPreexistentes = condicionesPreexistentes;
+        this.medicamentosActuales = medicamentosActuales;
+        this.historialVacunas = historialVacunas;
+        this.grupoSanguineo = grupoSanguineo;
+        this.notasAdicionales = notasAdicionales;
+        this.ultimaActualizacion = ultimaActualizacion;
+        this.paciente = paciente;
+    }
+
+    public Historial(int idHistorial, String motivoConsulta, Date fechaNacimiento, String sexo, String direccion,
+                     String ocupacion, String contactoEmergencia, String nombreContactoEmergencia, String alergias,
+                     String condicionesPreexistentes, String medicamentosActuales, String historialVacunas,
+                     String grupoSanguineo, String notasAdicionales, Timestamp ultimaActualizacion, Paciente paciente) {
+        this.idHistorial = idHistorial;
+        this.motivoConsulta = motivoConsulta;
+        this.fechaNacimiento = fechaNacimiento;
+        this.sexo = sexo;
+        this.direccion = direccion;
+        this.ocupacion = ocupacion;
+        this.contactoEmergencia = contactoEmergencia;
+        this.nombreContactoEmergencia = nombreContactoEmergencia;
+        this.alergias = alergias;
+        this.condicionesPreexistentes = condicionesPreexistentes;
+        this.medicamentosActuales = medicamentosActuales;
+        this.historialVacunas = historialVacunas;
+        this.grupoSanguineo = grupoSanguineo;
+        this.notasAdicionales = notasAdicionales;
+        this.ultimaActualizacion = ultimaActualizacion;
+        this.paciente = paciente;
+    }
 
     @Override
     public String toString() {
