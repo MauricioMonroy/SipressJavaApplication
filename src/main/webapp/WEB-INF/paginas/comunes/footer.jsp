@@ -1,9 +1,9 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" %>
 <footer class="py-5" id="iconos">
     <div class="py-2 text-center">
-        <span> Copyright &copy; 2024, Codelicht Software Solutions</span>
+        <span> Copyright &copy; 2024, Codelicht Software Solutions.</span>
         <p>
-            Todos los derechos reservados
+            Todos los derechos reservados.
         </p>
         <div class="text-center">
             <a

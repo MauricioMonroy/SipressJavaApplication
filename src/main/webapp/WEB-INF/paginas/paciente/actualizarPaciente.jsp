@@ -1,28 +1,16 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html lang="es">
-<head>
-    <title>Actualizar Usuario - SIPRESS</title>
-    <!-- Bootstrap core CSS -->
-    <link
-            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-            rel="stylesheet"
-            integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
-            crossorigin="anonymous"/>
-    <!-- Fontawesome íconos -->
-    <script
-            src="https://kit.fontawesome.com/dc97c04e5e.js"
-            crossorigin="anonymous"></script>
-    <!-- Enlace a hoja de estilos CSS -->
-    <link href="css/main.css" rel="stylesheet"/>
-    <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="images/favicon.ico"/>
-</head>
+<!-- Head común a todas lás vistas -->
+<jsp:include page="/WEB-INF/paginas/comunes/head.jsp"/>
+
 <body>
 <!-- Navbar con función responsive-->
 <jsp:include page="/WEB-INF/paginas/comunes/navbar.jsp"/>
+
 <!--Cabecero-->
 <jsp:include page="/WEB-INF/paginas/usuario/cabecero.jsp"/>
+
 <!-- Contenido de la página -->
 <form action="${pageContext.request.contextPath}/ServletUsuario?accion=modificar&idUsuario=${paciente.idPaciente}"
       method="post" class="was-validated">
@@ -103,6 +91,7 @@
         </div>
     </section>
 </form>
+
 <!-- Pie de página -->
 <jsp:include page="/WEB-INF/paginas/comunes/footer.jsp"/>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

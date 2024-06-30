@@ -53,6 +53,7 @@
     --bs-body-font-weight: 400;
     --bs-body-line-height: 1.5;
     --bs-body-text-align: center;
+    --bs-scroll-height: 100px;
     --bs-body-color: #212529;
     --bs-body-bg: #fff;
     --bs-border-width: 1px;
@@ -85,6 +86,7 @@
 
 body {
     margin: 0;
+    padding-top: 75px;
     font-family: var(--bs-font-sans-serif), 'Monserrat', sans-serif;
     font-size: var(--bs-body-font-size);
     font-weight: var(--bs-body-font-weight);
@@ -182,12 +184,25 @@ body {
     transition: color 0.3s ease, background-color 0.3s ease;
 }
 
+#menu .dropdown-menu {
+    background-color: var(--bs-dark-teal);
+}
+
+#menu form {
+    padding-left: 150px;
+}
+
 #menu form > button {
     font-size: 15px;
     font-weight: normal;
     color: rgba(255, 255, 255, 0.9);
     text-decoration: none;
     transition: color 0.3s ease, background-color 0.3s ease;
+}
+
+#menu form > input {
+    max-width: 275px;
+    max-height: fit-content;
 }
 
 /* Efecto on-hover */
@@ -552,32 +567,86 @@ footer span {
     content: "— ";
 }
 
-/* Estilos para apartado de servicios */
-.carousel {
-    max-width: 1920px;
-    margin: 0 auto;
+/* Estilos para la gestión de funciones relacionadas con los servicios de salud */
+#gestion-salud ul {
+    list-style-type: none;
+    padding: 0;
 }
 
-.carousel-inner img {
-    max-width: none;
-    height: 640px;
-    object-fit: cover;
+#gestion-salud ul li {
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    text-align: center;
 }
 
-/* Opcional: estilos adicionales para mejorar la apariencia del carrusel */
-.carousel-caption {
-    background-color: rgba(0, 0, 0, 0.5);
+#gestion-salud ul li a {
+    display: block;
+    flex: 2;
     padding: 10px;
+    background-color: #f8f9fa;
+    color: #212529;
+    text-decoration: none;
     border-radius: 5px;
 }
 
-.carousel-inner .carousel-item a {
-    color: inherit;
-    text-decoration: none;
+#gestion-salud ul li a:hover {
+    background-color: #e2e6ea;
 }
 
-.carousel-inner .carousel-item a:hover .carousel-caption {
-    background-color: rgba(0, 0, 0, 0.7);
+/* Estilos adicionales para las tarjetas de servicios */
+.card {
+    height: 100%;
+}
+
+.card-body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+.card-title {
+    font-size: 1.5rem;
+}
+
+.card-text {
+    font-size: 1rem;
+}
+
+#gestion-salud .card {
+    min-height: 300px;
+    transition: transform 0.3s;
+}
+
+#gestion-salud .card:hover {
+    transform: scale(1.05);
+}
+
+#gestion-salud .card-header {
+    background-color: var(--bs-dark-teal);
+}
+
+#gestion-salud .card-body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 1.5rem;
+}
+
+#gestion-salud .row>div {
+    display: flex;
+}
+
+#gestion-salud .col-md-6 {
+    display: flex;
+    flex-direction: column;
+}
+
+#gestion-salud .col-md-6 .card {
+    flex: 1 1 auto;
 }
 
 

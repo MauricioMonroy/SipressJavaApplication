@@ -1,6 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
-<nav class="navbar navbar-expand-lg navbar-dark" id="menu">
-    <div class="container px-lg-5">
+<nav class="navbar navbar-expand-lg fixed-top navbar-dark" id="menu">
+    <div class="container-md">
         <a class="navbar-brand" href="index.jsp">
             <img
                     src="images/nb-logo.png"
@@ -20,7 +20,7 @@
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
                     <a class="nav-link" aria-current="page" href="index.jsp"
                     >Inicio</a
@@ -36,32 +36,42 @@
                     >
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="servicios.jsp"
-                    >Servicios</a
-                    >
-                </li>
-                <li class="nav-item">
                     <a class="nav-link" href="empleados.jsp"
                     >Personal</a
                     >
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="contacto.jsp">Contacto</a>
-                </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link text-light"
-                    ><i class="fas fa-user"></i>
-                        <span>Usuario:</span>
-                        <span>Current user</span>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#"
+                       role="button" data-bs-toggle="dropdown"
+                       aria-expanded="false">
+                        Servicios
                     </a>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a class="dropdown-item" href="ServletHistorial">
+                            Gestión de Historias Clínicas
+                        </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item disabled" aria-disabled="true"
+                               href="#">
+                                Gestión de Citas médicas
+                            </a>
+                        </li>
+                    </ul>
                 </li>
+
                 <li class="nav-item">
-                    <a href="login.jsp" class="nav-link text-light"
-                    ><i class="fas fa-user-times"></i>
-                        <span>Salir</span>
-                    </a>
+                    <a class="nav-link" href="servicios.jsp"
+                    >Servicios</a
+                    >
                 </li>
             </ul>
+            <form class="d-flex" role="search">
+                <input class="form-control me-2" type="search" placeholder="Buscar" aria-label="Search">
+                <button class="btn btn-outline-success" type="submit">Buscar</button>
+            </form>
+
         </div>
     </div>
 </nav>
