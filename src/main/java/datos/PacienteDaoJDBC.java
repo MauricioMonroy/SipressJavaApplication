@@ -71,7 +71,7 @@ public class PacienteDaoJDBC implements PacienteDAO {
                 getConnection(); PreparedStatement ps = conn.prepareStatement(SQL_SELECT);
              ResultSet rs = ps.executeQuery()) {
 
-            System.out.println("Ejecutando query... ");
+            System.out.println("Ejecutando query SELECT ");
 
             while (rs.next()) {
                 pacientes.add(mapPaciente(rs));

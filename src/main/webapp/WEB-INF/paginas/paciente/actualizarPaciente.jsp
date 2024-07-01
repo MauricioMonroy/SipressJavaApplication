@@ -1,14 +1,14 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" %>
 <!DOCTYPE html>
 <html lang="es">
-<!-- Head común a todas lás vistas -->
+<!-- Head común a todas las vistas -->
 <jsp:include page="/WEB-INF/paginas/comunes/head.jsp"/>
 
 <body>
-<!-- Navbar con función responsive-->
+<!-- Navbar con función responsive -->
 <jsp:include page="/WEB-INF/paginas/comunes/navbar.jsp"/>
 
-<!--Cabecero-->
+<!-- Cabecero -->
 <jsp:include page="/WEB-INF/paginas/usuario/cabecero.jsp"/>
 
 <!-- Contenido de la página -->
@@ -19,70 +19,61 @@
     <!-- Formulario de edición -->
     <section id="details">
         <div class="container">
-            <div class="row">
-                <div class="col">
+            <div class="row justify-content-center">
+                <div class="col-lg-9">
                     <div class="card">
                         <div class="card-header">
                             <h4>Modificar Registro</h4>
                         </div>
                         <div class="card-body">
                             <div class="form-floating form-group mb-3">
-                                <input type="text" class="form-control" id="username"
-                                       name="username" placeholder="Username" required
-                                       value="${usuario.username}"/>
-                                <label for="username">Nombre de usuario</label>
+                                <input type="text" class="form-control" id="detalleEps"
+                                       name="detalleEps" placeholder="Detalle Eps" required
+                                       value="${paciente.detalleEps}"/>
+                                <label for="detalleEps">EPS y tipo de vinculación</label>
+                            </div>
+
+                            <div class="form-floating form-group mb-3">
+                                <input type="text" class="form-control" id="fechaConsulta"
+                                       name="fechaConsulta" placeholder="YYYY-MM-DD" pattern="\d{4}-\d{2}-\d{2}"
+                                       required
+                                       value="${paciente.fechaConsulta}"/>
+                                <label for="fechaConsulta">Fecha de consulta (YYYY-MM-DD)</label>
                             </div>
 
                             <div class="form-floating form-group mb-3">
                                 <input type="text" class="form-control" id="nombre"
                                        name="nombre" placeholder="Nombre" required
-                                       value="${usuario.nombre}"/>
+                                       value="${paciente.usuario.nombre}"/>
                                 <label for="nombre">Nombre(s)</label>
                             </div>
 
                             <div class="form-floating form-group mb-3">
                                 <input type="text" class="form-control" id="apellido"
                                        name="apellido" placeholder="Apellido" required
-                                       value="${usuario.apellido}"/>
+                                       value="${paciente.usuario.apellido}"/>
                                 <label for="apellido">Apellido(s)</label>
                             </div>
 
                             <div class="form-floating form-group mb-3">
                                 <input type="text" class="form-control" id="identificacion"
                                        name="identificacion" placeholder="Identificación" required
-                                       value="${usuario.identificacion}"/>
+                                       value="${paciente.usuario.identificacion}"/>
                                 <label for="identificacion">Identificación</label>
                             </div>
 
                             <div class="form-floating form-group mb-3">
                                 <input type="tel" class="form-control" id="telefono"
                                        name="telefono" placeholder="telefono" required
-                                       value="${usuario.telefono}"/>
+                                       value="${paciente.usuario.telefono}"/>
                                 <label for="telefono">Teléfono</label>
                             </div>
 
                             <div class="form-floating form-group mb-3">
                                 <input type="email" class="form-control" id="email"
                                        name="email" placeholder="nombre@ejemplo.com" required
-                                       value="${usuario.email}"/>
+                                       value="${paciente.usuario.email}"/>
                                 <label for="email">Correo electrónico</label>
-                            </div>
-
-                            <div class="form-check form-group mb-3">
-                                <div>
-                                    <label class="h5">
-                                        ¿Es Paciente?
-                                        <input type="checkbox" name="esPaciente"
-                                               class="custom-checkbox"
-                                               value="${usuario.esPaciente}"/>
-                                    </label>
-                                    <label class="h5">
-                                        ¿Es Empleado?
-                                        <input type="checkbox" name="esEmpleado"
-                                               class="custom-checkbox"
-                                               value="${usuario.esEmpleado}"/>
-                                    </label>
-                                </div>
                             </div>
                         </div>
                     </div>

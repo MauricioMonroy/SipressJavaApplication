@@ -398,7 +398,7 @@ body {
 }
 
 #details .card-header {
-    background-color: #007bff;
+    background-color: var(--bs-dark-teal);
     color: #fff;
     border-bottom: 1px solid #007bff;
     border-radius: 8px 8px 0 0;
@@ -412,6 +412,11 @@ body {
 
 #details .card-body {
     padding: 1.5rem;
+}
+
+#details .form-floating {
+    width: 100%;
+    font-size: 0.9rem;
 }
 
 #details .form-group {
@@ -430,6 +435,10 @@ body {
 
 #details .form-floating label {
     color: #495057;
+    font-size: 0.9rem;
+}
+
+#details .form-floating input {
     font-size: 0.9rem;
 }
 
@@ -460,6 +469,7 @@ body {
     background-color: #0056b3;
 }
 
+
 /* Ajustes para dispositivos móviles */
 @media (max-width: 768px) {
     #details .card {
@@ -474,51 +484,6 @@ body {
         width: 100%;
         margin-top: 1rem;
     }
-}
-
-
-/* Reglas para formularios */
-#bg-contacto {
-    position: relative;
-}
-
-#seccion-contacto {
-    background: url('/images/support.png') no-repeat center;
-    background-size: 71%;
-    justify-content: center;
-    align-items: center;
-    min-height: 300px;
-}
-
-#contenedor-formulario {
-    margin-top: 20px;
-    margin-bottom: 20px;
-    position: relative;
-    top: auto;
-    left: auto;
-    transform: translateX(-15%);
-    background: rgba(251, 250, 250, 0.8);
-    border-radius: 5px;
-    max-width: 75%;
-    min-height: 50%;
-    padding: 20px;
-}
-
-#titulo-formulario {
-    color: #3f3f3f;
-    font-size: 1.75rem;
-    font-weight: bold;
-}
-
-p.text-light {
-    font-size: 1.50rem;
-    font-weight: bold;
-    color: #ffffff;
-    text-align: center;
-}
-
-.hidden {
-    display: none;
 }
 
 /* Reglas para enlaces */
@@ -636,7 +601,7 @@ footer span {
     padding: 1.5rem;
 }
 
-#gestion-salud .row>div {
+#gestion-salud .row > div {
     display: flex;
 }
 
@@ -912,59 +877,6 @@ textarea {
     background-color: rgba(0, 0, 0, 0.075);
 }
 
-/* Ajustes para el formulario de solicitud de citas */
-#solicitud-citas {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 5px;
-}
-
-/* Ajustes para los campos de entrada */
-.form-floating {
-    margin-bottom: 1rem;
-}
-
-.form-floating > .form-control {
-    padding: 1rem 0.75rem;
-}
-
-.form-floating > label {
-    padding: 0.5rem 0.75rem;
-    left: 0.75rem;
-}
-
-.form-floating select {
-    padding-right: 3rem;
-}
-
-.form-label {
-    font-weight: bold;
-    padding: 1px;
-}
-
-.form-control {
-    margin: 5px;
-    max-width: 100%;
-}
-
-.btn-contact {
-    width: auto;
-    padding: 0.75rem 1.5rem;
-    font-size: 1rem;
-}
-
-.hidden {
-    display: none;
-}
-
-p.text-light {
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: #ffffff;
-    text-align: center;
-}
-
-
 /* Ajustes para el calendario */
 #calendar {
     width: 100%;
@@ -1038,17 +950,11 @@ p.text-light {
 }
 
 /* Reglas para el formulario del modal de historial médico */
+
 #registrarHistorialModal .modal-content {
-    background-color: #f8f9fa;
-}
-
-#registrarHistorialModal .modal-header {
-    background-color: var(--bs-dark-teal);
-    color: white;
-}
-
-#registrarHistorialModal .modal-header .btn-close {
-    filter: invert(1);
+    padding: 20px;
+    border-radius: 10px;
+    background-color: #f9f9f9;
 }
 
 #registrarHistorialModal .modal-body {
@@ -1059,20 +965,20 @@ p.text-light {
 }
 
 #registrarHistorialModal .form-label {
-    color: #495057;
+    font-weight: bold;
+    color: #333;
 }
 
 #registrarHistorialModal .form-control,
 #registrarHistorialModal .form-select {
-    border-radius: 0.25rem;
-    border: 1px solid #ced4da;
+    border-radius: 5px;
+    border: 1px solid #ccc;
 }
 
 #registrarHistorialModal .form-control:focus,
 #registrarHistorialModal .form-select:focus {
-    border-color: #80bdff;
-    outline: 0;
-    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+    border-color: #007bff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
 }
 
 #registrarHistorialModal .btn-primary {
@@ -1080,21 +986,39 @@ p.text-light {
     border-color: #007bff;
 }
 
+#registrarHistorialModal .btn-primary:hover {
+    background-color: #29a2de;
+    border-color: #0e3c54;
+}
+
 #registrarHistorialModal .btn-secondary {
     background-color: #6c757d;
     border-color: #6c757d;
 }
 
-/* Agrupación de inputs */
-#registrarHistorialModal .col-md-6 {
-    flex: 1 1 45%;
+#registrarHistorialModal .btn-secondary:hover {
+    background-color: #91939a;
+    border-color: #a8a3a3;
 }
 
-#registrarHistorialModal .col-md-12 {
-    flex: 1 1 100%;
+#registrarHistorialModal .btn-close {
+    background: none;
+    border: none;
+}
+
+#registrarHistorialModal .modal-header {
+    border-bottom: none;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
 }
 
 #registrarHistorialModal .modal-footer {
-    background-color: #f1f1f1;
+    background-color: #008a8a;
+    border-top: none;
+    justify-content: space-between;
+}
+
+#registrarHistorialModal .row.g-3 {
+    margin-bottom: 20px;
 }
 

@@ -7,7 +7,9 @@
 package domain;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -17,9 +19,6 @@ import java.sql.Timestamp;
 @Getter
 @Setter
 @AllArgsConstructor
-@NoArgsConstructor
-@EqualsAndHashCode
-@Builder
 
 public class Historial implements Serializable {
 
@@ -64,6 +63,9 @@ public class Historial implements Serializable {
     @OneToOne
     private Paciente paciente;
 
+    public Historial() {
+    }
+
     public Historial(int idHistorial) {
         this.idHistorial = idHistorial;
     }
@@ -72,28 +74,6 @@ public class Historial implements Serializable {
                      String contactoEmergencia, String nombreContactoEmergencia, String alergias,
                      String condicionesPreexistentes, String medicamentosActuales, String historialVacunas,
                      String grupoSanguineo, String notasAdicionales, Timestamp ultimaActualizacion, Paciente paciente) {
-        this.motivoConsulta = motivoConsulta;
-        this.fechaNacimiento = fechaNacimiento;
-        this.sexo = sexo;
-        this.direccion = direccion;
-        this.ocupacion = ocupacion;
-        this.contactoEmergencia = contactoEmergencia;
-        this.nombreContactoEmergencia = nombreContactoEmergencia;
-        this.alergias = alergias;
-        this.condicionesPreexistentes = condicionesPreexistentes;
-        this.medicamentosActuales = medicamentosActuales;
-        this.historialVacunas = historialVacunas;
-        this.grupoSanguineo = grupoSanguineo;
-        this.notasAdicionales = notasAdicionales;
-        this.ultimaActualizacion = ultimaActualizacion;
-        this.paciente = paciente;
-    }
-
-    public Historial(int idHistorial, String motivoConsulta, Date fechaNacimiento, String sexo, String direccion,
-                     String ocupacion, String contactoEmergencia, String nombreContactoEmergencia, String alergias,
-                     String condicionesPreexistentes, String medicamentosActuales, String historialVacunas,
-                     String grupoSanguineo, String notasAdicionales, Timestamp ultimaActualizacion, Paciente paciente) {
-        this.idHistorial = idHistorial;
         this.motivoConsulta = motivoConsulta;
         this.fechaNacimiento = fechaNacimiento;
         this.sexo = sexo;
@@ -131,6 +111,11 @@ public class Historial implements Serializable {
                 ", ultimaActualizacion=" + ultimaActualizacion + ",\n" +
                 ", paciente=" + paciente + ",\n" +
                 '}';
+    }
+
+    public Paciente getIdPaciente(Paciente paciente) {
+        this.setPaciente(getIdPaciente(this.paciente));
+        return paciente;
     }
 }
 

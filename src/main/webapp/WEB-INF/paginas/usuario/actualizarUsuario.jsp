@@ -16,8 +16,8 @@
     <!-- Formulario de edición -->
     <section id="details">
         <div class="container">
-            <div class="row">
-                <div class="col">
+            <div class="row justify-content-center">
+                <div class="col-lg-9">
                     <div class="card">
                         <div class="card-header">
                             <h4>Modificar Registro</h4>

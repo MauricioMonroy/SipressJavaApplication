@@ -19,6 +19,7 @@
                                     <th>Paciente</th>
                                     <th>Última Actualización</th>
                                     <th></th>
+                                    <th></th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -30,7 +31,13 @@
                                         <td>
                                             <a href="${pageContext.request.contextPath}/ServletHistorial?accion=actualizar&idHistorial=${historial.idHistorial}"
                                                class="btn btn-secondary">
-                                                <i class="fa-regular fa-pen-to-square"></i> Actualizar
+                                                <i class="fa-solid fa-file-pen"></i> Actualizar Historia
+                                            </a>
+                                        </td>
+                                        <td>
+                                            <a href="${pageContext.request.contextPath}/ServletPaciente?accion=actualizar&idPaciente=${paciente.idPaciente}"
+                                               class="btn btn-warning">
+                                                <i class="fa-regular fa-pen-to-square"></i> Actualizar Datos
                                             </a>
                                         </td>
                                     </tr>

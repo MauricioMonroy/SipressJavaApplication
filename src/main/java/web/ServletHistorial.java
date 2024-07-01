@@ -96,6 +96,7 @@ public class ServletHistorial extends HttpServlet {
     private void insertarHistorial(HttpServletRequest request, HttpServletResponse response)
             throws IOException, SQLException {
 
+        // Recoger parámetros del formulario
         String nombre = request.getParameter("nombre");
         String apellido = request.getParameter("apellido");
         String identificacion = request.getParameter("identificacion");
@@ -134,8 +135,16 @@ public class ServletHistorial extends HttpServlet {
 
     private void modificarHistorial(HttpServletRequest request, HttpServletResponse response)
             throws IOException, SQLException {
+        // Recoger parámetros del formulario
         int idHistorial = Integer.parseInt(request.getParameter("idHistorial"));
         int idPaciente = Integer.parseInt(request.getParameter("idPaciente"));
+        String nombre = request.getParameter("nombre");
+        String apellido = request.getParameter("apellido");
+        String identificacion = request.getParameter("identificacion");
+        String telefono = request.getParameter("telefono");
+        String email = request.getParameter("email");
+        String detalleEps = request.getParameter("detalleEps");
+        Date fechaConsulta = Date.valueOf(request.getParameter("fechaConsulta"));
         String motivoConsulta = request.getParameter("motivoConsulta");
         Date fechaNacimiento = Date.valueOf(request.getParameter("fechaNacimiento"));
         String sexo = request.getParameter("sexo");
@@ -151,7 +160,10 @@ public class ServletHistorial extends HttpServlet {
         String notasAdicionales = request.getParameter("notasAdicionales");
         Timestamp ultimaActualizacion = Timestamp.valueOf(request.getParameter("ultimaActualizacion"));
 
-        Paciente paciente = new Paciente(idPaciente);
+        // Crear objetos de dominio
+        Usuario usuario = new Usuario(nombre, apellido, identificacion, telefono, email, true, false);
+        usuario.setIdUsuario(Integer.parseInt(request.getParameter("idUsuario")));
+        Paciente paciente = new Paciente(idPaciente, detalleEps, fechaConsulta, usuario);
         Historial historial = new Historial(idHistorial, motivoConsulta, fechaNacimiento, sexo, direccion, ocupacion,
                 contactoEmergencia, nombreContactoEmergencia, alergias, condicionesPreexistentes, medicamentosActuales,
                 historialVacunas, grupoSanguineo, notasAdicionales, ultimaActualizacion, paciente);
@@ -178,3 +190,4 @@ public class ServletHistorial extends HttpServlet {
         }
     }
 }
+
