@@ -1,9 +1,11 @@
 package web;
 
 import datos.HistorialDaoJDBC;
+import datos.UsuarioDaoJDBC;
 import domain.Historial;
 import domain.Paciente;
 import domain.Usuario;
+import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -12,6 +14,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
+import java.io.Serial;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.sql.Timestamp;
@@ -29,6 +32,9 @@ public class ServletHistorial extends HttpServlet {
                 switch (accion) {
                     case "actualizar":
                         this.actualizarHistorial(request, response);
+                        break;
+                    case "seleccionar":
+                        this.seleccionarRegistro(request, response);
                         break;
                     case "eliminar":
                         this.eliminarHistorial(request, response);
@@ -52,6 +58,19 @@ public class ServletHistorial extends HttpServlet {
         session.setAttribute("historiales", historiales);
         session.setAttribute("totalHistoriales", historiales.size());
         response.sendRedirect("historiales.jsp");
+    }
+
+    private void seleccionarRegistro(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
+        int idHistorial = Integer.parseInt(request.getParameter("idHistorial"));
+        Historial historial = new HistorialDaoJDBC().seleccionarPorId(idHistorial);
+        if (historial == null) {
+            request.setAttribute("errorMessage", "Historial no encontrado");
+            request.getRequestDispatcher("/WEB-INF/paginas/historial/error.jsp").forward(request, response);
+            return;
+        }
+        request.setAttribute("historial", historial);
+        String jspMostrarHistorial = "/WEB-INF/paginas/historial/mostrarHistorial.jsp";
+        request.getRequestDispatcher(jspMostrarHistorial).forward(request, response);
     }
 
     private void actualizarHistorial(HttpServletRequest request, HttpServletResponse response)

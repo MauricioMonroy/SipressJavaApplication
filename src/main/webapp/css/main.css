@@ -494,6 +494,52 @@ a:active {
     text-decoration: none;
 }
 
+/* Reglas para sección mostrar historial */
+#detalleHistorial .card {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    padding: 20px;
+}
+
+#detalleHistorial .card-header {
+    background-color: var(--bs-dark-teal);
+    border-bottom: 1px solid #ddd;
+    color: #f3f3f3;
+    padding: 10px 20px;
+}
+
+#detalleHistorial .card-title {
+    font-size: 1.25rem;
+    margin-bottom: 10px;
+}
+
+#detalleHistorial .card-text {
+    font-size: 1rem;
+    margin-bottom: 5px;
+}
+
+#detalleHistorial .card-body {
+    background-color: #f3f3f3;
+    color: #000000;
+}
+
+#detalleHistorial .btn {
+    margin-top: 20px;
+}
+
+@media print {
+    #detalleHistorial .card {
+        border: none;
+        box-shadow: none;
+    }
+
+    #detalleHistorial .btn {
+        display: none;
+    }
+}
+
 /*FOOTER*/
 footer {
     background: #113733;

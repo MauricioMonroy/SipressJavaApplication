@@ -15,29 +15,27 @@
                             <table class="table table-striped mt-4">
                                 <thead>
                                 <tr>
-                                    <th>ID</th>
                                     <th>Paciente</th>
+                                    <th>Detalle</th>
                                     <th>Última Actualización</th>
-                                    <th></th>
-                                    <th></th>
+                                    <th>Acción</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 <c:forEach var="historial" items="${historiales}">
                                     <tr>
-                                        <td>${historial.idHistorial}</td>
                                         <td>${historial.paciente.usuario.nombre} ${historial.paciente.usuario.apellido}</td>
+                                        <td>
+                                            <a href="${pageContext.request.contextPath}/ServletHistorial?accion=seleccionar&idHistorial=${historial.idHistorial}"
+                                               class="btn btn-warning">
+                                                <i class="fa-regular fa-folder-open"></i> Ver
+                                            </a>
+                                        </td>
                                         <td>${historial.ultimaActualizacion}</td>
                                         <td>
                                             <a href="${pageContext.request.contextPath}/ServletHistorial?accion=actualizar&idHistorial=${historial.idHistorial}"
                                                class="btn btn-secondary">
-                                                <i class="fa-solid fa-file-pen"></i> Actualizar Historia
-                                            </a>
-                                        </td>
-                                        <td>
-                                            <a href="${pageContext.request.contextPath}/ServletPaciente?accion=actualizar&idPaciente=${paciente.idPaciente}"
-                                               class="btn btn-warning">
-                                                <i class="fa-regular fa-pen-to-square"></i> Actualizar Datos
+                                                <i class="fa-solid fa-file-pen"></i> Actualizar
                                             </a>
                                         </td>
                                     </tr>
@@ -55,6 +53,3 @@
 <jsp:include page="/WEB-INF/paginas/historial/cantidadHistoriales.jsp"/>
 <!-- Agregar un nuevo registro modal -->
 <jsp:include page="/WEB-INF/paginas/historial/registrarHistorial.jsp"/>
-
-
-

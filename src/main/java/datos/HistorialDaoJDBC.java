@@ -8,6 +8,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import static datos.Conexion.close;
 import static datos.Conexion.getConnection;
 
 public class HistorialDaoJDBC implements HistorialDAO {
@@ -127,21 +128,28 @@ public class HistorialDaoJDBC implements HistorialDAO {
 
     @Override
     public Historial seleccionarPorId(int idHistorial) throws SQLException {
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
         Historial historial = null;
 
-        try (Connection conn = this.conexionTransaccional != null ? this.conexionTransaccional : getConnection();
-             PreparedStatement ps = conn.prepareStatement(SQL_SELECT_ONE)) {
-
-            ps.setInt(1, idHistorial);
+        try {
+            conn = this.conexionTransaccional != null ? this.conexionTransaccional : Conexion.getConnection();
             System.out.println("Ejecutando query SELECT_ONE");
+            ps = conn.prepareStatement(SQL_SELECT_ONE);
+            ps.setInt(1, idHistorial);
+            rs = ps.executeQuery();
 
-            try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) {
-                    historial = mapHistorial(rs);
-                }
+            if (rs.next()) {
+                historial = mapHistorial(rs);
+            }
+        } finally {
+            close(rs);
+            close(ps);
+            if (this.conexionTransaccional == null) {
+                close(conn);
             }
         }
-
         return historial;
     }
 
