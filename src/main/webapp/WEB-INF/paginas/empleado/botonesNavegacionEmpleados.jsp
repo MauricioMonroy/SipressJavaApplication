@@ -2,18 +2,18 @@
 <section id="actions">
     <div class="container">
         <div class="row">
-            <!-- Botón para mostrar el número de historiales -->
+            <!-- Botón para mostrar el número de empleados -->
             <div class="col-12 col-md-4 d-flex justify-content-center">
                 <a href="#" class="btn btn-info"
-                   data-bs-toggle="modal" data-bs-target="#cantidadHistorialesModal">
+                   data-bs-toggle="modal" data-bs-target="#cantidadEmpleadosModal">
                     <i class="fa-solid fa-clipboard-question"></i> Total Registros
                 </a>
             </div>
             <!-- Botón para agregar un nuevo registro -->
             <div class="col-12 col-md-4 d-flex justify-content-center">
                 <a href="#" class="btn btn-success"
-                   data-bs-toggle="modal" data-bs-target="#registrarHistorialModal">
-                    <i class="fa-solid fa-notes-medical"></i> Agregar Registro
+                   data-bs-toggle="modal" data-bs-target="#registrarEmpleadoModal">
+                    <i class="fa-solid fa-user-plus"></i> Agregar Registro
                 </a>
             </div>
         </div>

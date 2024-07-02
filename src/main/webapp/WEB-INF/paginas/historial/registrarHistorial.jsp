@@ -111,7 +111,7 @@
                                       name="notasAdicionales"></textarea>
                         </div>
                         <div class="col-md-4">
-                            <label for="inputArchivosAdjuntos" class="form-label">Archivos Adjuntos</label>
+                            <label for="inputArchivosAdjuntos" class="form-label">Adjuntar archivo...</label>
                             <input type="file" class="form-control" id="inputArchivosAdjuntos" name="archivosAdjuntos">
                         </div>
                     </div>

@@ -13,7 +13,7 @@
             <div class="col-12 col-md-4 d-flex justify-content-center">
                 <a href="#" class="btn btn-success"
                    data-bs-toggle="modal" data-bs-target="#registrarPacienteModal">
-                    <i class="fa-solid fa-user-plus"></i> Agregar paciente
+                    <i class="fa-solid fa-user-plus"></i> Agregar Registro
                 </a>
             </div>
         </div>

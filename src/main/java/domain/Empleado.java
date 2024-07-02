@@ -37,6 +37,36 @@ public class Empleado extends Usuario implements Serializable {
     @OneToMany(mappedBy = "empleado")
     private List<Funcion> funcionList;
 
+    public Empleado(Integer idEmpleado) {
+        this.idEmpleado = idEmpleado;
+    }
+
+    public Empleado(Integer idUsuario, String cargo) {
+        super(idUsuario);
+        this.cargo = cargo;
+    }
+
+    public Empleado(String cargo, Usuario usuario) {
+        this.cargo = cargo;
+        this.usuario = usuario;
+    }
+
+    public Empleado(int idEmpleado, String cargo, Usuario usuario) {
+        this.idEmpleado = idEmpleado;
+        this.cargo = cargo;
+        this.usuario = usuario;
+    }
+
+    public Empleado(String nombre, String apellido, String identificacion, String telefono, String email, Integer idEmpleado) {
+        super(nombre, apellido, identificacion, telefono, email);
+        this.idEmpleado = idEmpleado;
+    }
+
+    public Empleado(String nombre, String apellido, String identificacion, String telefono, String email, String cargo) {
+        super(nombre, apellido, identificacion, telefono, email);
+        this.cargo = cargo;
+    }
+
     public Empleado(String username, String password, String nombre, String apellido, String identificacion, String telefono, String email, Boolean esPaciente, Boolean esEmpleado, String cargo) {
         super(username, password, nombre, apellido, identificacion, telefono, email, esPaciente, esEmpleado);
         this.cargo = cargo;

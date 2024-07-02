@@ -18,8 +18,7 @@
                             <tr>
                                 <th>#</th>
                                 <th>Usuario</th>
-                                <th>Nombre</th>
-                                <th>Apellido</th>
+                                <th>Nombre y Apellido</th>
                                 <th>Identificación</th>
                                 <th>Teléfono</th>
                                 <th>Email</th>
@@ -32,8 +31,7 @@
                                 <tr>
                                     <td>${status.count}</td>
                                     <td>${usuario.username}</td>
-                                    <td>${usuario.nombre}</td>
-                                    <td>${usuario.apellido}</td>
+                                    <td>${usuario.nombre} ${usuario.apellido}</td>
                                     <td>${usuario.identificacion}</td>
                                     <td>${usuario.telefono}</td>
                                     <td>${usuario.email}</td>

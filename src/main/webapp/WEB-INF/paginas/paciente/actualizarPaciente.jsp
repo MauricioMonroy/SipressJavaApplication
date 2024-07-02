@@ -9,13 +9,13 @@
 <jsp:include page="/WEB-INF/paginas/comunes/navbar.jsp"/>
 
 <!-- Cabecero -->
-<jsp:include page="/WEB-INF/paginas/usuario/cabecero.jsp"/>
+<jsp:include page="/WEB-INF/paginas/paciente/cabecero.jsp"/>
 
 <!-- Contenido de la página -->
-<form action="${pageContext.request.contextPath}/ServletUsuario?accion=modificar&idUsuario=${paciente.idPaciente}"
+<form action="${pageContext.request.contextPath}/ServletPaciente?accion=modificar&idPaciente=${paciente.idPaciente}"
       method="post" class="was-validated">
     <!-- Botones de navegación -->
-    <jsp:include page="/WEB-INF/paginas/usuario/botonesEdicionUsuarios.jsp"/>
+    <jsp:include page="/WEB-INF/paginas/paciente/botonesEdicionPacientes.jsp"/>
     <!-- Formulario de edición -->
     <section id="details">
         <div class="container">
@@ -23,7 +23,7 @@
                 <div class="col-lg-9">
                     <div class="card">
                         <div class="card-header">
-                            <h4>Modificar Registro</h4>
+                            <h4>Modificar Datos de Paciente</h4>
                         </div>
                         <div class="card-body">
                             <div class="form-floating form-group mb-3">

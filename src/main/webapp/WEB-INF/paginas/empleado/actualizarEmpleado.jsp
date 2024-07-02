@@ -1,19 +1,21 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
-<%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <!DOCTYPE html>
 <html lang="es">
-<!-- Head común a todas lás vistas -->
+<!-- Head común a todas las vistas -->
 <jsp:include page="/WEB-INF/paginas/comunes/head.jsp"/>
+
 <body>
-<!-- Navbar con función responsive-->
+<!-- Navbar con función responsive -->
 <jsp:include page="/WEB-INF/paginas/comunes/navbar.jsp"/>
-<!--Cabecero-->
-<jsp:include page="/WEB-INF/paginas/usuario/cabecero.jsp"/>
+
+<!-- Cabecero -->
+<jsp:include page="/WEB-INF/paginas/empleado/cabecero.jsp"/>
+
 <!-- Contenido de la página -->
-<form action="${pageContext.request.contextPath}/ServletUsuario?accion=modificar&idUsuario=${usuario.idUsuario}"
+<form action="${pageContext.request.contextPath}/ServletEmpleado?accion=modificar&idEmpleado=${empleado.idEmpleado}"
       method="post" class="was-validated">
     <!-- Botones de navegación -->
-    <jsp:include page="/WEB-INF/paginas/usuario/botonesEdicionUsuarios.jsp"/>
+    <jsp:include page="/WEB-INF/paginas/empleado/botonesEdicionEmpleados.jsp"/>
     <!-- Formulario de edición -->
     <section id="details">
         <div class="container">
@@ -24,62 +26,47 @@
                             <h4>Modificar Registro</h4>
                         </div>
                         <div class="card-body">
-                            <div class="form-floating form-group mb-3">
-                                <input type="text" class="form-control" id="username"
-                                       name="username" placeholder="Username" required
-                                       value="${usuario.username}"/>
-                                <label for="username">Nombre de usuario</label>
-                            </div>
 
                             <div class="form-floating form-group mb-3">
                                 <input type="text" class="form-control" id="nombre"
                                        name="nombre" placeholder="Nombre" required
-                                       value="${usuario.nombre}"/>
+                                       value="${empleado.usuario.nombre}"/>
                                 <label for="nombre">Nombre(s)</label>
                             </div>
 
                             <div class="form-floating form-group mb-3">
                                 <input type="text" class="form-control" id="apellido"
                                        name="apellido" placeholder="Apellido" required
-                                       value="${usuario.apellido}"/>
+                                       value="${empleado.usuario.apellido}"/>
                                 <label for="apellido">Apellido(s)</label>
+                            </div>
+
+                            <div class="form-floating form-group mb-3">
+                                <input type="text" class="form-control" id="cargo"
+                                       name="cargo" placeholder="Cargo" required
+                                       value="${empleado.cargo}"/>
+                                <label for="cargo">Cargo</label>
                             </div>
 
                             <div class="form-floating form-group mb-3">
                                 <input type="text" class="form-control" id="identificacion"
                                        name="identificacion" placeholder="Identificación" required
-                                       value="${usuario.identificacion}"/>
+                                       value="${empleado.usuario.identificacion}"/>
                                 <label for="identificacion">Identificación</label>
                             </div>
 
                             <div class="form-floating form-group mb-3">
                                 <input type="tel" class="form-control" id="telefono"
                                        name="telefono" placeholder="telefono" required
-                                       value="${usuario.telefono}"/>
+                                       value="${empleado.usuario.telefono}"/>
                                 <label for="telefono">Teléfono</label>
                             </div>
 
                             <div class="form-floating form-group mb-3">
                                 <input type="email" class="form-control" id="email"
                                        name="email" placeholder="nombre@ejemplo.com" required
-                                       value="${usuario.email}"/>
+                                       value="${empleado.usuario.email}"/>
                                 <label for="email">Correo electrónico</label>
-                            </div>
-                            <div class="form-check form-group mb-3">
-                                <div>
-                                    <label class="h5">
-                                        ¿Es Paciente?
-                                        <input type="checkbox" name="esPaciente"
-                                               class="custom-checkbox"
-                                               <c:if test="${usuario.esPaciente}">checked</c:if>/>
-                                    </label>
-                                    <label class="h5">
-                                        ¿Es Empleado?
-                                        <input type="checkbox" name="esEmpleado"
-                                               class="custom-checkbox"
-                                               <c:if test="${usuario.esEmpleado}">checked</c:if>/>
-                                    </label>
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -88,6 +75,7 @@
         </div>
     </section>
 </form>
+
 <!-- Pie de página -->
 <jsp:include page="/WEB-INF/paginas/comunes/footer.jsp"/>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -98,3 +86,4 @@
         crossorigin="anonymous"></script>
 </body>
 </html>
+

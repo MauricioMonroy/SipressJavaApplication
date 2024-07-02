@@ -127,8 +127,10 @@ public class ServletUsuario extends HttpServlet {
         String identificacion = request.getParameter("identificacion");
         String telefono = request.getParameter("telefono");
         String email = request.getParameter("email");
-        Boolean esPaciente = request.getParameter("esPaciente") != null ? Boolean.valueOf(request.getParameter("esPaciente")) : Boolean.FALSE;
-        Boolean esEmpleado = request.getParameter("esEmpleado") != null ? Boolean.valueOf(request.getParameter("esEmpleado")) : Boolean.FALSE;
+
+        Boolean esPaciente = request.getParameter("esPaciente") != null;
+        Boolean esEmpleado = request.getParameter("esEmpleado") != null;
+
         Usuario usuario = new Usuario(idUsuario, username, nombre, apellido, identificacion, telefono, email, esPaciente, esEmpleado);
         int registrosModificados = new UsuarioDaoJDBC().actualizar(usuario);
         System.out.println("registrosModificados = " + registrosModificados);

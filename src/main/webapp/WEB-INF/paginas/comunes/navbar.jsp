@@ -36,7 +36,7 @@
                     >
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="empleados.jsp"
+                    <a class="nav-link" href="ServletEmpleado"
                     >Personal</a
                     >
                 </li>

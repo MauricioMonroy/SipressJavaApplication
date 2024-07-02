@@ -1,6 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
-<section id="pacientes">
+<section id="empleados">
     <!-- Contenido -->
     <div class="container">
         <div class="row">
@@ -9,7 +9,7 @@
                 <div class="card" id="contenedor-lista">
                     <div class="card-header">
                         <h3 class="text-center">
-                            <i class="fa-solid fa-clipboard-list"></i> Lista de Pacientes
+                            <i class="fa-regular fa-id-card"></i> Lista de Empleados
                         </h3>
                     </div>
                     <div class="table-responsive">
@@ -18,26 +18,24 @@
                             <tr>
                                 <th>ID</th>
                                 <th>Nombre y Apellido</th>
-                                <th>Detalle EPS</th>
                                 <th>Identificación</th>
-                                <th>Última Consulta</th>
+                                <th>Cargo</th>
                                 <th>Teléfono</th>
                                 <th>Email</th>
                                 <th></th>
                             </tr>
                             </thead>
                             <tbody>
-                            <c:forEach var="paciente" items="${sessionScope.pacientes}" varStatus="status">
+                            <c:forEach var="empleado" items="${sessionScope.empleados}" varStatus="status">
                                 <tr>
                                     <td>${status.count}</td>
-                                    <td>${paciente.usuario.nombre} ${paciente.usuario.apellido}</td>
-                                    <td>${paciente.detalleEps}</td>
-                                    <td>${paciente.usuario.identificacion}</td>
-                                    <td>${paciente.fechaConsulta}</td>
-                                    <td>${paciente.usuario.telefono}</td>
-                                    <td>${paciente.usuario.email}</td>
+                                    <td>${empleado.usuario.nombre} ${empleado.usuario.apellido}</td>
+                                    <td>${empleado.usuario.identificacion}</td>
+                                    <td>${empleado.cargo}</td>
+                                    <td>${empleado.usuario.telefono}</td>
+                                    <td>${empleado.usuario.email}</td>
                                     <td>
-                                        <a href="${pageContext.request.contextPath}/ServletPaciente?accion=actualizar&idPaciente=${paciente.idPaciente}"
+                                        <a href="${pageContext.request.contextPath}/ServletEmpleado?accion=actualizar&idEmpleado=${empleado.idEmpleado}"
                                            class="btn btn-secondary">
                                             <i class="fa-regular fa-pen-to-square"></i> Actualizar
                                         </a>
@@ -52,8 +50,8 @@
         </div>
     </div>
 </section>
-<!-- Consultar número de pacientes modal -->
-<jsp:include page="/WEB-INF/paginas/paciente/cantidadPacientes.jsp"/>
+<!-- Consultar número de empleados modal -->
+<jsp:include page="/WEB-INF/paginas/empleado/cantidadEmpleados.jsp"/>
 <!-- Agregar un nuevo registro modal -->
-<jsp:include page="/WEB-INF/paginas/paciente/registrarPaciente.jsp"/>
+<jsp:include page="/WEB-INF/paginas/empleado/registrarEmpleado.jsp"/>
 

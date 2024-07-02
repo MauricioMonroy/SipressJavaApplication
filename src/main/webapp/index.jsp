@@ -16,7 +16,7 @@
                     Bienvenido a <span class="text-success fw-bold fs-2">SIPRESS</span>
                 </h1>
                 <p class="fs-6">
-                    SIPRESS (Sistema Integral para la Prestación de Servicios de Salud)
+                    El Sistema Integral para la Prestación de Servicios de Salud -SIPRESS
                     es una aplicación diseñada para simplificar la gestión de las
                     Instituciones Prestadoras de Salud (IPS). Facilita el registro de pacientes
                     y usuarios, así como la manipulación de historiales médicos y el control de
@@ -65,7 +65,7 @@
                 </a>
             </div>
             <div class="col-md-3 col-sm-6">
-                <a href="empleados.jsp" class="text-decoration-none">
+                <a href="ServletEmpleado" class="text-decoration-none">
                     <div class="card text-center h-100 custom-card">
                         <div class="card-header">
                             <h3 class="card-title">Personal</h3>

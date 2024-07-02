@@ -1,11 +1,9 @@
 package web;
 
 import datos.HistorialDaoJDBC;
-import datos.UsuarioDaoJDBC;
 import domain.Historial;
 import domain.Paciente;
 import domain.Usuario;
-import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -14,7 +12,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
-import java.io.Serial;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.sql.Timestamp;
