@@ -1,6 +1,7 @@
 package datos;
 
-import domain.*;
+import domain.Empleado;
+import domain.Usuario;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -16,33 +17,23 @@ public class EmpleadoDaoJDBC implements EmpleadoDAO {
 
     // Creación de las sentencias para recuperar la información de la base de datos
     private static final String SQL_SELECT =
-            "SELECT e.id_empleado, e.id_usuario, e.cargo, u.id_usuario, u.username, u.password, u.nombre, u.apellido, u.identificacion, "
-                    + "u.telefono, u.email, u.es_empleado, u.es_empleado, f.id_funcion, f.id_empleado, f.descripcion, "
-                    + "a.id_asignacion, a.id_empleado, a.id_servicio, a.id_empleado "
-                    + "FROM empleado e INNER JOIN usuario u ON e.id_usuario = u.id_usuario "
-                    + "INNER JOIN funcion f ON f.id_empleado = e.id_empleado "
-                    + "INNER JOIN asignacion a ON a.id_empleado = e.id_empleado ";
+            "SELECT e.id_empleado, e.cargo, u.id_usuario, u.nombre, u.apellido, u.identificacion, "
+                    + "u.telefono, u.email, u.es_empleado, u.es_empleado "
+                    + "FROM empleado e INNER JOIN usuario u ON e.id_usuario = u.id_usuario ";
     private static final String SQL_SELECT_ONE =
-            "SELECT e.id_empleado, e.id_usuario, e.cargo, u.id_usuario, u.username, u.password, u.nombre, u.apellido, u.identificacion, "
-                    + "u.telefono, u.email, u.es_empleado, u.es_empleado, f.id_funcion, f.id_empleado, f.descripcion, "
-                    + "a.id_asignacion, a.id_empleado, a.id_servicio, a.id_empleado "
+            "SELECT e.id_empleado, e.cargo, u.id_usuario, u.nombre, u.apellido, u.identificacion, "
+                    + "u.telefono, u.email, u.es_empleado, u.es_empleado "
                     + "FROM empleado e INNER JOIN usuario u ON e.id_usuario = u.id_usuario "
-                    + "INNER JOIN funcion f ON f.id_empleado = e.id_empleado "
-                    + "INNER JOIN asignacion a ON a.id_empleado = e.id_empleado "
                     + "WHERE e.id_empleado = ?";
-
     private static final String SQL_INSERT_EMPLEADO =
             "INSERT INTO empleado (cargo, id_usuario) VALUES (?, ?)";
     private static final String SQL_INSERT_USUARIO =
-            "INSERT INTO empleado(id_usuario, cargo) VALUES(?, ?)";
-    private static final String SQL_INSERT_FUNCION =
-            "INSERT INTO funcion (id_empleado, descripcion) VALUES (?, ?)";
+            "INSERT INTO usuario (username, password, nombre, apellido, identificacion, telefono, " +
+                    "email, es_paciente, es_empleado) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
     private static final String SQL_UPDATE_EMPLEADO =
             "UPDATE empleado SET cargo = ? WHERE id_empleado = ?";
     private static final String SQL_UPDATE_USUARIO =
             "UPDATE usuario SET nombre = ?, apellido = ?, identificacion = ?, telefono = ?, email = ? WHERE id_usuario = ?";
-    private static final String SQL_UPDATE_FUNCION =
-            "UPDATE funcion SET descripcion = ? WHERE id_funcion = ?";
     private static final String SQL_DELETE =
             "DELETE FROM empleado WHERE id_empleado = ?";
 
@@ -54,62 +45,16 @@ public class EmpleadoDaoJDBC implements EmpleadoDAO {
         this.conexionTransaccional = conexionTransaccional;
     }
 
-    // Método para recuperar las funciones del empleado
-    private List<Funcion> getFuncionesPorEmpleadoId(int idEmpleado) throws SQLException {
-        List<Funcion> funciones = new ArrayList<>();
-        String SQL_SELECT_FUNCIONES = "SELECT * FROM funcion WHERE id_empleado = ?";
-
-        try (Connection conn = getConnection();
-             PreparedStatement ps = conn.prepareStatement(SQL_SELECT_FUNCIONES)) {
-
-            ps.setInt(1, idEmpleado);
-            try (ResultSet rs = ps.executeQuery()) {
-                while (rs.next()) {
-                    Funcion funcion = new Funcion();
-                    funcion.setIdFuncion(rs.getInt("id_funcion"));
-                    funcion.setDescripcion(rs.getString("descripcion"));
-                    funciones.add(funcion);
-                }
-            }
-        }
-        return funciones;
-    }
-
-    // Método para recuperar las asignaciones del empleado
-    private List<Asignacion> getAsignacionesPorEmpleadoId(int idEmpleado) throws SQLException {
-        List<Asignacion> asignaciones = new ArrayList<>();
-        String SQL_SELECT_ASIGNACIONES = "SELECT * FROM asignacion WHERE id_empleado = ?";
-
-        try (Connection conn = getConnection();
-             PreparedStatement ps = conn.prepareStatement(SQL_SELECT_ASIGNACIONES)) {
-
-            ps.setInt(1, idEmpleado);
-            try (ResultSet rs = ps.executeQuery()) {
-                while (rs.next()) {
-                    Asignacion asignacion = new Asignacion();
-                    asignacion.setIdAsignacion(rs.getInt("id_asignacion"));
-                    asignaciones.add(asignacion);
-                }
-            }
-        }
-        return asignaciones;
-    }
-
-
     // Método que se encarga de mapear el ResultSet a un objeto de la clase
-    private Empleado mapEmpleado(ResultSet rs, List<Funcion> funciones, List<Asignacion> asignaciones) throws SQLException {
+    private Empleado mapEmpleado(ResultSet rs) throws SQLException {
         Empleado empleado = new Empleado();
 
-        // Llenar atributos específicos de Empleado
         empleado.setIdEmpleado(rs.getInt("id_empleado"));
-        empleado.setIdUsuario(rs.getInt("id_usuario"));
         empleado.setCargo(rs.getString("cargo"));
 
         // Crear un nuevo objeto Usuario y llenar sus atributos
         Usuario usuario = new Usuario();
         usuario.setIdUsuario(rs.getInt("id_usuario"));
-        usuario.setUsername(rs.getString("username"));
-        usuario.setPassword(rs.getString("password"));
         usuario.setNombre(rs.getString("nombre"));
         usuario.setApellido(rs.getString("apellido"));
         usuario.setIdentificacion(rs.getString("identificacion"));
@@ -118,28 +63,12 @@ public class EmpleadoDaoJDBC implements EmpleadoDAO {
         usuario.setEsEmpleado(rs.getBoolean("es_empleado"));
         usuario.setEsEmpleado(rs.getBoolean("es_empleado"));
 
-        // Establecer el objeto Usuario en el objeto Empleado
         empleado.setUsuario(usuario);
-
-        // Crear atributos específicos de Función
-        Funcion funcion = new Funcion();
-        funcion.setIdFuncion(rs.getInt("id_funcion"));
-        funcion.setDescripcion(rs.getString("descripcion"));
-
-        // Crear atributos específicos de Asignación
-        Asignacion asignacion = new Asignacion();
-        asignacion.setIdAsignacion(rs.getInt("id_asignacion"));
-
-        // Establecer la relación entre Empleado, Función y Asignacion
-        funcion.setEmpleado(empleado);
-        asignacion.setEmpleado(empleado);
-        empleado.setFuncionList(funciones);
-        empleado.setAsignacionList(asignaciones);
 
         return empleado;
     }
 
-// Método que permite seleccionar y listar todos los objetos de la base de datos (SELECT)
+    // Método que permite seleccionar y listar todos los objetos de la base de datos (SELECT)
     @Override
     public List<Empleado> seleccionar() throws SQLException {
         List<Empleado> empleados = new ArrayList<>();
@@ -148,13 +77,10 @@ public class EmpleadoDaoJDBC implements EmpleadoDAO {
              PreparedStatement ps = conn.prepareStatement(SQL_SELECT);
              ResultSet rs = ps.executeQuery()) {
 
-            System.out.println("Ejecutando query...");
+            System.out.println("Ejecutando query SELECT");
 
             while (rs.next()) {
-                int idEmpleado = rs.getInt("id_empleado");
-                List<Funcion> funciones = getFuncionesPorEmpleadoId(idEmpleado);
-                List<Asignacion> asignaciones = getAsignacionesPorEmpleadoId(idEmpleado);
-                empleados.add(mapEmpleado(rs, funciones, asignaciones));
+                empleados.add(mapEmpleado(rs));
             }
         }
 
@@ -170,13 +96,11 @@ public class EmpleadoDaoJDBC implements EmpleadoDAO {
              PreparedStatement ps = conn.prepareStatement(SQL_SELECT_ONE)) {
 
             ps.setInt(1, idEmpleado);
-            System.out.println("Ejecutando query... ");
+            System.out.println("Ejecutando query SELECT_ONE ");
 
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
-                    List<Funcion> funciones = getFuncionesPorEmpleadoId(idEmpleado);
-                    List<Asignacion> asignaciones = getAsignacionesPorEmpleadoId(idEmpleado);
-                    empleado = mapEmpleado(rs, funciones, asignaciones);
+                    empleado = mapEmpleado(rs);
                 }
             }
         }
@@ -188,57 +112,65 @@ public class EmpleadoDaoJDBC implements EmpleadoDAO {
     // Método que permite insertar objetos en la base de datos (INSERT)
     @Override
     public int insertar(Empleado empleado) throws SQLException {
-        Connection conn = null;
-        PreparedStatement psEmpleado = null;
-        PreparedStatement psFuncion = null;
         int registros = 0;
 
-        try {
-            conn = this.conexionTransaccional != null ? this.conexionTransaccional : getConnection();
+        try (Connection conn = this.conexionTransaccional != null ? this.conexionTransaccional : getConnection()) {
             conn.setAutoCommit(false);
 
-            // Insertar Empleado
-            System.out.println("Ejecutando query = " + SQL_INSERT_EMPLEADO);
-            psEmpleado = conn.prepareStatement(SQL_INSERT_EMPLEADO, Statement.RETURN_GENERATED_KEYS);
-            psEmpleado.setInt(1, empleado.getIdUsuario());
-            psEmpleado.setString(2, empleado.getNombre());
-            psEmpleado.setString(3, empleado.getApellido());
-            psEmpleado.setString(4, empleado.getIdentificacion());
-            psEmpleado.setString(5, empleado.getTelefono());
-            psEmpleado.setString(6, empleado.getEmail());
-            psEmpleado.setString(7, empleado.getCargo());
-            psEmpleado.executeUpdate();
+            try (PreparedStatement psUsuario = conn.prepareStatement(
+                    SQL_INSERT_USUARIO, Statement.RETURN_GENERATED_KEYS)) {
+                Usuario usuario = empleado.getUsuario();
+                psUsuario.setString(1, usuario.getUsername());
+                psUsuario.setString(2, usuario.getPassword());
+                psUsuario.setString(3, usuario.getNombre());
+                psUsuario.setString(4, usuario.getApellido());
+                psUsuario.setString(5, usuario.getIdentificacion());
+                psUsuario.setString(6, usuario.getTelefono());
+                psUsuario.setString(7, usuario.getEmail());
+                psUsuario.setBoolean(8, usuario.getEsPaciente());
+                psUsuario.setBoolean(9, usuario.getEsEmpleado());
 
-            ResultSet rsEmpleado = psEmpleado.getGeneratedKeys();
-            if (rsEmpleado.next()) {
-                empleado.setIdEmpleado(rsEmpleado.getInt(1));
+                psUsuario.executeUpdate();
+
+                try (ResultSet rsUsuario = psUsuario.getGeneratedKeys()) {
+                    if (rsUsuario.next()) {
+                        int idUsuario = rsUsuario.getInt(1);
+                        usuario.setIdUsuario(idUsuario);
+                        empleado.setIdUsuario(idUsuario);
+                    }
+                }
             }
 
-            // Insertar Funciones
-            System.out.println("Ejecutando query = " + SQL_INSERT_FUNCION);
-            psFuncion = conn.prepareStatement(SQL_INSERT_FUNCION);
-            for (Funcion funcion : empleado.getFuncionList()) {
-                psFuncion.setInt(1, empleado.getIdEmpleado());
-                psFuncion.setString(2, funcion.getDescripcion());
-                psFuncion.addBatch();
+            try (PreparedStatement psEmpleado = conn.prepareStatement(
+                    SQL_INSERT_EMPLEADO, Statement.RETURN_GENERATED_KEYS)) {
+                psEmpleado.setString(1, empleado.getCargo());
+                psEmpleado.setInt(2, empleado.getIdUsuario());
+
+                psEmpleado.executeUpdate();
+
+                try (ResultSet rsPaciente = psEmpleado.getGeneratedKeys()) {
+                    if (rsPaciente.next()) {
+                        int idEmpleado = rsPaciente.getInt(1);
+                        empleado.setIdEmpleado(idEmpleado);
+                    }
+                }
             }
-            psFuncion.executeBatch();
 
             conn.commit();
-            registros = 1; // Se considera como un registro exitoso
-
-        } catch (SQLException e) {
-            if (conn != null) {
-                conn.rollback();
-            }
-            e.printStackTrace();
-        } finally {
-            close(psFuncion);
-            close(psEmpleado);
-            if (this.conexionTransaccional == null) {
-                close(conn);
+            registros = 1;
+            System.out.println("Registros insertados = " + registros);
+        } catch (SQLException ex) {
+            ex.printStackTrace(System.out);
+            try (Connection conn = this.conexionTransaccional != null ? this.conexionTransaccional : getConnection()) {
+                System.out.println("Ejecutando rollback");
+                if (conn != null) {
+                    conn.rollback();
+                }
+            } catch (SQLException ex1) {
+                ex1.printStackTrace(System.out);
             }
         }
+
         return registros;
     }
 
@@ -246,53 +178,42 @@ public class EmpleadoDaoJDBC implements EmpleadoDAO {
     // Método que permite actualizar objetos en la base de datos (UPDATE)
     @Override
     public int actualizar(Empleado empleado) throws SQLException {
-        Connection conn = null;
-        PreparedStatement psEmpleado = null;
-        PreparedStatement psFuncion = null;
         int registros = 0;
 
-        try {
-            conn = this.conexionTransaccional != null ? this.conexionTransaccional : getConnection();
+        try (Connection conn = this.conexionTransaccional != null ? this.conexionTransaccional : getConnection()) {
             conn.setAutoCommit(false);
 
-            // Actualizar Empleado
-            System.out.println("Ejecutando query = " + SQL_UPDATE_EMPLEADO);
-            psEmpleado = conn.prepareStatement(SQL_UPDATE_EMPLEADO);
-            psEmpleado.setInt(1, empleado.getIdUsuario());
-            psEmpleado.setString(2, empleado.getNombre());
-            psEmpleado.setString(3, empleado.getApellido());
-            psEmpleado.setString(4, empleado.getIdentificacion());
-            psEmpleado.setString(5, empleado.getTelefono());
-            psEmpleado.setString(6, empleado.getEmail());
-            psEmpleado.setString(7, empleado.getCargo());
-            psEmpleado.setInt(8, empleado.getIdEmpleado());
-            psEmpleado.executeUpdate();
-
-            // Actualizar Funciones (puedes eliminarlas todas y volver a insertarlas o actualizar individualmente)
-            System.out.println("Ejecutando query = " + SQL_UPDATE_FUNCION);
-            psFuncion = conn.prepareStatement(SQL_UPDATE_FUNCION);
-            for (Funcion funcion : empleado.getFuncionList()) {
-                psFuncion.setString(1, funcion.getDescripcion());
-                psFuncion.setInt(2, funcion.getIdFuncion());
-                psFuncion.addBatch();
+            try (PreparedStatement psUsuario = conn.prepareStatement(SQL_UPDATE_USUARIO)) {
+                Usuario usuario = empleado.getUsuario();
+                psUsuario.setString(1, usuario.getNombre());
+                psUsuario.setString(2, usuario.getApellido());
+                psUsuario.setString(3, usuario.getIdentificacion());
+                psUsuario.setString(4, usuario.getTelefono());
+                psUsuario.setString(5, usuario.getEmail());
+                psUsuario.setInt(6, usuario.getIdUsuario());
+                registros += psUsuario.executeUpdate();
             }
-            psFuncion.executeBatch();
+
+            try (PreparedStatement psEmpleado = conn.prepareStatement(SQL_UPDATE_EMPLEADO)) {
+                psEmpleado.setString(1, empleado.getCargo());
+                psEmpleado.setInt(2, empleado.getIdEmpleado());
+                registros += psEmpleado.executeUpdate();
+            }
 
             conn.commit();
-            registros = 1; // Se considera como un registro exitoso
-
-        } catch (SQLException e) {
-            if (conn != null) {
-                conn.rollback();
-            }
-            e.printStackTrace();
-        } finally {
-            close(psFuncion);
-            close(psEmpleado);
-            if (this.conexionTransaccional == null) {
-                close(conn);
+            System.out.println("Registros actualizados = " + registros);
+        } catch (SQLException ex) {
+            ex.printStackTrace(System.out);
+            try (Connection conn = this.conexionTransaccional != null ? this.conexionTransaccional : getConnection()) {
+                System.out.println("Ejecutando rollback");
+                if (conn != null) {
+                    conn.rollback();
+                }
+            } catch (SQLException ex1) {
+                ex1.printStackTrace(System.out);
             }
         }
+
         return registros;
     }
 
@@ -320,6 +241,7 @@ public class EmpleadoDaoJDBC implements EmpleadoDAO {
         }
         return registros;
     }
+
     // Método para buscar un registro en la base de datos
     public List<Empleado> buscar(String query) throws SQLException {
         String SQL_SELECT_BUSCAR = "SELECT * FROM empleado WHERE cargo LIKE ?";

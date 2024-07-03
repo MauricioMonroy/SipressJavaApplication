@@ -90,7 +90,7 @@ public class PacienteDaoJDBC implements PacienteDAO {
              PreparedStatement ps = conn.prepareStatement(SQL_SELECT_ONE)) {
 
             ps.setInt(1, idPaciente);
-            System.out.println("Ejecutando query... ");
+            System.out.println("Ejecutando query SELECT_ONE ");
 
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
