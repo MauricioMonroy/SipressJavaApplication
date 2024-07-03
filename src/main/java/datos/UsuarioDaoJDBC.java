@@ -208,5 +208,35 @@ public class UsuarioDaoJDBC implements UsuarioDAO {
         }
         return registros;
     }
+
+    // Método para buscar un registro en la base de datos
+    public List<Usuario> buscar(String query) throws SQLException {
+        String SQL_SELECT_BUSCAR = "SELECT * FROM usuario WHERE username LIKE ? OR nombre LIKE ? OR apellido LIKE ?";
+        List<Usuario> usuarios = new ArrayList<>();
+
+        try (Connection conn = Conexion.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(SQL_SELECT_BUSCAR)) {
+            stmt.setString(1, "%" + query + "%");
+            stmt.setString(2, "%" + query + "%");
+            stmt.setString(3, "%" + query + "%");
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    int idUsuario = rs.getInt("idUsuario");
+                    String username = rs.getString("username");
+                    String nombre = rs.getString("nombre");
+                    String apellido = rs.getString("apellido");
+                    String identificacion = rs.getString("identificacion");
+                    String telefono = rs.getString("telefono");
+                    String email = rs.getString("email");
+                    boolean esPaciente = rs.getBoolean("esPaciente");
+                    boolean esEmpleado = rs.getBoolean("esEmpleado");
+
+                    Usuario usuario = new Usuario(idUsuario, username, nombre, apellido, identificacion, telefono, email, esPaciente, esEmpleado);
+                    usuarios.add(usuario);
+                }
+            }
+        }
+        return usuarios;
+    }
 }
 

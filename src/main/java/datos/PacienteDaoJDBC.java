@@ -226,5 +226,28 @@ public class PacienteDaoJDBC implements PacienteDAO {
         return registros;
     }
 
+    // Método para buscar un registro en la base de datos
+    public List<Paciente> buscar(String query) throws SQLException {
+        String SQL_SELECT_BUSCAR = "SELECT * FROM paciente WHERE detalle_eps LIKE ? OR fecha_consulta LIKE ?";
+        List<Paciente> pacientes = new ArrayList<>();
+
+        try (Connection conn = Conexion.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(SQL_SELECT_BUSCAR)) {
+            stmt.setString(1, "%" + query + "%");
+            stmt.setDate(2, Date.valueOf("%" + query + "%"));
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    int idPaciente = rs.getInt("idPaciente");
+                    String detalleEps = rs.getString("detalleEps");
+                    Date fechaConsulta = Date.valueOf(rs.getString("fechaConsulta"));
+
+                    Paciente paciente = new Paciente(idPaciente, detalleEps, fechaConsulta);
+                    pacientes.add(paciente);
+                }
+            }
+        }
+        return pacientes;
+    }
+
 }
 

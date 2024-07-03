@@ -1,9 +1,6 @@
 package datos;
 
-import domain.Asignacion;
-import domain.Empleado;
-import domain.Funcion;
-import domain.Usuario;
+import domain.*;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -20,22 +17,22 @@ public class EmpleadoDaoJDBC implements EmpleadoDAO {
     // Creación de las sentencias para recuperar la información de la base de datos
     private static final String SQL_SELECT =
             "SELECT e.id_empleado, e.id_usuario, e.cargo, u.id_usuario, u.username, u.password, u.nombre, u.apellido, u.identificacion, "
-                    + "u.telefono, u.email, u.es_paciente, u.es_empleado, f.id_funcion, f.id_empleado, f.descripcion, "
-                    + "a.id_asignacion, a.id_paciente, a.id_servicio, a.id_empleado "
+                    + "u.telefono, u.email, u.es_empleado, u.es_empleado, f.id_funcion, f.id_empleado, f.descripcion, "
+                    + "a.id_asignacion, a.id_empleado, a.id_servicio, a.id_empleado "
                     + "FROM empleado e INNER JOIN usuario u ON e.id_usuario = u.id_usuario "
                     + "INNER JOIN funcion f ON f.id_empleado = e.id_empleado "
                     + "INNER JOIN asignacion a ON a.id_empleado = e.id_empleado ";
     private static final String SQL_SELECT_ONE =
             "SELECT e.id_empleado, e.id_usuario, e.cargo, u.id_usuario, u.username, u.password, u.nombre, u.apellido, u.identificacion, "
-                    + "u.telefono, u.email, u.es_paciente, u.es_empleado, f.id_funcion, f.id_empleado, f.descripcion, "
-                    + "a.id_asignacion, a.id_paciente, a.id_servicio, a.id_empleado "
+                    + "u.telefono, u.email, u.es_empleado, u.es_empleado, f.id_funcion, f.id_empleado, f.descripcion, "
+                    + "a.id_asignacion, a.id_empleado, a.id_servicio, a.id_empleado "
                     + "FROM empleado e INNER JOIN usuario u ON e.id_usuario = u.id_usuario "
                     + "INNER JOIN funcion f ON f.id_empleado = e.id_empleado "
                     + "INNER JOIN asignacion a ON a.id_empleado = e.id_empleado "
                     + "WHERE e.id_empleado = ?";
 
     private static final String SQL_INSERT_EMPLEADO =
-            "INSERT INTO paciente (cargo, id_usuario) VALUES (?, ?)";
+            "INSERT INTO empleado (cargo, id_usuario) VALUES (?, ?)";
     private static final String SQL_INSERT_USUARIO =
             "INSERT INTO empleado(id_usuario, cargo) VALUES(?, ?)";
     private static final String SQL_INSERT_FUNCION =
@@ -118,7 +115,7 @@ public class EmpleadoDaoJDBC implements EmpleadoDAO {
         usuario.setIdentificacion(rs.getString("identificacion"));
         usuario.setTelefono(rs.getString("telefono"));
         usuario.setEmail(rs.getString("email"));
-        usuario.setEsPaciente(rs.getBoolean("es_paciente"));
+        usuario.setEsEmpleado(rs.getBoolean("es_empleado"));
         usuario.setEsEmpleado(rs.getBoolean("es_empleado"));
 
         // Establecer el objeto Usuario en el objeto Empleado
@@ -322,5 +319,25 @@ public class EmpleadoDaoJDBC implements EmpleadoDAO {
             }
         }
         return registros;
+    }
+    // Método para buscar un registro en la base de datos
+    public List<Empleado> buscar(String query) throws SQLException {
+        String SQL_SELECT_BUSCAR = "SELECT * FROM empleado WHERE cargo LIKE ?";
+        List<Empleado> empleados = new ArrayList<>();
+
+        try (Connection conn = Conexion.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(SQL_SELECT_BUSCAR)) {
+            stmt.setString(1, "%" + query + "%");
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    int idEmpleado = rs.getInt("idEmpleado");
+                    String cargo = rs.getString("cargo");
+
+                    Empleado empleado = new Empleado(idEmpleado, cargo);
+                    empleados.add(empleado);
+                }
+            }
+        }
+        return empleados;
     }
 }
