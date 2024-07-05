@@ -102,17 +102,23 @@ public class ServletUsuario extends HttpServlet {
         String repeatPassword = request.getParameter("repeatPassword");
         Boolean esPaciente = request.getParameter("esPaciente") != null ? Boolean.valueOf(request.getParameter("esPaciente")) : Boolean.FALSE;
         Boolean esEmpleado = request.getParameter("esEmpleado") != null ? Boolean.valueOf(request.getParameter("esEmpleado")) : Boolean.FALSE;
+
         // Validación de contraseñas
         if (!password.equals(repeatPassword)) {
             request.setAttribute("errorMessage", "Las contraseñas no coinciden.");
             request.getRequestDispatcher("/WEB-INF/paginas/usuario/registrarUsuario.jsp").forward(request, response);
             return;
         }
+
         System.out.println("esPaciente = " + esPaciente);
         System.out.println("esEmpleado = " + esEmpleado);
         Usuario usuario = new Usuario(username, password, nombre, apellido, identificacion, telefono, email, esPaciente, esEmpleado);
         int registrosModificados = new UsuarioDaoJDBC().insertar(usuario);
         System.out.println("registrosModificados = " + registrosModificados);
+
+        if (registrosModificados > 0) {
+            request.setAttribute("successMessage", "El registro se ha realizado exitosamente.");
+        }
 
         this.accionDefault(request, response);
     }

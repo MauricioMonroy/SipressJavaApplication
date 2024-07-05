@@ -37,7 +37,7 @@ public class UsuarioDaoJDBC implements UsuarioDAO {
                     + "LEFT JOIN paciente pac ON u.id_usuario = pac.id_usuario "
                     + "WHERE u.id_usuario = ?";
     private static final String SQL_INSERT =
-            "INSERT INTO usuario(username, password, nombre, apellido, identificacion, telefono, email, "
+            "INSERT INTO usuario (username, password, nombre, apellido, identificacion, telefono, email, "
                     + "es_paciente, es_empleado) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)";
     private static final String SQL_UPDATE = "UPDATE usuario SET username = ?, password = ?, nombre = ?, "
             + "apellido = ?, identificacion = ?, telefono = ?, email = ?, es_paciente = ?, es_empleado = ? "
@@ -130,10 +130,13 @@ public class UsuarioDaoJDBC implements UsuarioDAO {
     public int insertar(Usuario usuario) throws SQLException {
         Connection conn = null;
         PreparedStatement ps = null;
-        int registros;
+        ResultSet rs = null;
+        int registros = 0;
 
         try {
             conn = this.conexionTransaccional != null ? this.conexionTransaccional : Conexion.getConnection();
+            conn.setAutoCommit(false);
+
             System.out.println("Ejecutando query SELECT_INSERT");
             ps = conn.prepareStatement(SQL_INSERT, Statement.RETURN_GENERATED_KEYS);
             ps.setString(1, usuario.getUsername());
@@ -147,7 +150,36 @@ public class UsuarioDaoJDBC implements UsuarioDAO {
             ps.setBoolean(9, usuario.getEsEmpleado());
             registros = ps.executeUpdate();
 
+            rs = ps.getGeneratedKeys();
+            if (rs.next()) {
+                int usuarioId = rs.getInt(1);
+
+                if (usuario.getEsPaciente()) {
+                    String SQL_INSERT_PACIENTE = "INSERT INTO paciente (id_usuario) VALUES (?)";
+                    try (PreparedStatement psPaciente = conn.prepareStatement(SQL_INSERT_PACIENTE)) {
+                        psPaciente.setInt(1, usuarioId);
+                        psPaciente.executeUpdate();
+                    }
+                }
+
+                if (usuario.getEsEmpleado()) {
+                    String SQL_INSERT_EMPLEADO = "INSERT INTO empleado (id_usuario) VALUES (?)";
+                    try (PreparedStatement psEmpleado = conn.prepareStatement(SQL_INSERT_EMPLEADO)) {
+                        psEmpleado.setInt(1, usuarioId);
+                        psEmpleado.executeUpdate();
+                    }
+                }
+            }
+
+            conn.commit();
+        } catch (SQLException e) {
+            if (conn != null) {
+                conn.rollback();
+            }
+            e.printStackTrace();
+            throw e;
         } finally {
+            close(rs);
             close(ps);
             if (this.conexionTransaccional == null) {
                 close(conn);
@@ -161,11 +193,14 @@ public class UsuarioDaoJDBC implements UsuarioDAO {
     public int actualizar(Usuario usuario) throws SQLException {
         Connection conn = null;
         PreparedStatement ps = null;
-        int registros;
+        int registros = 0;
 
         try {
             conn = this.conexionTransaccional != null ? this.conexionTransaccional : Conexion.getConnection();
-            System.out.println("Ejecutando query SELECT_UPDATE");
+            conn.setAutoCommit(false);
+
+            // Actualizar la tabla usuario
+            System.out.println("Ejecutando query SQL_UPDATE");
             ps = conn.prepareStatement(SQL_UPDATE);
             ps.setString(1, usuario.getUsername());
             ps.setString(2, usuario.getPassword());
@@ -179,12 +214,48 @@ public class UsuarioDaoJDBC implements UsuarioDAO {
             ps.setInt(10, usuario.getIdUsuario());
             registros = ps.executeUpdate();
 
+            // Actualizar la tabla paciente si es necesario
+            if (usuario.getEsPaciente()) {
+                Paciente paciente = new PacienteDaoJDBC().seleccionarPorId(usuario.getIdUsuario());
+                if (paciente != null) {
+                    paciente.setIdUsuario(usuario.getIdUsuario());
+                    paciente.setNombre(usuario.getNombre());
+                    paciente.setApellido(usuario.getApellido());
+                    paciente.setIdentificacion(usuario.getIdentificacion());
+                    paciente.setTelefono(usuario.getTelefono());
+                    paciente.setEmail(usuario.getEmail());
+                    new PacienteDaoJDBC().actualizar(paciente);
+                }
+            }
+
+            // Actualizar la tabla empleado si es necesario
+            if (usuario.getEsEmpleado()) {
+                Empleado empleado = new EmpleadoDaoJDBC().seleccionarPorId(usuario.getIdUsuario());
+                if (empleado != null) {
+                    empleado.setIdUsuario(usuario.getIdUsuario());
+                    empleado.setNombre(usuario.getNombre());
+                    empleado.setApellido(usuario.getApellido());
+                    empleado.setIdentificacion(usuario.getIdentificacion());
+                    empleado.setTelefono(usuario.getTelefono());
+                    empleado.setEmail(usuario.getEmail());
+                    new EmpleadoDaoJDBC().actualizar(empleado);
+                }
+            }
+
+            conn.commit();
+
+        } catch (SQLException e) {
+            if (conn != null) {
+                conn.rollback();
+            }
+            throw e;
         } finally {
             close(ps);
             if (this.conexionTransaccional == null) {
                 close(conn);
             }
         }
+
         return registros;
     }
 
@@ -194,20 +265,31 @@ public class UsuarioDaoJDBC implements UsuarioDAO {
         Connection conn = null;
         PreparedStatement ps = null;
         int registros = 0;
+
         try {
             conn = this.conexionTransaccional != null ? this.conexionTransaccional : Conexion.getConnection();
-            System.out.println("Ejecutando query SELECT_DELETE");
+            conn.setAutoCommit(false);
             ps = conn.prepareStatement(SQL_DELETE);
             ps.setInt(1, usuario.getIdUsuario());
             registros = ps.executeUpdate();
+
+            conn.commit();
+
+        } catch (SQLException e) {
+            if (conn != null) {
+                conn.rollback();
+            }
+            throw e;
         } finally {
             close(ps);
             if (this.conexionTransaccional == null) {
                 close(conn);
             }
         }
+
         return registros;
     }
+
 
     // Método para buscar un registro en la base de datos
     public List<Usuario> buscar(String query) throws SQLException {

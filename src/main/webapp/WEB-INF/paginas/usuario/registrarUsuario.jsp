@@ -9,6 +9,11 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content bg-light">
             <div class="modal-header">
+                <c:if test="${not empty successMessage}">
+                    <div class="alert alert-info">
+                            ${successMessage}
+                    </div>
+                </c:if>
                 <h1 class="modal-title fs-5" id="registrarUsuarioModalLabel">
                     Registro de Usuarios
                 </h1>

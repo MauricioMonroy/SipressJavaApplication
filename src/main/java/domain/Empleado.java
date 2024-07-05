@@ -41,6 +41,10 @@ public class Empleado extends Usuario implements Serializable {
         this.idEmpleado = idEmpleado;
     }
 
+    public Empleado(Usuario usuario) {
+        this.usuario = usuario;
+    }
+
     public Empleado(Integer idUsuario, String cargo) {
         super(idUsuario);
         this.cargo = cargo;

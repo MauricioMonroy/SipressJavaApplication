@@ -146,6 +146,10 @@ public class ServletHistorial extends HttpServlet {
         int registrosModificados = new HistorialDaoJDBC().insertar(historial);
         System.out.println("registrosModificados = " + registrosModificados);
 
+        if (registrosModificados > 0) {
+            request.setAttribute("successMessage", "El registro se ha realizado exitosamente.");
+        }
+
         this.accionDefault(request, response);
     }
 

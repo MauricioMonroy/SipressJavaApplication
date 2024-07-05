@@ -47,8 +47,16 @@ public class Paciente extends Usuario implements Serializable {
     public Paciente() {
     }
 
+    public Paciente(Usuario usuario) {
+        this.usuario = usuario;
+    }
+
     public Paciente(int idPaciente) {
         this.idPaciente = idPaciente;
+    }
+
+    public Paciente(Integer idUsuario) {
+        super(idUsuario);
     }
 
     public Paciente(String detalleEps, Usuario usuario) {

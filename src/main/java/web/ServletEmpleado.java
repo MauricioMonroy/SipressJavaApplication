@@ -107,6 +107,10 @@ public class ServletEmpleado extends HttpServlet {
         int registrosModificados = new EmpleadoDaoJDBC().insertar(empleado);
         System.out.println("registrosModificados = " + registrosModificados);
 
+        if (registrosModificados > 0) {
+            request.setAttribute("successMessage", "El registro se ha realizado exitosamente.");
+        }
+
         this.accionDefault(request, response);
     }
 

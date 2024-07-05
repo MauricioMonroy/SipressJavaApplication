@@ -33,13 +33,13 @@ public class UsuarioUITest {
         driver.get("http://localhost:8080/SipressJavaApplication/index.jsp");
     }
 
-//    @AfterEach
-//    public void tearDown() {
-//        // Cerrar el navegador después de cada prueba
-//        if (driver != null) {
-//            driver.quit();
-//        }
-//    }
+    @AfterEach
+    public void tearDown() {
+        // Cerrar el navegador después de cada prueba
+        if (driver != null) {
+            driver.quit();
+        }
+    }
 
     @Test
     public void testAgregarUsuarioButton() {
