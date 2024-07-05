@@ -6,12 +6,9 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class UsuarioDaoJDBCTest {
 
@@ -27,9 +24,10 @@ public class UsuarioDaoJDBCTest {
                 "");
 
         // Crear tablas y datos de prueba
-        PreparedStatement createTable = connection.prepareStatement(
+        Statement statement = connection.createStatement();
+        statement.executeUpdate(
                 "CREATE TABLE usuario (" +
-                        "id INT AUTO_INCREMENT PRIMARY KEY, " +
+                        "id_usuario INT AUTO_INCREMENT PRIMARY KEY, " +
                         "username VARCHAR(45), " +
                         "password VARCHAR(45), " +
                         "nombre VARCHAR(255), " +
@@ -40,7 +38,20 @@ public class UsuarioDaoJDBCTest {
                         "es_paciente BOOLEAN, " +
                         "es_empleado BOOLEAN)"
         );
-        createTable.executeUpdate();
+
+        statement.executeUpdate(
+                "CREATE TABLE paciente (" +
+                        "id INT AUTO_INCREMENT PRIMARY KEY, " +
+                        "id_usuario INT, " +
+                        "FOREIGN KEY (id_usuario) REFERENCES usuario(id_usuario))"
+        );
+
+        statement.executeUpdate(
+                "CREATE TABLE empleado (" +
+                        "id INT AUTO_INCREMENT PRIMARY KEY, " +
+                        "id_usuario INT, " +
+                        "FOREIGN KEY (id_usuario) REFERENCES usuario(id_usuario))"
+        );
 
         // Inicializar DAO con la conexión de H2
         usuarioDao = new UsuarioDaoJDBC(connection);
@@ -73,7 +84,38 @@ public class UsuarioDaoJDBCTest {
 
         // Verificar que la inserción fue exitosa
         assertEquals(1, registros);
+
+        // Verificar que el usuario se insertó correctamente en la tabla usuario
+        PreparedStatement psUsuario = connection.prepareStatement(
+                "SELECT * FROM usuario WHERE username = ?");
+        psUsuario.setString(1, "testuser");
+        ResultSet rsUsuario = psUsuario.executeQuery();
+        assertTrue(rsUsuario.next());
+
+        // Verificar que el usuario se insertó correctamente en la tabla paciente
+        PreparedStatement psPaciente = connection.prepareStatement(
+                "SELECT * FROM paciente WHERE id_usuario = ?");
+        psPaciente.setInt(1, rsUsuario.getInt("id_usuario"));
+        ResultSet rsPaciente = psPaciente.executeQuery();
+        assertTrue(rsPaciente.next());
+
+        // Verificar que no se insertó en la tabla empleado
+        PreparedStatement psEmpleado = connection.prepareStatement(
+                "SELECT * FROM empleado WHERE id_usuario = ?");
+        psEmpleado.setInt(1, rsUsuario.getInt("id_usuario"));
+        ResultSet rsEmpleado = psEmpleado.executeQuery();
+        assertFalse(rsEmpleado.next());
+
+        // Cerrar recursos
+        rsUsuario.close();
+        psUsuario.close();
+        rsPaciente.close();
+        psPaciente.close();
+        rsEmpleado.close();
+        psEmpleado.close();
     }
 }
+
+
 
 
