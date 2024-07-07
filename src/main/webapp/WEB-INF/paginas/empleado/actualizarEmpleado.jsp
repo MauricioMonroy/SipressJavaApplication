@@ -26,46 +26,45 @@
                             <h4>Modificar Registro</h4>
                         </div>
                         <div class="card-body">
-
-                            <div class="form-floating form-group mb-3">
-                                <input type="text" class="form-control" id="nombre"
-                                       name="nombre" placeholder="Nombre" required
-                                       value="${empleado.usuario.nombre}"/>
-                                <label for="nombre">Nombre(s)</label>
-                            </div>
-
-                            <div class="form-floating form-group mb-3">
-                                <input type="text" class="form-control" id="apellido"
-                                       name="apellido" placeholder="Apellido" required
-                                       value="${empleado.usuario.apellido}"/>
-                                <label for="apellido">Apellido(s)</label>
-                            </div>
-
                             <div class="form-floating form-group mb-3">
                                 <input type="text" class="form-control" id="cargo"
-                                       name="cargo" placeholder="Cargo" required
+                                       name="cargo" placeholder="Cargo"
                                        value="${empleado.cargo}"/>
                                 <label for="cargo">Cargo</label>
                             </div>
 
                             <div class="form-floating form-group mb-3">
+                                <input type="text" class="form-control" id="nombre"
+                                       name="nombre" placeholder="Nombre"
+                                       value="${empleado.usuario.nombre}" disabled readonly/>
+                                <label for="nombre">Nombre(s)</label>
+                            </div>
+
+                            <div class="form-floating form-group mb-3">
+                                <input type="text" class="form-control" id="apellido"
+                                       name="apellido" placeholder="Apellido"
+                                       value="${empleado.usuario.apellido}" disabled readonly/>
+                                <label for="apellido">Apellido(s)</label>
+                            </div>
+
+                            <div class="form-floating form-group mb-3">
                                 <input type="text" class="form-control" id="identificacion"
-                                       name="identificacion" placeholder="Identificación" required
-                                       value="${empleado.usuario.identificacion}"/>
+                                       name="identificacion" placeholder="Identificación"
+                                       value="${empleado.usuario.identificacion}" disabled readonly/>
                                 <label for="identificacion">Identificación</label>
                             </div>
 
                             <div class="form-floating form-group mb-3">
                                 <input type="tel" class="form-control" id="telefono"
-                                       name="telefono" placeholder="telefono" required
-                                       value="${empleado.usuario.telefono}"/>
+                                       name="telefono" placeholder="telefono"
+                                       value="${empleado.usuario.telefono}" disabled readonly/>
                                 <label for="telefono">Teléfono</label>
                             </div>
 
                             <div class="form-floating form-group mb-3">
                                 <input type="email" class="form-control" id="email"
-                                       name="email" placeholder="nombre@ejemplo.com" required
-                                       value="${empleado.usuario.email}"/>
+                                       name="email" placeholder="nombre@ejemplo.com"
+                                       value="${empleado.usuario.email}" disabled readonly/>
                                 <label for="email">Correo electrónico</label>
                             </div>
                         </div>

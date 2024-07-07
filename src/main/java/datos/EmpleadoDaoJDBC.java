@@ -32,8 +32,6 @@ public class EmpleadoDaoJDBC implements EmpleadoDAO {
                     "email, es_paciente, es_empleado) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
     private static final String SQL_UPDATE_EMPLEADO =
             "UPDATE empleado SET cargo = ? WHERE id_empleado = ?";
-    private static final String SQL_UPDATE_USUARIO =
-            "UPDATE usuario SET nombre = ?, apellido = ?, identificacion = ?, telefono = ?, email = ? WHERE id_usuario = ?";
     private static final String SQL_DELETE =
             "DELETE FROM empleado WHERE id_empleado = ?";
 
@@ -178,42 +176,26 @@ public class EmpleadoDaoJDBC implements EmpleadoDAO {
     // Método que permite actualizar objetos en la base de datos (UPDATE)
     @Override
     public int actualizar(Empleado empleado) throws SQLException {
+        Connection conn = null;
+        PreparedStatement ps = null;
         int registros = 0;
+        try {
+            conn = this.conexionTransaccional != null ? this.conexionTransaccional : getConnection();
+            System.out.println("Ejecutando query SQL_UPDATE");
+            ps = conn.prepareStatement(SQL_UPDATE_EMPLEADO);
+            ps.setString(1, empleado.getCargo());
+            ps.setInt(2, empleado.getIdEmpleado());
 
-        try (Connection conn = this.conexionTransaccional != null ? this.conexionTransaccional : getConnection()) {
-            conn.setAutoCommit(false);
-
-            try (PreparedStatement psUsuario = conn.prepareStatement(SQL_UPDATE_USUARIO)) {
-                Usuario usuario = empleado.getUsuario();
-                psUsuario.setString(1, usuario.getNombre());
-                psUsuario.setString(2, usuario.getApellido());
-                psUsuario.setString(3, usuario.getIdentificacion());
-                psUsuario.setString(4, usuario.getTelefono());
-                psUsuario.setString(5, usuario.getEmail());
-                psUsuario.setInt(6, usuario.getIdUsuario());
-                registros += psUsuario.executeUpdate();
-            }
-
-            try (PreparedStatement psEmpleado = conn.prepareStatement(SQL_UPDATE_EMPLEADO)) {
-                psEmpleado.setString(1, empleado.getCargo());
-                psEmpleado.setInt(2, empleado.getIdEmpleado());
-                registros += psEmpleado.executeUpdate();
-            }
-
-            conn.commit();
+            registros = ps.executeUpdate();
             System.out.println("Registros actualizados = " + registros);
-        } catch (SQLException ex) {
-            ex.printStackTrace(System.out);
-            try (Connection conn = this.conexionTransaccional != null ? this.conexionTransaccional : getConnection()) {
-                System.out.println("Ejecutando rollback");
-                if (conn != null) {
-                    conn.rollback();
-                }
-            } catch (SQLException ex1) {
-                ex1.printStackTrace(System.out);
+        }
+        // Se ejecuta el bloque finally para cerrar la conexión
+        finally {
+            close(ps);
+            if (this.conexionTransaccional == null) {
+                close(conn);
             }
         }
-
         return registros;
     }
 

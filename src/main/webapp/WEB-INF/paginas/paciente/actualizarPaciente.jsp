@@ -43,36 +43,36 @@
 
                             <div class="form-floating form-group mb-3">
                                 <input type="text" class="form-control" id="nombre"
-                                       name="nombre" placeholder="Nombre" required
-                                       value="${paciente.usuario.nombre}"/>
+                                       name="nombre" placeholder="Nombre"
+                                       value="${paciente.usuario.nombre}" disabled readonly/>
                                 <label for="nombre">Nombre(s)</label>
                             </div>
 
                             <div class="form-floating form-group mb-3">
                                 <input type="text" class="form-control" id="apellido"
-                                       name="apellido" placeholder="Apellido" required
-                                       value="${paciente.usuario.apellido}"/>
+                                       name="apellido" placeholder="Apellido"
+                                       value="${paciente.usuario.apellido}" disabled readonly/>
                                 <label for="apellido">Apellido(s)</label>
                             </div>
 
                             <div class="form-floating form-group mb-3">
                                 <input type="text" class="form-control" id="identificacion"
-                                       name="identificacion" placeholder="Identificación" required
-                                       value="${paciente.usuario.identificacion}"/>
+                                       name="identificacion" placeholder="Identificación"
+                                       value="${paciente.usuario.identificacion}" disabled readonly/>
                                 <label for="identificacion">Identificación</label>
                             </div>
 
                             <div class="form-floating form-group mb-3">
                                 <input type="tel" class="form-control" id="telefono"
-                                       name="telefono" placeholder="telefono" required
-                                       value="${paciente.usuario.telefono}"/>
+                                       name="telefono" placeholder="telefono"
+                                       value="${paciente.usuario.telefono}" disabled readonly/>
                                 <label for="telefono">Teléfono</label>
                             </div>
 
                             <div class="form-floating form-group mb-3">
                                 <input type="email" class="form-control" id="email"
-                                       name="email" placeholder="nombre@ejemplo.com" required
-                                       value="${paciente.usuario.email}"/>
+                                       name="email" placeholder="nombre@ejemplo.com"
+                                       value="${paciente.usuario.email}" disabled readonly/>
                                 <label for="email">Correo electrónico</label>
                             </div>
                         </div>

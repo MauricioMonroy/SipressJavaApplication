@@ -30,28 +30,28 @@
                                 <div class="col-md-6">
                                     <label for="inputNombre" class="form-label">Nombre</label>
                                     <input type="text" class="form-control" id="inputNombre" name="nombre"
-                                           value="${historial.paciente.usuario.nombre}"/>
+                                           value="${historial.paciente.usuario.nombre}" disabled readonly/>
                                 </div>
                                 <div class="col-md-6">
                                     <label for="inputApellido" class="form-label">Apellido</label>
                                     <input type="text" class="form-control" id="inputApellido" name="apellido"
-                                           value="${historial.paciente.usuario.apellido}"/>
+                                           value="${historial.paciente.usuario.apellido}" disabled readonly/>
                                 </div>
                                 <div class="col-md-4">
                                     <label for="inputIdentificacion" class="form-label">Identificación</label>
                                     <input type="text" class="form-control" id="inputIdentificacion"
                                            name="identificacion"
-                                           value="${historial.paciente.usuario.identificacion}"/>
+                                           value="${historial.paciente.usuario.identificacion}" disabled readonly/>
                                 </div>
                                 <div class="col-md-4">
                                     <label for="inputTelefono" class="form-label">Teléfono</label>
                                     <input type="text" class="form-control" id="inputTelefono" name="telefono"
-                                           value="${historial.paciente.usuario.telefono}"/>
+                                           value="${historial.paciente.usuario.telefono}" disabled readonly/>
                                 </div>
                                 <div class="col-md-4">
                                     <label for="inputEmail" class="form-label">Email</label>
                                     <input type="email" class="form-control" id="inputEmail" name="email"
-                                           value="${historial.paciente.usuario.email}"/>
+                                           value="${historial.paciente.usuario.email}" disabled readonly/>
                                 </div>
                                 <div class="col-md-4">
                                     <label for="inputFechaNacimiento" class="form-label">Fecha de Nacimiento</label>

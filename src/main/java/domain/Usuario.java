@@ -62,6 +62,17 @@ public class Usuario implements Serializable {
         this.email = email;
     }
 
+    public Usuario(Integer idUsuario, String nombre, String apellido, String identificacion, String telefono, String email) {
+        this.idUsuario = idUsuario;
+        this.username = username;
+        this.password = password;
+        this.nombre = nombre;
+        this.apellido = apellido;
+        this.identificacion = identificacion;
+        this.telefono = telefono;
+        this.email = email;
+    }
+
     public Usuario(String username, String password, String nombre, String apellido,
                    String identificacion, String telefono, String email,
                    Boolean esPaciente, Boolean esEmpleado) {
@@ -115,6 +126,7 @@ public class Usuario implements Serializable {
         this.esPaciente = b;
         this.esEmpleado = b1;
     }
+
 
     @Override
     public String toString() {

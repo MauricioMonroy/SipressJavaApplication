@@ -119,6 +119,7 @@ public class ServletPaciente extends HttpServlet {
 
     private void modificarPaciente(HttpServletRequest request, HttpServletResponse response)
             throws IOException, SQLException {
+
         int idPaciente = Integer.parseInt(request.getParameter("idPaciente"));
         String detalleEps = request.getParameter("detalleEps");
         Date fechaConsulta = Date.valueOf(request.getParameter("fechaConsulta"));
@@ -130,9 +131,13 @@ public class ServletPaciente extends HttpServlet {
         String telefono = request.getParameter("telefono");
         String email = request.getParameter("email");
 
-        Paciente paciente = new Paciente(idPaciente, detalleEps, fechaConsulta, new Usuario(nombre, apellido, identificacion, telefono, email));
+        // Crear objetos de dominio
+        Usuario usuario = new Usuario(nombre, apellido, identificacion, telefono, email);
+        Paciente paciente = new Paciente(idPaciente, detalleEps, fechaConsulta, usuario);
+
         int registrosModificados = new PacienteDaoJDBC().actualizar(paciente);
         System.out.println("registrosModificados = " + registrosModificados);
+
         this.accionDefault(request, response);
     }
 

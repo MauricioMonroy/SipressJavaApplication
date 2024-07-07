@@ -7,6 +7,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import static datos.Conexion.close;
 import static datos.Conexion.getConnection;
 
 public class PacienteDaoJDBC implements PacienteDAO {
@@ -28,9 +29,6 @@ public class PacienteDaoJDBC implements PacienteDAO {
                     "email, es_paciente, es_empleado) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
     private static final String SQL_INSERT_PACIENTE =
             "INSERT INTO paciente (detalle_eps, fecha_consulta, id_usuario) VALUES (?, ?, ?)";
-    private static final String SQL_UPDATE_USUARIO =
-            "UPDATE usuario SET nombre = ?, apellido = ?, identificacion = ?, telefono = ?, " +
-                    "email = ? WHERE id_usuario = ?";
     private static final String SQL_UPDATE_PACIENTE =
             "UPDATE paciente SET detalle_eps = ?, fecha_consulta = ? WHERE id_paciente = ?";
     private static final String SQL_DELETE =
@@ -169,45 +167,39 @@ public class PacienteDaoJDBC implements PacienteDAO {
 
     @Override
     public int actualizar(Paciente paciente) throws SQLException {
+        Connection conn = null;
+        PreparedStatement ps = null;
         int registros = 0;
 
-        try (Connection conn = this.conexionTransaccional != null ? this.conexionTransaccional : getConnection()) {
+        try {
+            conn = this.conexionTransaccional != null ? this.conexionTransaccional : Conexion.getConnection();
             conn.setAutoCommit(false);
 
-            try (PreparedStatement psUsuario = conn.prepareStatement(SQL_UPDATE_USUARIO)) {
-                Usuario usuario = paciente.getUsuario();
-                psUsuario.setString(1, usuario.getNombre());
-                psUsuario.setString(2, usuario.getApellido());
-                psUsuario.setString(3, usuario.getIdentificacion());
-                psUsuario.setString(4, usuario.getTelefono());
-                psUsuario.setString(5, usuario.getEmail());
-                psUsuario.setInt(6, usuario.getIdUsuario());
-                registros += psUsuario.executeUpdate();
-            }
+            System.out.println("Ejecutando query SQL_UPDATE");
+            ps = conn.prepareStatement(SQL_UPDATE_PACIENTE);
+            ps.setString(1, paciente.getDetalleEps());
+            ps.setDate(2, new java.sql.Date(paciente.getFechaConsulta().getTime()));
+            ps.setInt(3, paciente.getIdPaciente());
 
-            try (PreparedStatement psPaciente = conn.prepareStatement(SQL_UPDATE_PACIENTE)) {
-                psPaciente.setString(1, paciente.getDetalleEps());
-                psPaciente.setDate(2, new java.sql.Date(paciente.getFechaConsulta().getTime()));
-                psPaciente.setInt(3, paciente.getIdPaciente());
-                registros += psPaciente.executeUpdate();
-            }
+            registros = ps.executeUpdate();
 
             conn.commit();
-            System.out.println("Registros actualizados = " + registros);
-        } catch (SQLException ex) {
-            ex.printStackTrace(System.out);
-            try (Connection conn = this.conexionTransaccional != null ? this.conexionTransaccional : getConnection()) {
-                System.out.println("Ejecutando rollback");
-                if (conn != null) {
-                    conn.rollback();
-                }
-            } catch (SQLException ex1) {
-                ex1.printStackTrace(System.out);
+
+        } catch (SQLException e) {
+            if (conn != null) {
+                conn.rollback();
+            }
+            throw e;
+        } finally {
+            close(ps);
+            if (this.conexionTransaccional == null) {
+                close(conn);
             }
         }
 
         return registros;
     }
+
 
     @Override
     public int eliminar(Paciente paciente) throws SQLException {
