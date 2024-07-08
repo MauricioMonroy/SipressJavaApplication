@@ -100,8 +100,8 @@ public class ServletUsuario extends HttpServlet {
         String email = request.getParameter("email");
         String password = request.getParameter("password");
         String repeatPassword = request.getParameter("repeatPassword");
-        Boolean esPaciente = request.getParameter("esPaciente") != null ? Boolean.valueOf(request.getParameter("esPaciente")) : Boolean.FALSE;
-        Boolean esEmpleado = request.getParameter("esEmpleado") != null ? Boolean.valueOf(request.getParameter("esEmpleado")) : Boolean.FALSE;
+        Boolean esPaciente = request.getParameter("esPaciente") != null;
+        Boolean esEmpleado = request.getParameter("esEmpleado") != null;
 
         // Validación de contraseñas
         if (!password.equals(repeatPassword)) {
